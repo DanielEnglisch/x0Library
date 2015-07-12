@@ -13,6 +13,9 @@ import at.xer0.x0_Library.Log.Logger;
 
 public class ConfigFile {
 	
+	
+	private Logger l = new Logger("ConfigFile",Logger.SILENT);
+	
 	private File file = null;
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
@@ -22,16 +25,25 @@ public class ConfigFile {
 		name = f.getName();
 		file = f;
 		
-		Logger.log("Initializing " + name + ":");
+		l.info("Initializing " + name + ":");
 
 		parseContents();
 	}
 	
+	public Logger getLogger() {
+		return l;
+	}
+	
+	public boolean exists()
+	{
+		return file.exists();
+	}
+	
 	private void parseContents()
 	{
-		if(!file.exists())
+		if(!exists())
 		{
-			Logger.error("FileNotFound");
+			l.error("FileNotFound: " + name);
 			return;
 		}
 		
@@ -48,7 +60,7 @@ public class ConfigFile {
 				
 				if(s.substring(0,1).equalsIgnoreCase("#"))
 				{
-					Logger.log("Skipping comment: " + s);
+					l.log("Skipping comment: " + s);
 				}else
 				{
 					try
@@ -66,11 +78,11 @@ public class ConfigFile {
 						}
 						
 						loadProperty(property, value);
-						Logger.log("Parsed: [" + property + " - " + value + "];");
+						l.log("Parsed: [" + property + " - " + value + "];");
 					}
 					catch(Exception ex)
 					{
-						Logger.warning("Failed to parse line: " + s);
+						l.warning("Failed to parse line: " + s);
 					}
 				}
 				
@@ -82,7 +94,7 @@ public class ConfigFile {
 		catch(Exception e)
 		{
 			try {in.close();} catch (IOException e1) {e1.printStackTrace();}
-			Logger.error("Error reading file!");
+			l.error("Error reading file!");
 			e.printStackTrace();
 			
 		}
@@ -123,16 +135,16 @@ public class ConfigFile {
 		catch(Exception ex)
 		{			
 			try {out.close();} catch (IOException e1) {e1.printStackTrace();}
-			Logger.error("Error writing file!");
+			l.error("Error writing file!");
 			ex.printStackTrace();
 		}
 		
-		Logger.log("Saved " + name);
+		l.log("Saved " + name);
 	}
 	
 	public void reloadFile()
 	{
-		Logger.log("Reloading " + name + ":");
+		l.log("Reloading " + name + ":");
 		properties.clear();
 		parseContents();
 	}
@@ -148,11 +160,11 @@ public class ConfigFile {
 		saveFile();
 	}
 	
-	public void addProperty(String property, String value)
+	private void addProperty(String property, String value)
 	{
 		
 		properties.put(property, value);
-		Logger.log("Added: [" + property + " - " + value + "];");
+		l.log("Added: [" + property + " - " + value + "];");
 
 		saveFile();
 	}
@@ -174,6 +186,8 @@ public class ConfigFile {
 		if(isProperty(property))
 		{
 			properties.replace(property, value);
+			l.log("Set: [" + property + " - " + value + "];");
+
 			saveFile();
 		}else
 		{
@@ -189,14 +203,17 @@ public class ConfigFile {
 
 	public void list()
 	{
-		Logger.log("#####Contents of " + name + ":#####");
+		Logger g = new Logger("ConfigFile");
+		g.log("#####Contents of " + name + ":#####");
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
 		    String key = entry.getKey();
 		    String value = entry.getValue();
 		    
-		    Logger.log(key + " = " + value);
+		    g.log(key + " = " + value);
 		}		
-		Logger.log("#####End of Contents#####");
+		g.log("#####End of Contents#####");
+		
+
 
 	}
 }
