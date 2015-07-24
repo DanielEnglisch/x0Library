@@ -1,5 +1,11 @@
 package at.xer0.x0_Library.Log;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * This class provides the ability to manage logging in your program. You not
  * only have control over the different types of log-outputs but also if and
@@ -14,6 +20,8 @@ public class Logger {
 	public static int NORMAL = -1;
 	public static int ERRORS_ONLY = 0;
 	public static int SILENT = 1;
+
+	private ArrayList<String> log = new ArrayList<String>();
 
 	private int mode = -1;
 
@@ -65,7 +73,11 @@ public class Logger {
 		if (mode == SILENT) {
 			return;
 		}
-		System.out.println("[" + parentApp + "]" + " [LOG] " + s);
+
+		String lg = "[" + parentApp + "]" + " [LOG] " + s;
+
+		System.out.println(lg);
+		log.add(lg);
 	}
 
 	/**
@@ -81,7 +93,11 @@ public class Logger {
 		if (mode == SILENT) {
 			return;
 		}
-		System.out.println("[" + parentApp + "]" + " [INFO] " + s);
+
+		String lg = "[" + parentApp + "]" + " [INFO] " + s;
+
+		System.out.println(lg);
+		log.add(lg);
 	}
 
 	/**
@@ -97,7 +113,12 @@ public class Logger {
 		if (mode == SILENT) {
 			return;
 		}
-		System.out.println("[" + parentApp + "]" + " [WARNING] " + s);
+
+		String lg = "[" + parentApp + "]" + " [WARNING] " + s;
+
+		System.out.println(lg);
+		log.add(lg);
+
 	}
 
 	/**
@@ -110,7 +131,11 @@ public class Logger {
 		if (mode == SILENT) {
 			return;
 		}
-		System.out.println("[" + parentApp + "]" + " [ERROR] " + s);
+
+		String lg = "[" + parentApp + "]" + " [ERROR] " + s;
+
+		System.out.println(lg);
+		log.add(lg);
 	}
 
 	/**
@@ -123,7 +148,44 @@ public class Logger {
 		if (mode == SILENT) {
 			return;
 		}
-		System.out.println("[" + parentApp + "]" + " [FATAL] " + s);
+
+		String lg = "[" + parentApp + "]" + " [FATAL] " + s;
+
+		System.out.println(lg);
+		log.add(lg);
+	}
+
+	public void write(File f) {
+		BufferedWriter out = null;
+
+		try {
+			out = new BufferedWriter(new FileWriter(f));
+
+			out.write("##### x0 Log File #####");
+
+			for (String s : log) {
+				out.write(s + "\n");
+			}
+
+			out.write("##### End of File #####");
+			out.flush();
+
+		} catch (Exception e) {
+			try {
+				out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+
+		try {
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		info("Successfully wrote file " + f.getAbsolutePath());
 	}
 
 }

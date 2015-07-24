@@ -2,6 +2,7 @@ package at.xer0.x0_Library.Config;
 
 /**
  * This class provides the ability to create and manage config files.
+ * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-07-11
  **/

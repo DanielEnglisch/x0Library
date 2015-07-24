@@ -28,6 +28,8 @@ public class MainClass {
 
 		l.info("-----ArgumentParser-----");
 		testArgumentParser();
+
+		l.write(new File(".", "log.log"));
 	}
 
 	private static void testConfigFile() {
