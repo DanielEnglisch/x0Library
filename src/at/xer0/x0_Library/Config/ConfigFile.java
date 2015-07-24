@@ -1,5 +1,11 @@
 package at.xer0.x0_Library.Config;
 
+/**
+ * This class provides the ability to create and manage config files.
+ * @author Daniel 'Xer0' Englisch
+ * @since 2015-07-11
+ **/
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,14 +19,14 @@ import at.xer0.x0_Library.Log.Logger;
 
 public class ConfigFile {
 
-	//LoggerBlock:
+	// LoggerBlock:
 	private Logger l = new Logger("ConfigFile", Logger.SILENT);
-	
+
 	public Logger getLogger() {
 		return l;
 	}
-	//-----------	
-	
+	// -----------
+
 	private File file = null;
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
@@ -33,8 +39,6 @@ public class ConfigFile {
 
 		parseContents();
 	}
-
-
 
 	public boolean exists() {
 		return file.exists();

@@ -1,5 +1,12 @@
 package at.xer0.x0_Library;
 
+/**
+ * This class shows some examples to user some classes of this library.
+ * 
+ * @author Daniel 'Xer0' Englisch
+ * @since 2015-07-12
+ **/
+
 import java.io.File;
 
 import at.xer0.x0_Library.Config.ConfigFile;
@@ -15,16 +22,15 @@ public class MainClass {
 
 		l.info("-----ConfigFile-----");
 		testConfigFile();
-		
+
 		l.info("-----StringTools-----");
 		testStringTools();
-		
+
 		l.info("-----ArgumentParser-----");
 		testArgumentParser();
 	}
-	
-	private static void testConfigFile()
-	{
+
+	private static void testConfigFile() {
 		l.info("Initializing Programm...");
 		l.info("Creating Config...");
 
@@ -40,11 +46,10 @@ public class MainClass {
 		l.info("Enumerating config:");
 		conf.list();
 	}
-	
-	private static void testStringTools()
-	{
+
+	private static void testStringTools() {
 		String s = "Xer0";
-		
+
 		l.log(s);
 		l.info(StringTools.getFirstChar(s));
 		l.info(StringTools.getLastChar(s));
@@ -52,18 +57,15 @@ public class MainClass {
 		l.info(StringTools.removeLastChar(s));
 
 	}
-	
-	private static void testArgumentParser()
-	{
+
+	private static void testArgumentParser() {
 		String args = "-x -y -z -verbose -name Daniel";
-		
+
 		ArgumentParser p = new ArgumentParser(args);
-		
-		
+
 		l.info(p.getValue("-name"));
-		
-		if(p.exists("-y"))
-		{
+
+		if (p.exists("-y")) {
 			l.info("YES");
 		}
 	}
