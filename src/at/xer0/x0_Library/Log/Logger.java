@@ -9,18 +9,13 @@ package at.xer0.x0_Library.Log;
 
 public class Logger {
 
-	/**Logger Mode: Logs everything**/
 	public static int NORMAL = -1;
-	/**Logger Mode: Logs errors only**/
 	public static int ERRORS_ONLY = 0;
-	/**Logger Mode: Logs nothing**/
 	public static int SILENT = 1;
 	
-	/**Current Logger Mode**/
 	private int mode = -1;
 
-	/** Name of program/process using the logger **/
-	private String parentApp = "ParentApp";
+	private String parentApp = "Logger";
 
 	/**
 	 * Constructor
@@ -32,7 +27,7 @@ public class Logger {
 
 	/**
 	 * Constructor
-	 * @param parent Name of the process using this logger
+	 * @param parent Name of the logger
 	 * @param mode Logger Mode
 	 **/
 	public Logger(String parent, int mode) {

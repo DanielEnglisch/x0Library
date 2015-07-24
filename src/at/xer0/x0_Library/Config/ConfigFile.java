@@ -13,7 +13,14 @@ import at.xer0.x0_Library.Log.Logger;
 
 public class ConfigFile {
 
+	//LoggerBlock:
 	private Logger l = new Logger("ConfigFile", Logger.SILENT);
+	
+	public Logger getLogger() {
+		return l;
+	}
+	//-----------	
+	
 	private File file = null;
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
@@ -27,9 +34,7 @@ public class ConfigFile {
 		parseContents();
 	}
 
-	public Logger getLogger() {
-		return l;
-	}
+
 
 	public boolean exists() {
 		return file.exists();
