@@ -1,0 +1,13 @@
+[MainLogger] [INFO] -----ConfigFile-----
+[MainLogger] [INFO] Initializing Programm...
+[MainLogger] [INFO] Creating Config...
+[MainLogger] [INFO] Enumerating config:
+[MainLogger] [INFO] -----StringTools-----
+[MainLogger] [LOG] Xer0
+[MainLogger] [INFO] X
+[MainLogger] [INFO] 0
+[MainLogger] [INFO] er0
+[MainLogger] [INFO] Xer
+[MainLogger] [INFO] -----ArgumentParser-----
+[MainLogger] [INFO] Daniel
+[MainLogger] [INFO] YES

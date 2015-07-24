@@ -47,6 +47,8 @@ public class MainClass {
 
 		l.info("Enumerating config:");
 		conf.list();
+		
+		conf.setValue("cs", "go");
 	}
 
 	private static void testStringTools() {

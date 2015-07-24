@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import at.xer0.x0_Library.Log.Logger;
+import at.xer0.x0_Library.String.StringTools;
 
 public class ConfigFile {
 
@@ -59,8 +60,9 @@ public class ConfigFile {
 			while (in.ready()) {
 				String s = in.readLine();
 
-				if (s.substring(0, 1).equalsIgnoreCase("#")) {
+				if (StringTools.getFirstChar(s).equalsIgnoreCase("#")) {
 					l.log("Skipping comment: " + s);
+					properties.put("#", StringTools.removeFirstChar(s));
 				} else {
 					try {
 						String[] sp = s.split("=");
@@ -115,7 +117,15 @@ public class ConfigFile {
 				String key = entry.getKey();
 				String value = entry.getValue();
 
-				out.write(key + " = " + value + "\n");
+				
+				if(StringTools.getFirstChar(key).equals("#"))
+				{
+					out.write("#"+value + "\n");
+				}else
+				{
+					out.write(key + " = " + value + "\n");
+				}
+				
 				out.flush();
 			}
 
@@ -191,7 +201,11 @@ public class ConfigFile {
 			String key = entry.getKey();
 			String value = entry.getValue();
 
-			g.log(key + " = " + value);
+			if(!StringTools.getFirstChar(key).equals("#"))
+			{
+				g.log(key + " = " + value);
+			}
+			
 		}
 		g.log("#####End of Contents#####");
 		g = null;
