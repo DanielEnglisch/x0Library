@@ -1,13 +1,13 @@
-[MainLogger] [INFO] -----ConfigFile-----
-[MainLogger] [INFO] Initializing Programm...
-[MainLogger] [INFO] Creating Config...
-[MainLogger] [INFO] Enumerating config:
-[MainLogger] [INFO] -----StringTools-----
-[MainLogger] [LOG] Xer0
-[MainLogger] [INFO] X
-[MainLogger] [INFO] 0
-[MainLogger] [INFO] er0
-[MainLogger] [INFO] Xer
-[MainLogger] [INFO] -----ArgumentParser-----
-[MainLogger] [INFO] Daniel
-[MainLogger] [INFO] YES
+[2015-07-25 21:11:03.74] [MainLogger] [INFO] -----ConfigFile-----
+[2015-07-25 21:11:03.75] [MainLogger] [INFO] Initializing Programm...
+[2015-07-25 21:11:03.751] [MainLogger] [INFO] Creating Config...
+[2015-07-25 21:11:03.756] [MainLogger] [INFO] Enumerating config:
+[2015-07-25 21:11:03.76] [MainLogger] [INFO] -----StringTools-----
+[2015-07-25 21:11:03.763] [MainLogger] [LOG] Xer0
+[2015-07-25 21:11:03.764] [MainLogger] [INFO] X
+[2015-07-25 21:11:03.764] [MainLogger] [INFO] 0
+[2015-07-25 21:11:03.764] [MainLogger] [INFO] er0
+[2015-07-25 21:11:03.765] [MainLogger] [INFO] Xer
+[2015-07-25 21:11:03.765] [MainLogger] [INFO] -----ArgumentParser-----
+[2015-07-25 21:11:03.766] [MainLogger] [INFO] Daniel
+[2015-07-25 21:11:03.767] [MainLogger] [INFO] YES

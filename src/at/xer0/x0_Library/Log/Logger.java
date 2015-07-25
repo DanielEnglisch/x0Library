@@ -1,7 +1,12 @@
 package at.xer0.x0_Library.Log;
 
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import at.xer0.x0_Library.IO.FileOutput;
 
@@ -19,52 +24,56 @@ public class Logger {
 	public static int NORMAL = -1;
 	public static int ERRORS_ONLY = 0;
 	public static int SILENT = 1;
+	
+	private boolean enableTimestamp = false;
+	
+	private boolean isGUIInitialized = false;
 
 	private ArrayList<String> log = new ArrayList<String>();
 
 	private int mode = -1;
 
+	private JFrame frame = null;
+	private JTextArea scroll = null;
+	
 	private String parentApp = "Logger";
 
-	/**
-	 * Constructor
-	 * 
-	 * @param parent
-	 *            Name of the process using this logger
-	 **/
+
 	public Logger(String parent) {
 		parentApp = parent;
 	}
 
-	/**
-	 * Constructor
-	 * 
-	 * @param parent
-	 *            Name of the logger
-	 * @param mode
-	 *            Logger Mode
-	 **/
+
 	public Logger(String parent, int mode) {
 		parentApp = parent;
 		this.mode = mode;
 	}
+	
+	public Logger(String parent, boolean timestamp) {
+		parentApp = parent;
+		this.enableTimestamp = timestamp;
+	}
 
-	/**
-	 * Changes the current Logger Mode
-	 * 
-	 * @param mode
-	 *            Logger Mode
-	 **/
+
+	public Logger(String parent, int mode, boolean timestamp) {
+		parentApp = parent;
+		this.mode = mode;
+		this.enableTimestamp = timestamp;
+
+	}
+
+
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
+	
+	private String getTimestamp()
+	{
+		java.util.Date date= new java.util.Date();
+		 return "[" + (new Timestamp(date.getTime()).toString()) + "] ";
+	}
 
-	/**
-	 * Logs a given string as a normal log
-	 * 
-	 * @param s
-	 *            String to log
-	 **/
+
 	public void log(String s) {
 		if (mode == ERRORS_ONLY) {
 			return;
@@ -73,18 +82,21 @@ public class Logger {
 			return;
 		}
 
+		
 		String lg = "[" + parentApp + "]" + " [LOG] " + s;
+		
+		if(this.enableTimestamp)
+		{
+			lg = getTimestamp() + lg;
+		}
 
 		System.out.println(lg);
 		log.add(lg);
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
 	}
 
-	/**
-	 * Logs a given string as an info log
-	 * 
-	 * @param s
-	 *            String to log
-	 **/
+
 	public void info(String s) {
 		if (mode == ERRORS_ONLY) {
 			return;
@@ -95,16 +107,19 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [INFO] " + s;
 
+		if(this.enableTimestamp)
+		{
+			lg = getTimestamp() + lg;
+		}
+		
 		System.out.println(lg);
 		log.add(lg);
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
+
 	}
 
-	/**
-	 * Logs a given string as a warning
-	 * 
-	 * @param s
-	 *            String to log
-	 **/
+
 	public void warning(String s) {
 		if (mode == ERRORS_ONLY) {
 			return;
@@ -115,17 +130,20 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [WARNING] " + s;
 
+		if(this.enableTimestamp)
+		{
+			lg = getTimestamp() + lg;
+		}
+		
 		System.out.println(lg);
 		log.add(lg);
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
+
 
 	}
 
-	/**
-	 * Logs a given string as an error
-	 * 
-	 * @param s
-	 *            String to log
-	 **/
+
 	public void error(String s) {
 		if (mode == SILENT) {
 			return;
@@ -133,16 +151,19 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [ERROR] " + s;
 
+		if(this.enableTimestamp)
+		{
+			lg = getTimestamp() + lg;
+		}
+		
 		System.out.println(lg);
 		log.add(lg);
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
+
 	}
 
-	/**
-	 * Logs a given string as a fatal error
-	 * 
-	 * @param s
-	 *            String to log
-	 **/
+
 	public void fatal(String s) {
 		if (mode == SILENT) {
 			return;
@@ -150,14 +171,57 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [FATAL] " + s;
 
+		if(this.enableTimestamp)
+		{
+			lg = getTimestamp() + lg;
+		}
+		
 		System.out.println(lg);
 		log.add(lg);
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
+
 	}
 
 	public void write(File f) {
 		
 		FileOutput.writeArrayList(log, f);
 		info("Successfully wrote file " + f.getAbsolutePath());
+	}
+	
+
+	
+	private void initGUI()
+	{
+		frame = new JFrame("Logger");
+		frame.setLocationRelativeTo(null);
+		frame.setSize(450, 300);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		scroll = new JTextArea();
+		JScrollPane pane = new JScrollPane(scroll);
+		frame.add(pane);
+		
+		
+		isGUIInitialized = true;
+	}
+	
+	public void showGUI()
+	{
+		if(!isGUIInitialized)
+		{
+			initGUI();
+		}
+		
+		frame.setVisible(true);
+	}
+	
+	public void hideGUI()
+	{
+		if(isGUIInitialized)
+		{
+			frame.setVisible(false);
+		}
+
 	}
 
 }
