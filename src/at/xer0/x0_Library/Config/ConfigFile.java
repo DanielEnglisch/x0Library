@@ -117,15 +117,12 @@ public class ConfigFile {
 				String key = entry.getKey();
 				String value = entry.getValue();
 
-				
-				if(StringTools.getFirstChar(key).equals("#"))
-				{
-					out.write("#"+value + "\n");
-				}else
-				{
+				if (StringTools.getFirstChar(key).equals("#")) {
+					out.write("#" + value + "\n");
+				} else {
 					out.write(key + " = " + value + "\n");
 				}
-				
+
 				out.flush();
 			}
 
@@ -201,11 +198,10 @@ public class ConfigFile {
 			String key = entry.getKey();
 			String value = entry.getValue();
 
-			if(!StringTools.getFirstChar(key).equals("#"))
-			{
+			if (!StringTools.getFirstChar(key).equals("#")) {
 				g.log(key + " = " + value);
 			}
-			
+
 		}
 		g.log("#####End of Contents#####");
 		g = null;

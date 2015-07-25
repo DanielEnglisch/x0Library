@@ -13,27 +13,22 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class FileOutput {
-	
-	public static void writeArrayList(ArrayList<?> a, File f)
-	{
+
+	public static void writeArrayList(ArrayList<?> a, File f) {
 		BufferedWriter out = null;
-		
-		try
-		{
+
+		try {
 			out = new BufferedWriter(new FileWriter(f));
-			
-			for(Object s : a)
-			{
+
+			for (Object s : a) {
 				out.write(s.toString() + "\n");
 			}
-			
+
 			out.close();
-		}
-		catch(Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 	}
 
 }
