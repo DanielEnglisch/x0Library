@@ -24,9 +24,9 @@ public class Logger {
 	public static int NORMAL = -1;
 	public static int ERRORS_ONLY = 0;
 	public static int SILENT = 1;
-
+	
 	private boolean enableTimestamp = false;
-
+	
 	private boolean isGUIInitialized = false;
 
 	private ArrayList<String> log = new ArrayList<String>();
@@ -35,22 +35,25 @@ public class Logger {
 
 	private JFrame frame = null;
 	private JTextArea scroll = null;
-
+	
 	private String parentApp = "Logger";
+
 
 	public Logger(String parent) {
 		parentApp = parent;
 	}
 
+
 	public Logger(String parent, int mode) {
 		parentApp = parent;
 		this.mode = mode;
 	}
-
+	
 	public Logger(String parent, boolean timestamp) {
 		parentApp = parent;
 		this.enableTimestamp = timestamp;
 	}
+
 
 	public Logger(String parent, int mode, boolean timestamp) {
 		parentApp = parent;
@@ -59,14 +62,17 @@ public class Logger {
 
 	}
 
+
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
-
-	private String getTimestamp() {
-		java.util.Date date = new java.util.Date();
-		return "[" + (new Timestamp(date.getTime()).toString()) + "] ";
+	
+	private String getTimestamp()
+	{
+		java.util.Date date= new java.util.Date();
+		 return "[" + (new Timestamp(date.getTime()).toString()) + "] ";
 	}
+
 
 	public void log(String s) {
 		if (mode == ERRORS_ONLY) {
@@ -76,19 +82,20 @@ public class Logger {
 			return;
 		}
 
+		
 		String lg = "[" + parentApp + "]" + " [LOG] " + s;
-
-		if (this.enableTimestamp) {
+		
+		if(this.enableTimestamp)
+		{
 			lg = getTimestamp() + lg;
 		}
 
 		System.out.println(lg);
 		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
 	}
+
 
 	public void info(String s) {
 		if (mode == ERRORS_ONLY) {
@@ -100,18 +107,18 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [INFO] " + s;
 
-		if (this.enableTimestamp) {
+		if(this.enableTimestamp)
+		{
 			lg = getTimestamp() + lg;
 		}
-
+		
 		System.out.println(lg);
 		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
 
 	}
+
 
 	public void warning(String s) {
 		if (mode == ERRORS_ONLY) {
@@ -123,18 +130,19 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [WARNING] " + s;
 
-		if (this.enableTimestamp) {
+		if(this.enableTimestamp)
+		{
 			lg = getTimestamp() + lg;
 		}
-
+		
 		System.out.println(lg);
 		log.add(lg);
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
 
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
 
 	}
+
 
 	public void error(String s) {
 		if (mode == SILENT) {
@@ -143,18 +151,18 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [ERROR] " + s;
 
-		if (this.enableTimestamp) {
+		if(this.enableTimestamp)
+		{
 			lg = getTimestamp() + lg;
 		}
-
+		
 		System.out.println(lg);
 		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
 
 	}
+
 
 	public void fatal(String s) {
 		if (mode == SILENT) {
@@ -163,26 +171,28 @@ public class Logger {
 
 		String lg = "[" + parentApp + "]" + " [FATAL] " + s;
 
-		if (this.enableTimestamp) {
+		if(this.enableTimestamp)
+		{
 			lg = getTimestamp() + lg;
 		}
-
+		
 		System.out.println(lg);
 		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
+		
+		if(this.isGUIInitialized){scroll.setText(scroll.getText() + lg + "\n");}
 
 	}
 
 	public void write(File f) {
-
+		
 		FileOutput.writeArrayList(log, f);
 		info("Successfully wrote file " + f.getAbsolutePath());
 	}
+	
 
-	private void initGUI() {
+	
+	private void initGUI()
+	{
 		frame = new JFrame("Logger");
 		frame.setLocationRelativeTo(null);
 		frame.setSize(450, 300);
@@ -190,20 +200,25 @@ public class Logger {
 		scroll = new JTextArea();
 		JScrollPane pane = new JScrollPane(scroll);
 		frame.add(pane);
-
+		
+		
 		isGUIInitialized = true;
 	}
-
-	public void showGUI() {
-		if (!isGUIInitialized) {
+	
+	public void showGUI()
+	{
+		if(!isGUIInitialized)
+		{
 			initGUI();
 		}
-
+		
 		frame.setVisible(true);
 	}
-
-	public void hideGUI() {
-		if (isGUIInitialized) {
+	
+	public void hideGUI()
+	{
+		if(isGUIInitialized)
+		{
 			frame.setVisible(false);
 		}
 
