@@ -11,8 +11,8 @@ import java.io.File;
 
 import at.xer0.x0_Library.Config.ConfigFile;
 import at.xer0.x0_Library.Log.Logger;
+import at.xer0.x0_Library.ObjectTools.StringTools;
 import at.xer0.x0_Library.Parser.ArgumentParser;
-import at.xer0.x0_Library.String.StringTools;
 
 public class MainClass {
 
@@ -20,6 +20,7 @@ public class MainClass {
 
 	public static void main(String[] args) {
 
+		
 		l.showGUI();
 
 		l.info("-----ConfigFile-----");

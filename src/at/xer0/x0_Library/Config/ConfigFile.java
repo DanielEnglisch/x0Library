@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import at.xer0.x0_Library.Log.Logger;
-import at.xer0.x0_Library.String.StringTools;
+import at.xer0.x0_Library.ObjectTools.StringTools;
 
 public class ConfigFile {
 

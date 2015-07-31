@@ -40,6 +40,7 @@ public class Logger {
 
 	public Logger(String parent) {
 		parentApp = parent;
+
 	}
 
 	public Logger(String parent, int mode) {
