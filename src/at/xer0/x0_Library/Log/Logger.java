@@ -17,6 +17,9 @@ import at.xer0.x0_Library.IO.FileOutput;
  * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-07-12
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
  **/
 
 public class Logger {

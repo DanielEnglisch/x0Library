@@ -3,8 +3,12 @@ package at.xer0.x0_Library.Parser;
 /**
  * This class provides the ability to parse command-line arguments.
  * You can check for certain arguments and their values.
+ * 
  * @author  Daniel 'Xer0' Englisch
  * @since   2015-07-24 
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
  **/
 
 import java.util.HashMap;

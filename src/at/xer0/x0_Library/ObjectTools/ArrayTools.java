@@ -6,31 +6,29 @@ package at.xer0.x0_Library.ObjectTools;
  * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-07-31
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
  **/
 
 import java.util.ArrayList;
 
 public class ArrayTools {
-	
-	public static ArrayList<Integer> convertToIntArrayList(ArrayList<?> array)
-	{
-		
+
+	public static ArrayList<Integer> convertToIntArrayList(ArrayList<?> array) {
+
 		ArrayList<Integer> ret = new ArrayList<Integer>();
-		
-		for(Object o : array)
-		{
-			try
-			{
+
+		for (Object o : array) {
+			try {
 				Integer i = Integer.parseInt(o.toString());
 				ret.add(i);
+			} catch (Exception e) {
 			}
-			catch(Exception e)
-			{}
 		}
-		
+
 		return ret;
-		
+
 	}
-	
 
 }

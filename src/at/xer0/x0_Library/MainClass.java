@@ -5,6 +5,9 @@ package at.xer0.x0_Library;
  * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-07-12
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
  **/
 
 import java.io.File;
@@ -20,7 +23,6 @@ public class MainClass {
 
 	public static void main(String[] args) {
 
-		
 		l.showGUI();
 
 		l.info("-----ConfigFile-----");

@@ -5,6 +5,9 @@ package at.xer0.x0_Library.Config;
  * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-07-11
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
  **/
 
 import java.io.BufferedReader;

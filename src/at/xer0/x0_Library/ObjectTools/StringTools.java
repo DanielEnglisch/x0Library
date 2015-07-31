@@ -6,6 +6,9 @@ package at.xer0.x0_Library.ObjectTools;
  * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-07-24
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
  **/
 
 public class StringTools {
