@@ -22,7 +22,7 @@ public class MainClass {
 	private static Logger l = new Logger("MainLogger");
 
 	public static void main(String[] args) {
-
+		
 		l.showGUI();
 
 		l.info("-----ConfigFile-----");

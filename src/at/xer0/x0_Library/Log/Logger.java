@@ -161,9 +161,7 @@ public class Logger {
 	}
 
 	public void fatal(String s) {
-		if (mode == SILENT) {
-			return;
-		}
+		
 
 		String lg = "[" + parentApp + "]" + " [FATAL] " + s;
 
