@@ -161,7 +161,6 @@ public class Logger {
 	}
 
 	public void fatal(String s) {
-		
 
 		String lg = "[" + parentApp + "]" + " [FATAL] " + s;
 
@@ -180,7 +179,7 @@ public class Logger {
 
 	public void write(File f) {
 
-		if(FileOutput.writeStringList(log, f))
+		if (FileOutput.writeStringList(log, f))
 			info("Successfully wrote file " + f.getAbsolutePath());
 		else
 			error("Failed to write log!");

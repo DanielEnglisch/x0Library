@@ -16,18 +16,17 @@ import java.util.ArrayList;
  **/
 
 public class FileInput {
-	
+
 	public static ArrayList<String> readStringList(File f) {
-		
+
 		ArrayList<String> ar = new ArrayList<String>();
-		
+
 		BufferedReader in = null;
 
 		try {
 			in = new BufferedReader(new FileReader(f));
 
-			while(in.ready())
-			{
+			while (in.ready()) {
 				ar.add(in.readLine());
 			}
 
@@ -37,7 +36,7 @@ public class FileInput {
 		}
 
 		return ar;
-		
+
 	}
 
 }

@@ -1,6 +1,5 @@
 package org.xeroserver.x0_Library.net;
 
-
 /**
  * This class provides the ability to automatically check for updates and even update your application.
  * 
@@ -28,8 +27,6 @@ import javax.swing.JOptionPane;
 import org.xeroserver.x0_Library.Log.Logger;
 
 public class AppUpdater {
-	
-	
 
 	private String checkSumFile = "*.php";
 	private String downloadFile = ".exe";
@@ -39,8 +36,7 @@ public class AppUpdater {
 	private String localChecksum = "checksum";
 	private String remoteChecksum = "checksum";
 	private boolean cancelled = false;;
-	
-	
+
 	// LoggerBlock:
 	private Logger l = new Logger("AppUpdater", Logger.SILENT);
 
@@ -49,32 +45,37 @@ public class AppUpdater {
 	}
 	// -----------
 
-	
 	/**
 	 * Constructor
-	 * @param checkSumFile HTTP link to the php/html file on your server which prints / generates the checksum of the newest version of your application.
-	 * @param donwloadFile HTTP link to the application that should be downloaded once an update is available.
-	 * @param defaultName Default name to which the downloaded update will be saved to if it fails to get the current filename.
+	 * 
+	 * @param checkSumFile
+	 *            HTTP link to the php/html file on your server which prints /
+	 *            generates the checksum of the newest version of your
+	 *            application.
+	 * @param donwloadFile
+	 *            HTTP link to the application that should be downloaded once an
+	 *            update is available.
+	 * @param defaultName
+	 *            Default name to which the downloaded update will be saved to
+	 *            if it fails to get the current filename.
 	 */
 	public AppUpdater(String checkSumFile, String donwloadFile, String defaultName) {
 
-			this.checkSumFile = checkSumFile;
-			this.downloadFile = donwloadFile;
-			name = defaultName;
-		
-			localChecksum = getLocalChecksum();
-			remoteChecksum = getRemoteChecksum();
-			
-			if(localChecksum.equals("x0_fail")||remoteChecksum.equals("x0_fail"))
-			{
-				cancelled = true;
-				l.fatal("Update checking failed... check HTTP links or internet connection!");
-			}
+		this.checkSumFile = checkSumFile;
+		this.downloadFile = donwloadFile;
+		name = defaultName;
+
+		localChecksum = getLocalChecksum();
+		remoteChecksum = getRemoteChecksum();
+
+		if (localChecksum.equals("x0_fail") || remoteChecksum.equals("x0_fail")) {
+			cancelled = true;
+			l.fatal("Update checking failed... check HTTP links or internet connection!");
+		}
 
 	}
-	
-	public void checkForUpdate()
-	{
+
+	public void checkForUpdate() {
 		if (isUpdateAvailable()) {
 			Object[] options = { "Yes", "No" };
 			int n = JOptionPane.showOptionDialog(null, "There is an update available! Do you want to download it?",
@@ -96,11 +97,8 @@ public class AppUpdater {
 
 		}
 	}
-	
-	
 
 	private boolean downloadUpdate() {
-
 
 		try {
 			URL website = new URL(downloadFile);
@@ -118,12 +116,11 @@ public class AppUpdater {
 
 	}
 
-
 	private boolean isUpdateAvailable() {
-		
-		if(cancelled )
+
+		if (cancelled)
 			return false;
-		
+
 		return !localChecksum.equals(remoteChecksum);
 	}
 
@@ -147,7 +144,7 @@ public class AppUpdater {
 
 		} catch (Exception ex) {
 			return "x0_fail";
-			
+
 		}
 
 		return res;
@@ -156,8 +153,6 @@ public class AppUpdater {
 
 	private String getLocalChecksum() {
 
-			
-		
 		File f = null;
 		try {
 			f = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
@@ -195,7 +190,5 @@ public class AppUpdater {
 
 		return res;
 	}
-	
-	
 
 }

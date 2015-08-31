@@ -25,71 +25,56 @@ public class MainClass {
 	private static Logger l = new Logger("MainLogger");
 
 	public static void main(String[] args) {
-		
-		
-		
+
 		JFrame f = new JFrame("GUI TEST");
 		f.setLayout(null);
-		
-		
+
 		@SuppressWarnings("serial")
-		X0InputField inp = new X0InputField(new int[]{
-				X0InputField.DOUBLE,
-				X0InputField.NOT_ZERO,
-				X0InputField.POSITIVE,
+		X0InputField inp = new X0InputField(
+				new int[] { X0InputField.DOUBLE, X0InputField.NOT_ZERO, X0InputField.POSITIVE,
 
-		})
-				{
-					@Override
-					public void update()
-					{
-						l.info("##########");
-						l.info("String: " + this.getStringValue());
-						l.info("Integer: " + this.getIntegerValue());
-						l.info("Double: " + this.getDoubleValue());
+		}) {
+			@Override
+			public void update() {
+				l.info("##########");
+				l.info("String: " + this.getStringValue());
+				l.info("Integer: " + this.getIntegerValue());
+				l.info("Double: " + this.getDoubleValue());
 
-					}
-					
-					@Override
-					public void handleError(int flag)
-					{
-						l.error("Flag "+ flag + " failed!");
-					}
-					
-					
-				}
-				
-				;
+			}
+
+			@Override
+			public void handleError(int flag) {
+				l.error("Flag " + flag + " failed!");
+			}
+
+		}
+
+		;
 		inp.setDisplayErrors(true);
 
-		
-		
 		inp.setBounds(50, 50, 200, 40);
 		f.add(inp);
-		
+
 		f.setSize(500, 300);
 		f.setLocationRelativeTo(null);
-		
+
 		f.setResizable(false);
 		f.setVisible(true);
-		
-		
+
 		/*
-				
-		l.showGUI();
-
-		l.info("-----ConfigFile-----");
-		testConfigFile();
-
-		l.info("-----StringTools-----");
-		testStringTools();
-
-		l.info("-----ArgumentParser-----");
-		testArgumentParser();
-
-		l.write(new File(".", "log.log"));
-		
-		*/
+		 * 
+		 * l.showGUI();
+		 * 
+		 * l.info("-----ConfigFile-----"); testConfigFile();
+		 * 
+		 * l.info("-----StringTools-----"); testStringTools();
+		 * 
+		 * l.info("-----ArgumentParser-----"); testArgumentParser();
+		 * 
+		 * l.write(new File(".", "log.log"));
+		 * 
+		 */
 	}
 
 	public static void testConfigFile() {
