@@ -13,7 +13,6 @@ package org.xeroserver.x0_Library;
 import java.io.File;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 import org.xeroserver.x0_Library.Config.ConfigFile;
 import org.xeroserver.x0_Library.GUI.X0InputField;
@@ -93,7 +92,7 @@ public class MainClass {
 		*/
 	}
 
-	private static void testConfigFile() {
+	public static void testConfigFile() {
 		l.info("Initializing Programm...");
 		l.info("Creating Config...");
 
@@ -112,7 +111,7 @@ public class MainClass {
 		conf.setValue("cs", "go");
 	}
 
-	private static void testStringTools() {
+	public static void testStringTools() {
 		String s = "Xer0";
 
 		l.log(s);
@@ -123,7 +122,7 @@ public class MainClass {
 
 	}
 
-	private static void testArgumentParser() {
+	public static void testArgumentParser() {
 		String args = "-x -y -z -verbose -name Daniel";
 
 		ArgumentParser p = new ArgumentParser(args);

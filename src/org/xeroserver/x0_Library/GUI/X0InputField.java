@@ -24,11 +24,18 @@ public class X0InputField extends JTextField{
 	
 	//Mode enum
 	final public static int 
+		//NumberFlags:
 		INT = 0,
 		DOUBLE = 1,
 		NOT_ZERO = 2,
 		POSITIVE = 3,
-		NEGATIVE = 4;
+		NEGATIVE = 4,
+		ROUND_UP = 5,
+		ROUND_DOWN = 6,
+		ROUND = 7,
+		//StringFlags:
+		CLEAR_SPACES = 8,
+		NO_SPACES = 9;
 	
 	private int[] flags;
 	
@@ -138,8 +145,7 @@ public class X0InputField extends JTextField{
 					d = Double.parseDouble(txt);
 			} catch (Exception e) {
 				l.error("Failed to convert input to double!");
-				handleError(DOUBLE);
-				display(DOUBLE);
+				error(DOUBLE);
 				//e.printStackTrace();
 				return false;
 			}
@@ -148,8 +154,7 @@ public class X0InputField extends JTextField{
 			{
 				if(d == 0)
 				{
-					handleError(NOT_ZERO);
-					display(NOT_ZERO);
+					error(NOT_ZERO);
 					return false;
 				}
 				
@@ -159,8 +164,7 @@ public class X0InputField extends JTextField{
 			{
 				if(d < 0)
 				{
-					handleError(POSITIVE);
-					display(POSITIVE);
+					error(POSITIVE);
 					return false;
 				}
 				
@@ -170,13 +174,30 @@ public class X0InputField extends JTextField{
 			{
 				if(d > 0)
 				{
-					handleError(NEGATIVE);
-					display(NEGATIVE);
+					error(NEGATIVE);
 					return false;
 				}
 					
 				
 			}
+			
+			
+			if(contains(ROUND))
+			{
+				d = Math.round(d);
+			}
+			
+			if(contains(ROUND_UP))
+			{
+				d = Math.ceil(d);
+			}
+			
+			
+			if(contains(ROUND_DOWN))
+			{
+				d = Math.floor(d);
+			}
+			
 				
 			if(contains(INT))
 			{
@@ -184,10 +205,11 @@ public class X0InputField extends JTextField{
 					integerValue = (int)(d);
 
 				} catch (Exception e) {
-					handleError(INT);
-					display(INT);
+					error(INT);
 					return false;
 				}
+				
+				
 			}
 			
 			
@@ -196,19 +218,44 @@ public class X0InputField extends JTextField{
 
 				
 		}
-		else
+		else //IF STRING:
 		{
-			stringValue = this.getText();
+			String content = getText();
+			
+			if(contains(NO_SPACES))
+			{
+				if(content.contains(" "))
+				{
+					error(NO_SPACES);
+					return false;
+				}
+				
+			}
+			
+			if(contains(CLEAR_SPACES))
+			{
+				content = content.replaceAll("\\s+", "");
+			}
+			
+			stringValue = content;
 		}
 		
 		return true;
 		
 	}
 	
+	private void error(int flag)
+	{
+		handleError(flag);
+		
+		if(displayErrors)
+			display(flag);
+	
+	}
+	
 	private void display (int flag)
 	{
-		if(!displayErrors)
-			return;
+		
 		
 		String msg = "";
 		
@@ -223,6 +270,8 @@ public class X0InputField extends JTextField{
 			case POSITIVE: msg = "Please enter a value above 0!";
 				break;
 			case NEGATIVE: msg = "Please enter a value below 0!";
+				break;
+			case NO_SPACES: msg = "Input mustn't contain spaces!";
 				break;
 		}
 		
