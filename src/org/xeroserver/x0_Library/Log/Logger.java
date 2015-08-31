@@ -1,4 +1,4 @@
-package at.xer0.x0_Library.Log;
+package org.xeroserver.x0_Library.Log;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import at.xer0.x0_Library.IO.FileOutput;
+import org.xeroserver.x0_Library.IO.FileOutput;
 
 /**
  * This class provides the ability to manage logging in your program. You not
@@ -180,8 +180,10 @@ public class Logger {
 
 	public void write(File f) {
 
-		FileOutput.writeArrayList(log, f);
-		info("Successfully wrote file " + f.getAbsolutePath());
+		if(FileOutput.writeStringList(log, f))
+			info("Successfully wrote file " + f.getAbsolutePath());
+		else
+			error("Failed to write log!");
 	}
 
 	private void initGUI() {

@@ -1,4 +1,4 @@
-package at.xer0.x0_Library.IO;
+package org.xeroserver.x0_Library.IO;
 
 /**
  * This class provides the ability to write certain data to file.
@@ -13,11 +13,11 @@ package at.xer0.x0_Library.IO;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
+import java.util.List;
 
 public class FileOutput {
 
-	public static void writeArrayList(ArrayList<?> a, File f) {
+	public static boolean writeStringList(List<String> a, File f) {
 		BufferedWriter out = null;
 
 		try {
@@ -30,7 +30,10 @@ public class FileOutput {
 			out.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			return false;
 		}
+		
+		return true;
 
 	}
 

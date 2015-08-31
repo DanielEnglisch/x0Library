@@ -1,4 +1,4 @@
-package at.xer0.x0_Library.ObjectTools;
+package org.xeroserver.x0_Library.ObjectTools;
 
 /**
  * This class provides the ability to perform simple string operations. For

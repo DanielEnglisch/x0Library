@@ -1,4 +1,4 @@
-package at.xer0.x0_Library.net;
+package org.xeroserver.x0_Library.net;
 
 
 /**
@@ -25,7 +25,7 @@ import java.security.MessageDigest;
 
 import javax.swing.JOptionPane;
 
-import at.xer0.x0_Library.Log.Logger;
+import org.xeroserver.x0_Library.Log.Logger;
 
 public class AppUpdater {
 	
@@ -48,7 +48,6 @@ public class AppUpdater {
 		return l;
 	}
 	// -----------
-
 
 	
 	/**

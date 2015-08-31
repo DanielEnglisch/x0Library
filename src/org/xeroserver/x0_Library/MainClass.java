@@ -1,4 +1,4 @@
-package at.xer0.x0_Library;
+package org.xeroserver.x0_Library;
 
 /**
  * This class shows some examples to user some classes of this library.
@@ -12,10 +12,10 @@ package at.xer0.x0_Library;
 
 import java.io.File;
 
-import at.xer0.x0_Library.Config.ConfigFile;
-import at.xer0.x0_Library.Log.Logger;
-import at.xer0.x0_Library.ObjectTools.StringTools;
-import at.xer0.x0_Library.Parser.ArgumentParser;
+import org.xeroserver.x0_Library.Config.ConfigFile;
+import org.xeroserver.x0_Library.Log.Logger;
+import org.xeroserver.x0_Library.ObjectTools.StringTools;
+import org.xeroserver.x0_Library.Parser.ArgumentParser;
 
 public class MainClass {
 
@@ -23,6 +23,24 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		
+		/*
+		
+		JFrame f = new JFrame("GUI TEST");
+		f.setLayout(null);
+		
+		X0InputField inp = new X0InputField();
+		inp.setBounds(50, 50, 200, 40);
+		f.add(inp);
+		
+		f.setSize(500, 300);
+		f.setLocationRelativeTo(null);
+		
+		f.setResizable(false);
+		f.setVisible(true);
+		
+		*/
+		/*
+				
 		l.showGUI();
 
 		l.info("-----ConfigFile-----");
@@ -35,6 +53,8 @@ public class MainClass {
 		testArgumentParser();
 
 		l.write(new File(".", "log.log"));
+		
+		*/
 	}
 
 	private static void testConfigFile() {
