@@ -12,7 +12,11 @@ package org.xeroserver.x0_Library;
 
 import java.io.File;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.xeroserver.x0_Library.Config.ConfigFile;
+import org.xeroserver.x0_Library.GUI.X0InputField;
 import org.xeroserver.x0_Library.Log.Logger;
 import org.xeroserver.x0_Library.ObjectTools.StringTools;
 import org.xeroserver.x0_Library.Parser.ArgumentParser;
@@ -23,12 +27,44 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		
-		/*
+		
 		
 		JFrame f = new JFrame("GUI TEST");
 		f.setLayout(null);
 		
-		X0InputField inp = new X0InputField();
+		
+		@SuppressWarnings("serial")
+		X0InputField inp = new X0InputField(new int[]{
+				X0InputField.DOUBLE,
+				X0InputField.NOT_ZERO,
+				X0InputField.POSITIVE,
+
+		})
+				{
+					@Override
+					public void update()
+					{
+						l.info("##########");
+						l.info("String: " + this.getStringValue());
+						l.info("Integer: " + this.getIntegerValue());
+						l.info("Double: " + this.getDoubleValue());
+
+					}
+					
+					@Override
+					public void handleError(int flag)
+					{
+						l.error("Flag "+ flag + " failed!");
+					}
+					
+					
+				}
+				
+				;
+		inp.setDisplayErrors(true);
+
+		
+		
 		inp.setBounds(50, 50, 200, 40);
 		f.add(inp);
 		
@@ -38,7 +74,7 @@ public class MainClass {
 		f.setResizable(false);
 		f.setVisible(true);
 		
-		*/
+		
 		/*
 				
 		l.showGUI();
