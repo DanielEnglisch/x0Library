@@ -12,10 +12,7 @@ package org.xeroserver.x0_Library;
 
 import java.io.File;
 
-import javax.swing.JFrame;
-
 import org.xeroserver.x0_Library.Config.ConfigFile;
-import org.xeroserver.x0_Library.GUI.X0InputField;
 import org.xeroserver.x0_Library.Log.Logger;
 import org.xeroserver.x0_Library.ObjectTools.StringTools;
 import org.xeroserver.x0_Library.Parser.ArgumentParser;
@@ -25,7 +22,9 @@ public class MainClass {
 	private static Logger l = new Logger("MainLogger");
 
 	public static void main(String[] args) {
-
+		
+		/*
+		
 		JFrame f = new JFrame("GUI TEST");
 		f.setLayout(null);
 
