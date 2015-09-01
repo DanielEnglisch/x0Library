@@ -46,7 +46,7 @@ public class X0InputField extends JTextField {
 			// Imperatives:
 			CLEAR_SPACES = 9;
 
-	private int[] flags;
+	private int[] flags = new int[]{};
 
 	private double doubleValue = 0;
 	private int integerValue = 0;
@@ -57,19 +57,25 @@ public class X0InputField extends JTextField {
 
 	private boolean displayErrors = false;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param flags
-	 *            List of flags for input filtering (X0InputField.*)
-	 */
-	public X0InputField(int[] flags) {
+	
+	public X0InputField(int[] flags, boolean display) {
 		this.flags = flags;
+		this.displayErrors = display;
 		registerKeyListener();
 	}
+	
+	public X0InputField(int[] flags) {
+		this(flags,false);
 
-	public X0InputField() {
-		this(new int[] {});
+	}
+	
+	public X0InputField(boolean display) {
+		this(new int[]{},display);
+
+	}
+
+	public X0InputField(){
+		this(new int[]{},false);
 	}
 
 	private void registerKeyListener() {
@@ -192,8 +198,10 @@ public class X0InputField extends JTextField {
 			if (contains(DOUBLE))
 				doubleValue = d;
 
-		} else // IF STRING:
-		{
+		}
+		
+		//STRING:
+		
 			String content = getText();
 
 			if (contains(NO_SPACES)) {
@@ -209,7 +217,7 @@ public class X0InputField extends JTextField {
 			}
 
 			stringValue = content;
-		}
+		
 
 		return true;
 
