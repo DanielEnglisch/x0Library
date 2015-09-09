@@ -12,7 +12,10 @@ package org.xeroserver.x0_Library;
 
 import java.io.File;
 
+import javax.swing.JFrame;
+
 import org.xeroserver.x0_Library.Config.ConfigFile;
+import org.xeroserver.x0_Library.GUI.X0InputField;
 import org.xeroserver.x0_Library.Log.Logger;
 import org.xeroserver.x0_Library.ObjectTools.StringTools;
 import org.xeroserver.x0_Library.Parser.ArgumentParser;
@@ -23,8 +26,41 @@ public class MainClass {
 
 	public static void main(String[] args) {
 		
-		/*
+
+		  l.showGUI();
+		  
+		  l.info("-----Logger-----"); testLogger();
+		  
+		  l.info("-----X0InputField-----"); testInpuField();
+		  
+		  l.info("-----ConfigFile-----"); testConfigFile();
+		 
+		  l.info("-----StringTools-----"); testStringTools();
+		  
+		  l.info("-----ArgumentParser-----"); testArgumentParser();
+		 
+		 // l.write(new File(".", "log.log"));
+		  
+		 
+	}
+	
+	private static void testLogger()
+	{
+		Logger l1 = new Logger();
+		Logger l2 = new Logger("Yolo");
+		Logger l3 = new Logger("XER0",Logger.ERRORS_ONLY);
 		
+		l1.fatal("Something went horribly wrong...");
+		l2.info("Ther is an update available!");
+		
+		l3.info("Yea this is not important...");
+		l3.error("This on the other hand is!");
+	
+
+	}
+	
+	private static void testInpuField()
+	{
 		JFrame f = new JFrame("GUI TEST");
 		f.setLayout(null);
 
@@ -42,10 +78,7 @@ public class MainClass {
 
 			}
 
-			@Override
-			public void handleError(int flag) {
-				l.error("Flag " + flag + " failed!");
-			}
+			
 
 		}
 
@@ -61,19 +94,6 @@ public class MainClass {
 		f.setResizable(false);
 		f.setVisible(true);
 
-		/*
-		 * 
-		 * l.showGUI();
-		 * 
-		 * l.info("-----ConfigFile-----"); testConfigFile();
-		 * 
-		 * l.info("-----StringTools-----"); testStringTools();
-		 * 
-		 * l.info("-----ArgumentParser-----"); testArgumentParser();
-		 * 
-		 * l.write(new File(".", "log.log"));
-		 * 
-		 */
 	}
 
 	public static void testConfigFile() {

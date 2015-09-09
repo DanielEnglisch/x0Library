@@ -24,7 +24,7 @@ public class X0InputField extends JTextField {
 	private static final long serialVersionUID = 1L;
 
 	// LoggerBlock:
-	private Logger l = new Logger("X0InputField", Logger.SILENT);
+	private Logger l = new Logger("X0InputField", Logger.ERRORS_ONLY);
 
 	public Logger getLogger() {
 		return l;
@@ -260,7 +260,7 @@ public class X0InputField extends JTextField {
 	}
 
 	public void handleError(int flag) {
-		l.info("Override handleError(int flag) to handle input errors!");
+		l.error("Override handleError(int flag) to handle input errors!");
 	}
 
 	private boolean contains(int i) {

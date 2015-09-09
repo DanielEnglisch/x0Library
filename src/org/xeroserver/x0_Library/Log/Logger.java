@@ -1,7 +1,6 @@
 package org.xeroserver.x0_Library.Log;
 
 import java.io.File;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -23,180 +22,89 @@ import org.xeroserver.x0_Library.IO.FileOutput;
  **/
 
 public class Logger {
+	
+	private String name = "";
 
-	public static int NORMAL = -1;
-	public static int ERRORS_ONLY = 0;
-	public static int SILENT = 1;
 
-	private boolean enableTimestamp = false;
-
+	//Mode
+	public static int NORMAL = -1, ERRORS_ONLY = 0, SILENT = 1;
+	private int mode = NORMAL;
+	//--------
+	
+	//Gui
 	private boolean isGUIInitialized = false;
-
-	private ArrayList<String> log = new ArrayList<String>();
-
-	private int mode = -1;
-
 	private JFrame frame = null;
 	private JTextArea scroll = null;
+	//----------------------
+	
+	//Log/Gui
+	private ArrayList<String> log = new ArrayList<String>();
+	//----------
 
-	private String parentApp = "Logger";
 
+
+	//Constructors
+	
+	public Logger(){
+		this("",NORMAL);
+
+	}
+	
 	public Logger(String parent) {
-		parentApp = parent;
+		this(parent,NORMAL);
+
+	}
+	
+	public Logger(int mode) {
+		this("",mode);
 
 	}
 
 	public Logger(String parent, int mode) {
-		parentApp = parent;
+		this.name = parent;
 		this.mode = mode;
 	}
 
-	public Logger(String parent, boolean timestamp) {
-		parentApp = parent;
-		this.enableTimestamp = timestamp;
-	}
-
-	public Logger(String parent, int mode, boolean timestamp) {
-		parentApp = parent;
-		this.mode = mode;
-		this.enableTimestamp = timestamp;
-
-	}
-
-	public void setMode(int mode) {
-		this.mode = mode;
-	}
-
-	private String getTimestamp() {
-		java.util.Date date = new java.util.Date();
-		return "[" + (new Timestamp(date.getTime()).toString()) + "] ";
-	}
-
-	public void log(String s) {
-		if (mode == ERRORS_ONLY) {
-			return;
-		}
-		if (mode == SILENT) {
-			return;
-		}
-
-		String lg = "[" + parentApp + "]" + " [LOG] " + s;
-
-		if (this.enableTimestamp) {
-			lg = getTimestamp() + lg;
-		}
-
-		System.out.println(lg);
-		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
-	}
-
-	public void info(String s) {
-		if (mode == ERRORS_ONLY) {
-			return;
-		}
-		if (mode == SILENT) {
-			return;
-		}
-
-		String lg = "[" + parentApp + "]" + " [INFO] " + s;
-
-		if (this.enableTimestamp) {
-			lg = getTimestamp() + lg;
-		}
-
-		System.out.println(lg);
-		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
-
-	}
-
-	public void warning(String s) {
-		if (mode == ERRORS_ONLY) {
-			return;
-		}
-		if (mode == SILENT) {
-			return;
-		}
-
-		String lg = "[" + parentApp + "]" + " [WARNING] " + s;
-
-		if (this.enableTimestamp) {
-			lg = getTimestamp() + lg;
-		}
-
-		System.out.println(lg);
-		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
-
-	}
-
-	public void error(String s) {
-		if (mode == SILENT) {
-			return;
-		}
-
-		String lg = "[" + parentApp + "]" + " [ERROR] " + s;
-
-		if (this.enableTimestamp) {
-			lg = getTimestamp() + lg;
-		}
-
-		System.out.println(lg);
-		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
-
-	}
-
-	public void fatal(String s) {
-
-		String lg = "[" + parentApp + "]" + " [FATAL] " + s;
-
-		if (this.enableTimestamp) {
-			lg = getTimestamp() + lg;
-		}
-
-		System.out.println(lg);
-		log.add(lg);
-
-		if (this.isGUIInitialized) {
-			scroll.setText(scroll.getText() + lg + "\n");
-		}
-
-	}
-
-	public void write(File f) {
-
-		if (FileOutput.writeStringList(log, f))
-			info("Successfully wrote file " + f.getAbsolutePath());
-		else
-			error("Failed to write log!");
-	}
-
+	//-----------------
+	
+	//Private methods
 	private void initGUI() {
-		frame = new JFrame("Logger");
+		frame = new JFrame("Logger - " + name);
 		frame.setLocationRelativeTo(null);
 		frame.setSize(450, 300);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		scroll = new JTextArea();
+		scroll.setEditable(false);
 		JScrollPane pane = new JScrollPane(scroll);
 		frame.add(pane);
 
 		isGUIInitialized = true;
 	}
-
+	
+	private void flush(String msg)
+	{
+		System.out.println(msg);
+		log.add(msg);
+		
+		if (this.isGUIInitialized) {
+			scroll.setText(scroll.getText() + msg + "\n");
+		}
+		
+	}
+	
+	private String getHead()
+	{
+		if(name.equals(""))
+		{
+			return "";
+		}
+		
+		return "[" + name +"]";
+	}
+	
+	//------------------
+	
+	//GUI related methods
 	public void showGUI() {
 		if (!isGUIInitialized) {
 			initGUI();
@@ -211,5 +119,96 @@ public class Logger {
 		}
 
 	}
+	//-------------------
+	
+	//Setter/Getter
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
+	//---------
+
+	//IO
+	public void write(File f) {
+
+		if (FileOutput.writeStringList(log, f))
+			info("Successfully wrote file " + f.getAbsolutePath());
+		else
+			error("Failed to write log!");
+	}
+	//-------
+
+	//Logging:
+	public void log(String s) {
+		
+		if (mode == ERRORS_ONLY ||mode == SILENT)
+			return;
+		
+		String lg = getHead()  +" "+ s;
+
+		flush(lg);
+	}
+
+	public void info(String s) {
+		
+		if (mode == ERRORS_ONLY ||mode == SILENT)
+			return;
+		
+		String lg = getHead() + "[INFO] " + s;
+
+	
+		flush(lg);
+
+
+	}
+
+	public void warning(String s) {
+		
+		if (mode == ERRORS_ONLY ||mode == SILENT)
+			return;
+
+		String lg = getHead() + "[WARNING] " + s;
+
+	
+		flush(lg);
+
+
+	}
+
+	public void error(String s) {
+		
+		if (mode == SILENT)
+			return;
+		
+
+		String lg = getHead() + "[ERROR] " + s;
+
+		flush(lg);
+
+
+	}
+
+	public void fatal(String s) {
+
+		String lg = getHead() + "[FATAL] " + s;
+
+		flush(lg);
+
+
+	}
+
+
+	public void custom(String type, String s) {
+		
+		if (mode == ERRORS_ONLY ||mode == SILENT)
+			return;
+		
+		String lg = getHead() + "[" + type + "] " + s;
+
+	
+		flush(lg);
+
+
+	}
+	
 
 }
