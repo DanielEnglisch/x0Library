@@ -27,19 +27,19 @@ public class MainClass {
 	public static void main(String[] args) {
 		
 
-		  l.showGUI();
+		  //l.showGUI();
 		  
-		  l.info("-----Logger-----"); testLogger();
+		  //l.info("-----Logger-----"); testLogger();
 		  
-		  l.info("-----X0InputField-----"); testInpuField();
+		  //l.info("-----X0InputField-----"); testInpuField();
 		  
 		  l.info("-----ConfigFile-----"); testConfigFile();
 		 
-		  l.info("-----StringTools-----"); testStringTools();
+		  //l.info("-----StringTools-----"); testStringTools();
 		  
-		  l.info("-----ArgumentParser-----"); testArgumentParser();
+		  //l.info("-----ArgumentParser-----"); testArgumentParser();
 		 
-		 // l.write(new File(".", "log.log"));
+		  l.write(new File(".", "log.log"));
 		  
 		 
 	}
@@ -101,18 +101,22 @@ public class MainClass {
 		l.info("Creating Config...");
 
 		ConfigFile conf = new ConfigFile(new File(".", "test.conf"));
+		conf.getLogger().setMode(Logger.NORMAL);
+		
+		l.fatal("Logger mode: " + conf.getLogger().getMode());
 
 		// ifNotExists:
 		if (!conf.exists()) {
 			l.info("Writing Config...");
-			conf.setValue("love", "true");
-			conf.setValue("life", "false");
+			conf.setProperty("love", "true");
+			conf.setProperty("life", "false");
+			conf.save();
 		}
 
 		l.info("Enumerating config:");
-		conf.list();
+		conf.listProperties();
 
-		conf.setValue("cs", "go");
+		conf.setProperty("cs", "go");
 	}
 
 	public static void testStringTools() {

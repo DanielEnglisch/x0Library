@@ -25,7 +25,7 @@ import org.xeroserver.x0_Library.ObjectTools.StringTools;
 public class ConfigFile {
 
 	// LoggerBlock:
-	private Logger l = new Logger("ConfigFile", Logger.SILENT);
+	private Logger l = new Logger("ConfigFile", Logger.ERRORS_ONLY);
 
 	public Logger getLogger() {
 		return l;
@@ -36,11 +36,12 @@ public class ConfigFile {
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
 
+	
+
 	public ConfigFile(File f) {
+		
 		name = f.getName();
 		file = f;
-
-		l.info("Initializing " + name + ":");
 
 		parseContents();
 	}
@@ -50,8 +51,9 @@ public class ConfigFile {
 	}
 
 	private void parseContents() {
+		
 		if (!exists()) {
-			l.error("FileNotFound: " + name);
+			l.warning("Config File doesn't exist (yet): " + name);
 			return;
 		}
 
@@ -64,7 +66,7 @@ public class ConfigFile {
 				String s = in.readLine();
 
 				if (StringTools.getFirstChar(s).equalsIgnoreCase("#")) {
-					l.log("Skipping comment: " + s);
+
 					properties.put("#", StringTools.removeFirstChar(s));
 				} else {
 					try {
@@ -78,11 +80,14 @@ public class ConfigFile {
 							value = valueRaw;
 						}
 
-						loadProperty(property, value);
-						l.log("Parsed: [" + property + " - " + value + "];");
+						properties.put(property, value);
+
 					} catch (Exception ex) {
 						l.warning("Failed to parse line: " + s);
 					}
+					
+					save();
+
 				}
 
 			}
@@ -101,7 +106,12 @@ public class ConfigFile {
 
 	}
 
-	public void saveFile() {
+	
+	public HashMap<String, String> getProperties() {
+		return properties;
+	}
+	
+	public void save() {
 
 		if (!file.exists()) {
 			try {
@@ -140,10 +150,10 @@ public class ConfigFile {
 			ex.printStackTrace();
 		}
 
-		l.log("Saved " + name);
+		l.info("Saved " + name);
 	}
 
-	public void reloadFile() {
+	public void reload() {
 		l.log("Reloading " + name + ":");
 		properties.clear();
 		parseContents();
@@ -153,48 +163,41 @@ public class ConfigFile {
 		return name;
 	}
 
+
+
 	public void removeProperty(String property) {
 		properties.remove(property);
-		saveFile();
+		l.info("removed [" + property + "];");
 	}
-
-	private void addProperty(String property, String value) {
-
-		properties.put(property, value);
-		l.log("Added: [" + property + " - " + value + "];");
-
-		saveFile();
-	}
-
-	private void loadProperty(String property, String value) {
-
-		properties.put(property, value);
-	}
-
-	public String getValue(String property) {
-		if (!isProperty(property)) {
-			return "NULL";
+	
+	public String getProperty(String property) {
+		
+		if (!exists(property)) {
+			return null;
 		}
 		return properties.get(property);
+		
 	}
 
-	public void setValue(String property, String value) {
-		if (isProperty(property)) {
+	public void setProperty(String property, String value) {
+		
+		if (exists(property)) {
 			properties.replace(property, value);
-			l.log("Set: [" + property + " - " + value + "];");
+			l.info("replaced [" + property +" - " + value +  "];");
 
-			saveFile();
 		} else {
-			addProperty(property, value);
-		}
+			properties.put(property, value);
+			l.info("created [" + property +" - " + value +  "];");
 
+		}
+		
 	}
 
-	public boolean isProperty(String property) {
+	public boolean exists(String property) {
 		return properties.containsKey(property);
 	}
 
-	public void list() {
+	public void listProperties() {
 		Logger g = new Logger("ConfigFile");
 		g.log("#####Contents of " + name + ":#####");
 		for (Map.Entry<String, String> entry : properties.entrySet()) {

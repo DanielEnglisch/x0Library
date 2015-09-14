@@ -27,7 +27,7 @@ public class Logger {
 
 
 	//Mode
-	public static int NORMAL = -1, ERRORS_ONLY = 0, SILENT = 1;
+	public static int NORMAL = 0, ERRORS_ONLY = 1, SILENT = 2;
 	private int mode = NORMAL;
 	//--------
 	
@@ -125,6 +125,9 @@ public class Logger {
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
+	public int getMode() {
+		return mode;
+	}
 	//---------
 
 	//IO
@@ -140,7 +143,7 @@ public class Logger {
 	//Logging:
 	public void log(String s) {
 		
-		if (mode == ERRORS_ONLY ||mode == SILENT)
+		if (mode == ERRORS_ONLY || mode == SILENT)
 			return;
 		
 		String lg = getHead()  +" "+ s;
