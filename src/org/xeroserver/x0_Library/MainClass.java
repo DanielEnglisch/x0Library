@@ -78,7 +78,7 @@ public class MainClass {
 
 			}
 
-			
+
 
 		}
 
@@ -97,26 +97,15 @@ public class MainClass {
 	}
 
 	public static void testConfigFile() {
-		l.info("Initializing Programm...");
-		l.info("Creating Config...");
+
 
 		ConfigFile conf = new ConfigFile(new File(".", "test.conf"));
 		conf.getLogger().setMode(Logger.NORMAL);
-		
-		l.fatal("Logger mode: " + conf.getLogger().getMode());
-
-		// ifNotExists:
-		if (!conf.exists()) {
-			l.info("Writing Config...");
-			conf.setProperty("love", "true");
-			conf.setProperty("life", "false");
-			conf.save();
-		}
-
-		l.info("Enumerating config:");
+			
 		conf.listProperties();
-
-		conf.setProperty("cs", "go");
+		conf.save();
+	
+		
 	}
 
 	public static void testStringTools() {

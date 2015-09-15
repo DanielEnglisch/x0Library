@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +37,7 @@ public class ConfigFile {
 	private File file = null;
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
+	private int commenID = 0;
 
 	
 
@@ -63,12 +66,10 @@ public class ConfigFile {
 			in = new BufferedReader(new FileReader(file));
 
 			while (in.ready()) {
+				
 				String s = in.readLine();
 
-				if (StringTools.getFirstChar(s).equalsIgnoreCase("#")) {
-
-					properties.put("#", StringTools.removeFirstChar(s));
-				} else {
+				
 					try {
 						String[] sp = s.split("=");
 						String property = sp[0].replaceAll("\\s", "");
@@ -86,13 +87,10 @@ public class ConfigFile {
 						l.warning("Failed to parse line: " + s);
 					}
 					
-					save();
-
 				}
 
-			}
-
 			in.close();
+			
 		} catch (Exception e) {
 			try {
 				in.close();
@@ -103,7 +101,7 @@ public class ConfigFile {
 			e.printStackTrace();
 
 		}
-
+		
 	}
 
 	
@@ -125,19 +123,28 @@ public class ConfigFile {
 
 		try {
 			out = new BufferedWriter(new FileWriter(file));
+			
+			ArrayList<String> outputList = new  ArrayList<String>();
 
 			for (Map.Entry<String, String> entry : properties.entrySet()) {
 				String key = entry.getKey();
 				String value = entry.getValue();
 
-				if (StringTools.getFirstChar(key).equals("#")) {
-					out.write("#" + value + "\n");
-				} else {
-					out.write(key + " = " + value + "\n");
-				}
-
+				outputList.add(key + " = " + value );
+				
+				
+			}
+			
+			Collections.reverse(outputList);
+			
+			for(String s : outputList)
+			{
+				out.write(s + "\n");
 				out.flush();
 			}
+
+			
+			
 
 			out.close();
 		} catch (Exception ex) {

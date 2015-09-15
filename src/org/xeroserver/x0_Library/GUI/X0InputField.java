@@ -132,6 +132,7 @@ public class X0InputField extends JTextField {
 	public void setDisplayErrors(boolean display) {
 		displayErrors = display;
 	}
+	
 
 	private boolean processValue() {
 		String txt = this.getText();
