@@ -11,12 +11,6 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.Config"/>
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.GUI"/>
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.IO"/>
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.Parser"/>
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.ObjectTools"/>
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.net"/>
-        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0_Library.Log"/>
+        <javaElement handleIdentifier="=x0_Library/src"/>
     </selectedElements>
 </jardesc>

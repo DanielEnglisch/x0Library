@@ -37,9 +37,7 @@ public class ConfigFile {
 	private File file = null;
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
-	private int commenID = 0;
 
-	
 
 	public ConfigFile(File f) {
 		
