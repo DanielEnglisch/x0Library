@@ -1,7 +1,6 @@
 package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
 
-public class FloatPacket extends Packet{
-	
+public class FloatPacket extends Packet {
 
 	/**
 	 * 
@@ -10,25 +9,18 @@ public class FloatPacket extends Packet{
 	private int type = Packet.FLOAT;
 	private float f;
 
-	public FloatPacket(float f)
-	{
+	public FloatPacket(float f) {
 		this.f = f;
 	}
-	
+
 	@Override
-	public int getPacketType()
-	{
+	public int getPacketType() {
 		return type;
 	}
-	
+
 	@Override
-	public Float getFloat()
-	{
+	public Float getFloat() {
 		return f;
 	}
-	
-	
-	
-	
 
 }

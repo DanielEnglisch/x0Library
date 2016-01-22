@@ -38,9 +38,8 @@ public class ConfigFile {
 	private String name = "NULL";
 	private HashMap<String, String> properties = new HashMap<String, String>();
 
-
 	public ConfigFile(File f) {
-		
+
 		name = f.getName();
 		file = f;
 
@@ -52,7 +51,7 @@ public class ConfigFile {
 	}
 
 	private void parseContents() {
-		
+
 		if (!exists()) {
 			l.warning("Config File doesn't exist (yet): " + name);
 			return;
@@ -64,31 +63,30 @@ public class ConfigFile {
 			in = new BufferedReader(new FileReader(file));
 
 			while (in.ready()) {
-				
+
 				String s = in.readLine();
 
-				
-					try {
-						String[] sp = s.split("=");
-						String property = sp[0].replaceAll("\\s", "");
-						String valueRaw = sp[1];
-						String value = "NULL";
-						if (valueRaw.substring(0, 1).equals(" ")) {
-							value = valueRaw.substring(1);
-						} else {
-							value = valueRaw;
-						}
-
-						properties.put(property, value);
-
-					} catch (Exception ex) {
-						l.warning("Failed to parse line: " + s);
+				try {
+					String[] sp = s.split("=");
+					String property = sp[0].replaceAll("\\s", "");
+					String valueRaw = sp[1];
+					String value = "NULL";
+					if (valueRaw.substring(0, 1).equals(" ")) {
+						value = valueRaw.substring(1);
+					} else {
+						value = valueRaw;
 					}
-					
+
+					properties.put(property, value);
+
+				} catch (Exception ex) {
+					l.warning("Failed to parse line: " + s);
 				}
 
+			}
+
 			in.close();
-			
+
 		} catch (Exception e) {
 			try {
 				in.close();
@@ -99,14 +97,13 @@ public class ConfigFile {
 			e.printStackTrace();
 
 		}
-		
+
 	}
 
-	
 	public HashMap<String, String> getProperties() {
 		return properties;
 	}
-	
+
 	public void save() {
 
 		if (!file.exists()) {
@@ -121,28 +118,23 @@ public class ConfigFile {
 
 		try {
 			out = new BufferedWriter(new FileWriter(file));
-			
-			ArrayList<String> outputList = new  ArrayList<String>();
+
+			ArrayList<String> outputList = new ArrayList<String>();
 
 			for (Map.Entry<String, String> entry : properties.entrySet()) {
 				String key = entry.getKey();
 				String value = entry.getValue();
 
-				outputList.add(key + " = " + value );
-				
-				
+				outputList.add(key + " = " + value);
+
 			}
-			
+
 			Collections.reverse(outputList);
-			
-			for(String s : outputList)
-			{
+
+			for (String s : outputList) {
 				out.write(s + "\n");
 				out.flush();
 			}
-
-			
-			
 
 			out.close();
 		} catch (Exception ex) {
@@ -168,34 +160,32 @@ public class ConfigFile {
 		return name;
 	}
 
-
-
 	public void removeProperty(String property) {
 		properties.remove(property);
 		l.info("removed [" + property + "];");
 	}
-	
+
 	public String getProperty(String property) {
-		
+
 		if (!exists(property)) {
 			return null;
 		}
 		return properties.get(property);
-		
+
 	}
 
 	public void setProperty(String property, String value) {
-		
+
 		if (exists(property)) {
 			properties.replace(property, value);
-			l.info("replaced [" + property +" - " + value +  "];");
+			l.info("replaced [" + property + " - " + value + "];");
 
 		} else {
 			properties.put(property, value);
-			l.info("created [" + property +" - " + value +  "];");
+			l.info("created [" + property + " - " + value + "];");
 
 		}
-		
+
 	}
 
 	public boolean exists(String property) {

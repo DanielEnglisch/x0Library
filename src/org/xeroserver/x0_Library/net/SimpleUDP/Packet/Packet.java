@@ -2,7 +2,7 @@ package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
 
 import java.io.Serializable;
 
-public class Packet implements Serializable{
+public class Packet implements Serializable {
 
 	/**
 	 * 
@@ -11,31 +11,25 @@ public class Packet implements Serializable{
 	/**
 	 * 
 	 */
-	public static final int UNKNOWN = 0, STRING = 1,INT = 2,DOUBLE = 3, FLOAT = 4;
-	
-	
-	public int getPacketType()
-	{
+	public static final int UNKNOWN = 0, STRING = 1, INT = 2, DOUBLE = 3, FLOAT = 4;
+
+	public int getPacketType() {
 		return UNKNOWN;
 	}
-	
-	public String getString()
-	{
+
+	public String getString() {
 		return "";
 	}
-	
-	public int getInt()
-	{
+
+	public int getInt() {
 		return -1;
 	}
-	
-	public Double getDouble()
-	{
+
+	public Double getDouble() {
 		return -1.0d;
 	}
-	
-	public Float getFloat()
-	{
+
+	public Float getFloat() {
 		return -1.0f;
 	}
 

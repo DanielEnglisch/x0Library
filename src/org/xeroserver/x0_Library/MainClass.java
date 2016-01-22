@@ -26,82 +26,65 @@ import org.xeroserver.x0_Library.net.SimpleUDP.Packet.FloatPacket;
 import org.xeroserver.x0_Library.net.SimpleUDP.Packet.IntPacket;
 import org.xeroserver.x0_Library.net.SimpleUDP.Packet.StringPacket;
 
-
-
-public class MainClass extends UDPReceiver{
+public class MainClass extends UDPReceiver {
 
 	private static Logger l = new Logger("MainLogger");
-	
-	public MainClass() throws Exception
-	{
-		testSimpleUDP();
-		
 
-		  //l.showGUI();
-		  
-		  //l.info("-----Logger-----"); testLogger();
-		  
-		  //l.info("-----X0InputField-----"); testInpuField();
-		  
-		  //l.info("-----ConfigFile-----"); testConfigFile();
-		 
-		  //l.info("-----StringTools-----"); testStringTools();
-		  
-		  //l.info("-----ArgumentParser-----"); testArgumentParser();
-		 
-		  //l.write(new File(".", "log.log"));
-	
+	public MainClass() throws Exception {
+		testSimpleUDP();
+
+		// l.showGUI();
+
+		// l.info("-----Logger-----"); testLogger();
+
+		// l.info("-----X0InputField-----"); testInpuField();
+
+		// l.info("-----ConfigFile-----"); testConfigFile();
+
+		// l.info("-----StringTools-----"); testStringTools();
+
+		// l.info("-----ArgumentParser-----"); testArgumentParser();
+
+		// l.write(new File(".", "log.log"));
+
 	}
 
 	public static void main(String[] args) throws Exception {
-		
 
-		
 		new MainClass();
-		
-	
-		
+
 	}
-	
-	//Methods extended to receive Packets:
+
+	// Methods extended to receive Packets:
 	@Override
-	public void receiveString(String s)
-	{
+	public void receiveString(String s) {
 		System.out.println("EVENT: Received String: " + s);
 	}
-	
+
 	@Override
-	public void receiveInt(int i)
-	{
+	public void receiveInt(int i) {
 		System.out.println("EVENT: Received Int: " + i);
 	}
-	
+
 	@Override
-	public void receiveDouble(double d)
-	{
+	public void receiveDouble(double d) {
 		System.out.println("EVENT: Received Double: " + d);
 	}
-	
+
 	@Override
-	public void receiveFloat(float f)
-	{
+	public void receiveFloat(float f) {
 		System.out.println("EVENT: Received Float: " + f);
 	}
-	//#######################################################
-	
+	// #######################################################
 
-	
-	public void testSimpleUDP() throws InterruptedException
-	{
+	public void testSimpleUDP() throws InterruptedException {
 		SimpleUDP server = new SimpleUDP(5599);
 		SimpleUDP client = new SimpleUDP(6000);
 		client.registerReceiver(this);
 
-		
 		server.setConnection("localhost", 6000);
-		
-		while(true)
-		{
+
+		while (true) {
 			server.send(new StringPacket("Test"));
 			Thread.sleep(100);
 			server.send(new IntPacket(6969));
@@ -112,24 +95,21 @@ public class MainClass extends UDPReceiver{
 			Thread.sleep(1000);
 		}
 	}
-	
-	public  void testLogger()
-	{
+
+	public void testLogger() {
 		Logger l1 = new Logger();
 		Logger l2 = new Logger("Yolo");
-		Logger l3 = new Logger("XER0",Logger.ERRORS_ONLY);
-		
+		Logger l3 = new Logger("XER0", Logger.ERRORS_ONLY);
+
 		l1.fatal("Something went horribly wrong...");
 		l2.info("Ther is an update available!");
-		
+
 		l3.info("Yea this is not important...");
 		l3.error("This on the other hand is!");
-	
 
 	}
-	
-	public  void testInpuField()
-	{
+
+	public void testInpuField() {
 		JFrame f = new JFrame("GUI TEST");
 		f.setLayout(null);
 
@@ -147,8 +127,6 @@ public class MainClass extends UDPReceiver{
 
 			}
 
-
-
 		}
 
 		;
@@ -165,19 +143,17 @@ public class MainClass extends UDPReceiver{
 
 	}
 
-	public  void testConfigFile() {
-
+	public void testConfigFile() {
 
 		ConfigFile conf = new ConfigFile(new File(".", "test.conf"));
 		conf.getLogger().setMode(Logger.NORMAL);
-			
+
 		conf.listProperties();
 		conf.save();
-	
-		
+
 	}
 
-	public  void testStringTools() {
+	public void testStringTools() {
 		String s = "Xer0";
 
 		l.log(s);
@@ -188,7 +164,7 @@ public class MainClass extends UDPReceiver{
 
 	}
 
-	public  void testArgumentParser() {
+	public void testArgumentParser() {
 		String args = "-x -y -z -verbose -name Daniel";
 
 		ArgumentParser p = new ArgumentParser(args);

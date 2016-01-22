@@ -46,7 +46,7 @@ public class X0InputField extends JTextField {
 			// Imperatives:
 			CLEAR_SPACES = 9;
 
-	private int[] flags = new int[]{};
+	private int[] flags = new int[] {};
 
 	private double doubleValue = 0;
 	private int integerValue = 0;
@@ -57,25 +57,24 @@ public class X0InputField extends JTextField {
 
 	private boolean displayErrors = false;
 
-	
 	public X0InputField(int[] flags, boolean display) {
 		this.flags = flags;
 		this.displayErrors = display;
 		registerKeyListener();
 	}
-	
+
 	public X0InputField(int[] flags) {
-		this(flags,false);
+		this(flags, false);
 
 	}
-	
+
 	public X0InputField(boolean display) {
-		this(new int[]{},display);
+		this(new int[] {}, display);
 
 	}
 
-	public X0InputField(){
-		this(new int[]{},false);
+	public X0InputField() {
+		this(new int[] {}, false);
 	}
 
 	private void registerKeyListener() {
@@ -132,7 +131,6 @@ public class X0InputField extends JTextField {
 	public void setDisplayErrors(boolean display) {
 		displayErrors = display;
 	}
-	
 
 	private boolean processValue() {
 		String txt = this.getText();
@@ -200,25 +198,24 @@ public class X0InputField extends JTextField {
 				doubleValue = d;
 
 		}
-		
-		//STRING:
-		
-			String content = getText();
 
-			if (contains(NO_SPACES)) {
-				if (content.contains(" ")) {
-					error(NO_SPACES);
-					return false;
-				}
+		// STRING:
 
+		String content = getText();
+
+		if (contains(NO_SPACES)) {
+			if (content.contains(" ")) {
+				error(NO_SPACES);
+				return false;
 			}
 
-			if (contains(CLEAR_SPACES)) {
-				content = content.replaceAll("\\s+", "");
-			}
+		}
 
-			stringValue = content;
-		
+		if (contains(CLEAR_SPACES)) {
+			content = content.replaceAll("\\s+", "");
+		}
+
+		stringValue = content;
 
 		return true;
 

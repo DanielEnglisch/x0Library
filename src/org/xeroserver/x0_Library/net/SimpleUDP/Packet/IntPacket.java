@@ -1,7 +1,6 @@
 package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
 
-public class IntPacket extends Packet{
-	
+public class IntPacket extends Packet {
 
 	/**
 	 * 
@@ -10,25 +9,18 @@ public class IntPacket extends Packet{
 	private int type = Packet.INT;
 	private int integer;
 
-	public IntPacket(int integer)
-	{
+	public IntPacket(int integer) {
 		this.integer = integer;
 	}
-	
+
 	@Override
-	public int getPacketType()
-	{
+	public int getPacketType() {
 		return type;
 	}
-	
+
 	@Override
-	public int getInt()
-	{
+	public int getInt() {
 		return integer;
 	}
-	
-	
-	
-	
 
 }

@@ -1,7 +1,7 @@
 package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
 
-public class StringPacket extends Packet{
-	
+public class StringPacket extends Packet {
+
 	/**
 	 * 
 	 */
@@ -9,25 +9,18 @@ public class StringPacket extends Packet{
 	private int type = Packet.STRING;
 	private String string;
 
-	public StringPacket(String string)
-	{
+	public StringPacket(String string) {
 		this.string = string;
 	}
-	
+
 	@Override
-	public int getPacketType()
-	{
+	public int getPacketType() {
 		return type;
 	}
-	
+
 	@Override
-	public String getString()
-	{
+	public String getString() {
 		return string;
 	}
-	
-	
-	
-	
 
 }
