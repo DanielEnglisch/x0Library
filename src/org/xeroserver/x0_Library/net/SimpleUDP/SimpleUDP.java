@@ -92,16 +92,16 @@ public class SimpleUDP implements Runnable {
 		for (UDPReceiver r : receivers) {
 			switch (p.getPacketType()) {
 			case Packet.STRING:
-				r.receiveString(p.getString());
+				r.receiveString(p.getString(),p.getIdentifier());
 				break;
 			case Packet.INT:
-				r.receiveInt(p.getInt());
+				r.receiveInt(p.getInt(),p.getIdentifier());
 				break;
 			case Packet.DOUBLE:
-				r.receiveDouble(p.getDouble());
+				r.receiveDouble(p.getDouble(),p.getIdentifier());
 				break;
 			case Packet.FLOAT:
-				r.receiveFloat(p.getFloat());
+				r.receiveFloat(p.getFloat(),p.getIdentifier());
 				break;
 			}
 		}

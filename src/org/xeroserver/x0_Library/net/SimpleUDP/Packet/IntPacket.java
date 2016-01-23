@@ -5,12 +5,24 @@ public class IntPacket extends Packet {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8466611780450518564L;
+	private static final long serialVersionUID = 1107555468190427268L;
 	private int type = Packet.INT;
 	private int integer;
+	private String id;
+
 
 	public IntPacket(int integer) {
 		this.integer = integer;
+	}
+	
+	public IntPacket(int integer, String id) {
+		this.integer = integer;
+		this.id = id;
+	}
+	
+	@Override
+	public String getIdentifier() {
+		return id;
 	}
 
 	@Override

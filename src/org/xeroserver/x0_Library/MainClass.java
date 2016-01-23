@@ -57,23 +57,23 @@ public class MainClass extends UDPReceiver {
 
 	// Methods extended to receive Packets:
 	@Override
-	public void receiveString(String s) {
-		System.out.println("EVENT: Received String: " + s);
+	public void receiveString(String s, String id) {
+		System.out.println("EVENT: Received String: " + s + " withID: " + id);
 	}
 
 	@Override
-	public void receiveInt(int i) {
-		System.out.println("EVENT: Received Int: " + i);
+	public void receiveInt(int i, String id) {
+		System.out.println("EVENT: Received Int: " + i+ " withID: " + id);
 	}
 
 	@Override
-	public void receiveDouble(double d) {
-		System.out.println("EVENT: Received Double: " + d);
+	public void receiveDouble(double d, String id) {
+		System.out.println("EVENT: Received Double: " + d+ " withID: " + id);
 	}
 
 	@Override
-	public void receiveFloat(float f) {
-		System.out.println("EVENT: Received Float: " + f);
+	public void receiveFloat(float f, String id) {
+		System.out.println("EVENT: Received Float: " + f+ " withID: " + id);
 	}
 	// #######################################################
 
@@ -85,7 +85,7 @@ public class MainClass extends UDPReceiver {
 		server.setConnection("localhost", 6000);
 
 		while (true) {
-			server.send(new StringPacket("Test"));
+			server.send(new StringPacket("Test","nameupdate"));
 			Thread.sleep(100);
 			server.send(new IntPacket(6969));
 			Thread.sleep(100);
