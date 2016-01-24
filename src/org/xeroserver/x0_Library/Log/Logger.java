@@ -93,7 +93,7 @@ public class Logger {
 			return "";
 		}
 
-		return "[" + name + "]";
+		return "[" + name + "] ";
 	}
 
 	// ------------------

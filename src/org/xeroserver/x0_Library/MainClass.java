@@ -31,21 +31,21 @@ public class MainClass extends UDPReceiver {
 	private static Logger l = new Logger("MainLogger");
 
 	public MainClass() throws Exception {
-		testSimpleUDP();
+		//testSimpleUDP();
 
-		// l.showGUI();
+		 l.showGUI();
 
-		// l.info("-----Logger-----"); testLogger();
+		l.info("-----Logger-----"); testLogger();
 
-		// l.info("-----X0InputField-----"); testInpuField();
+		 l.info("-----X0InputField-----"); testInpuField();
 
-		// l.info("-----ConfigFile-----"); testConfigFile();
+		l.info("-----ConfigFile-----"); testConfigFile();
 
-		// l.info("-----StringTools-----"); testStringTools();
+		l.info("-----StringTools-----"); testStringTools();
 
-		// l.info("-----ArgumentParser-----"); testArgumentParser();
+		l.info("-----ArgumentParser-----"); testArgumentParser();
 
-		// l.write(new File(".", "log.log"));
+		l.write(new File(".", "log.log"));
 
 	}
 
