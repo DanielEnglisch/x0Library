@@ -1,11 +1,13 @@
-package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
+package org.xeroserver.x0_Library.net.UDP.Packet;
 
-public class IntPacket extends Packet {
+public class IntPacket implements Packet {
+
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1107555468190427268L;
+	private static final long serialVersionUID = 1L;
 	private int type = Packet.INT;
 	private int integer;
 	private String id;
@@ -30,7 +32,6 @@ public class IntPacket extends Packet {
 		return type;
 	}
 
-	@Override
 	public int getInt() {
 		return integer;
 	}

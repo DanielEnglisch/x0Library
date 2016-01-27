@@ -1,12 +1,13 @@
-package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
+package org.xeroserver.x0_Library.net.UDP.Packet;
 
-public class FloatPacket extends Packet {
+public class FloatPacket implements Packet {
+
 
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1280841144532564266L;
+	private static final long serialVersionUID = 1L;
 	private int type = Packet.FLOAT;
 	private float f;
 	private String id;
@@ -31,7 +32,6 @@ public class FloatPacket extends Packet {
 		return type;
 	}
 
-	@Override
 	public Float getFloat() {
 		return f;
 	}

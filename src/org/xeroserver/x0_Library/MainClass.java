@@ -19,33 +19,34 @@ import org.xeroserver.x0_Library.GUI.X0InputField;
 import org.xeroserver.x0_Library.Log.Logger;
 import org.xeroserver.x0_Library.ObjectTools.StringTools;
 import org.xeroserver.x0_Library.Parser.ArgumentParser;
-import org.xeroserver.x0_Library.net.SimpleUDP.SimpleUDP;
-import org.xeroserver.x0_Library.net.SimpleUDP.UDPReceiver;
-import org.xeroserver.x0_Library.net.SimpleUDP.Packet.DoublePacket;
-import org.xeroserver.x0_Library.net.SimpleUDP.Packet.FloatPacket;
-import org.xeroserver.x0_Library.net.SimpleUDP.Packet.IntPacket;
-import org.xeroserver.x0_Library.net.SimpleUDP.Packet.StringPacket;
+import org.xeroserver.x0_Library.net.UDP.SingleUDP;
+import org.xeroserver.x0_Library.net.UDP.SingleUDPReceiver;
+import org.xeroserver.x0_Library.net.UDP.Packet.DoublePacket;
+import org.xeroserver.x0_Library.net.UDP.Packet.FloatPacket;
+import org.xeroserver.x0_Library.net.UDP.Packet.IntPacket;
+import org.xeroserver.x0_Library.net.UDP.Packet.Packet;
+import org.xeroserver.x0_Library.net.UDP.Packet.StringPacket;
 
-public class MainClass extends UDPReceiver {
+public class MainClass extends SingleUDPReceiver {
 
 	private static Logger l = new Logger("MainLogger");
 
 	public MainClass() throws Exception {
-		//testSimpleUDP();
+		testSimpleUDP();
 
-		 l.showGUI();
-
-		l.info("-----Logger-----"); testLogger();
-
-		 l.info("-----X0InputField-----"); testInpuField();
-
-		l.info("-----ConfigFile-----"); testConfigFile();
-
-		l.info("-----StringTools-----"); testStringTools();
-
-		l.info("-----ArgumentParser-----"); testArgumentParser();
-
-		l.write(new File(".", "log.log"));
+//		 l.showGUI();
+//
+//		l.info("-----Logger-----"); testLogger();
+//
+//		 l.info("-----X0InputField-----"); testInpuField();
+//
+//		l.info("-----ConfigFile-----"); testConfigFile();
+//
+//		l.info("-----StringTools-----"); testStringTools();
+//
+//		l.info("-----ArgumentParser-----"); testArgumentParser();
+//
+//		l.write(new File(".", "log.log"));
 
 	}
 
@@ -75,11 +76,16 @@ public class MainClass extends UDPReceiver {
 	public void receiveFloat(float f, String id) {
 		System.out.println("EVENT: Received Float: " + f+ " withID: " + id);
 	}
+	
+	@Override
+	public void receiveCustom(Packet p, String id) {
+		System.out.println("EVENT: Received Custom  withID: " + id);
+	}
 	// #######################################################
 
 	public void testSimpleUDP() throws InterruptedException {
-		SimpleUDP server = new SimpleUDP(5599);
-		SimpleUDP client = new SimpleUDP(6000);
+		SingleUDP server = new SingleUDP(5599);
+		SingleUDP client = new SingleUDP(6000);
 		client.registerReceiver(this);
 
 		server.setConnection("localhost", 6000);
@@ -92,7 +98,7 @@ public class MainClass extends UDPReceiver {
 			server.send(new DoublePacket(0.99999999995));
 			Thread.sleep(100);
 			server.send(new FloatPacket(0.99999999995f));
-			Thread.sleep(1000);
+
 		}
 	}
 

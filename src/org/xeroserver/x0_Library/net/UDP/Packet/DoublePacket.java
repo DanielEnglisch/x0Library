@@ -1,12 +1,12 @@
-package org.xeroserver.x0_Library.net.SimpleUDP.Packet;
+package org.xeroserver.x0_Library.net.UDP.Packet;
 
-public class DoublePacket extends Packet {
+public class DoublePacket implements Packet {
 
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8749358722707548096L;
+	private static final long serialVersionUID = 1L;
 	private int type = Packet.DOUBLE;
 	private double d;
 	private String id;
@@ -31,7 +31,6 @@ public class DoublePacket extends Packet {
 		return type;
 	}
 
-	@Override
 	public Double getDouble() {
 		return d;
 	}

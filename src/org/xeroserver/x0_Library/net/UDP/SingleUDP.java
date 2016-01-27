@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.net.SimpleUDP;
+package org.xeroserver.x0_Library.net.UDP;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,9 +14,13 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.xeroserver.x0_Library.Log.Logger;
-import org.xeroserver.x0_Library.net.SimpleUDP.Packet.Packet;
+import org.xeroserver.x0_Library.net.UDP.Packet.DoublePacket;
+import org.xeroserver.x0_Library.net.UDP.Packet.FloatPacket;
+import org.xeroserver.x0_Library.net.UDP.Packet.IntPacket;
+import org.xeroserver.x0_Library.net.UDP.Packet.Packet;
+import org.xeroserver.x0_Library.net.UDP.Packet.StringPacket;
 
-public class SimpleUDP implements Runnable {
+public class SingleUDP implements Runnable {
 
 	private Thread run, send, receive;
 	private int serverport;
@@ -27,9 +31,9 @@ public class SimpleUDP implements Runnable {
 	private InetAddress remoteAddress;
 	private int remotePort;
 
-	private ArrayList<UDPReceiver> receivers = new ArrayList<UDPReceiver>();
+	private ArrayList<SingleUDPReceiver> receivers = new ArrayList<SingleUDPReceiver>();
 
-	public SimpleUDP(int serverport) {
+	public SingleUDP(int serverport) {
 
 		this.serverport = serverport;
 
@@ -59,7 +63,7 @@ public class SimpleUDP implements Runnable {
 
 	}
 
-	public void registerReceiver(UDPReceiver rec) {
+	public void registerReceiver(SingleUDPReceiver rec) {
 		this.receivers.add(rec);
 		l.info("Sucessfully registered receiver!");
 	}
@@ -89,20 +93,21 @@ public class SimpleUDP implements Runnable {
 
 	private void processPacket(Packet p) {
 
-		for (UDPReceiver r : receivers) {
+		for (SingleUDPReceiver r : receivers) {
 			switch (p.getPacketType()) {
 			case Packet.STRING:
-				r.receiveString(p.getString(),p.getIdentifier());
+				r.receiveString(((StringPacket) p).getString(),((StringPacket) p).getIdentifier());
 				break;
 			case Packet.INT:
-				r.receiveInt(p.getInt(),p.getIdentifier());
+				r.receiveInt(((IntPacket) p).getInt(),((IntPacket) p).getIdentifier());
 				break;
 			case Packet.DOUBLE:
-				r.receiveDouble(p.getDouble(),p.getIdentifier());
+				r.receiveDouble(((DoublePacket) p).getDouble(),((DoublePacket) p).getIdentifier());
 				break;
 			case Packet.FLOAT:
-				r.receiveFloat(p.getFloat(),p.getIdentifier());
+				r.receiveFloat(((FloatPacket) p).getFloat(),((FloatPacket) p).getIdentifier());
 				break;
+				default: r.receiveCustom(p, p.getIdentifier());
 			}
 		}
 	}

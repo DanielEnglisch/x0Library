@@ -1,6 +1,8 @@
-package org.xeroserver.x0_Library.net.SimpleUDP;
+package org.xeroserver.x0_Library.net.UDP;
 
-public class UDPReceiver {
+import org.xeroserver.x0_Library.net.UDP.Packet.Packet;
+
+public class SingleUDPReceiver {
 
 	public void receiveString(String s, String id) {
 		// Do Something
@@ -17,5 +19,12 @@ public class UDPReceiver {
 	public void receiveFloat(float f, String id) {
 		// Do Something
 	}
+	
+	public void receiveCustom(Packet p, String id) {
+		// Do Something
+	}
+	
+	
+	
 
 }
