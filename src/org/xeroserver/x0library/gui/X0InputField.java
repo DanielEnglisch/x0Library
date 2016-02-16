@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.GUI;
+package org.xeroserver.x0library.gui;
 
 /**
  * This class is an extension of JTextField and adds the ability to set certain flags to filter inputted values.
@@ -17,7 +17,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.xeroserver.x0_Library.Log.Logger;
+import org.xeroserver.x0library.log.Logger;
 
 public class X0InputField extends JTextField {
 
@@ -26,7 +26,7 @@ public class X0InputField extends JTextField {
 	// LoggerBlock:
 	private Logger l = new Logger("X0InputField", Logger.ERRORS_ONLY);
 
-	public Logger getLogger() {
+	public final Logger getLogger() {
 		return l;
 	}
 	// -----------
@@ -108,27 +108,27 @@ public class X0InputField extends JTextField {
 
 	}
 
-	public double getDoubleValue() {
+	public final double getDoubleValue() {
 		return doubleValue;
 	}
 
-	public int getIntegerValue() {
+	public final int getIntegerValue() {
 		return integerValue;
 	}
 
-	public String getStringValue() {
+	public final String getStringValue() {
 		return stringValue;
 	}
 
-	public void setEditColor(Color c) {
+	public final void setEditColor(Color c) {
 		editColor = c;
 	}
 
-	public void setErrorColor(Color c) {
+	public final void setErrorColor(Color c) {
 		errorColor = c;
 	}
 
-	public void setDisplayErrors(boolean display) {
+	public final void setDisplayErrors(boolean display) {
 		displayErrors = display;
 	}
 
@@ -257,10 +257,7 @@ public class X0InputField extends JTextField {
 		JOptionPane.showMessageDialog(null, msg);
 	}
 
-	public void handleError(int flag) {
-		l.error("Override handleError(int flag) to handle input errors!");
-	}
-
+	
 	private boolean contains(int i) {
 
 		for (Integer x : flags) {
@@ -271,6 +268,11 @@ public class X0InputField extends JTextField {
 		return false;
 	}
 
+	//Override
+	public void handleError(int flag) {
+		l.error("Override handleError(int flag) to handle input errors!");
+	}
+	
 	public void update() {
 		l.info("Override update() to get change events!");
 	}

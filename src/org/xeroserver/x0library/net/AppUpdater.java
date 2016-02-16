@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.net;
+package org.xeroserver.x0library.net;
 
 /**
  * This class provides the ability to automatically check for updates and even update your application.
@@ -24,9 +24,9 @@ import java.security.MessageDigest;
 
 import javax.swing.JOptionPane;
 
-import org.xeroserver.x0_Library.Log.Logger;
+import org.xeroserver.x0library.log.Logger;
 
-public class AppUpdater {
+public final class AppUpdater {
 
 	private String checkSumFile = "*.php";
 	private String downloadFile = ".exe";

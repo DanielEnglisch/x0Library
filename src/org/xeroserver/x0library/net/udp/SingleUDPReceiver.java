@@ -1,6 +1,6 @@
-package org.xeroserver.x0_Library.net.UDP;
+package org.xeroserver.x0library.net.udp;
 
-import org.xeroserver.x0_Library.net.UDP.Packet.Packet;
+import org.xeroserver.x0library.net.packets.Packet;
 
 public class SingleUDPReceiver {
 

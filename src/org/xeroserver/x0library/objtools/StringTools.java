@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.ObjectTools;
+package org.xeroserver.x0library.objtools;
 
 /**
  * This class provides the ability to perform simple string operations. For
@@ -11,7 +11,7 @@ package org.xeroserver.x0_Library.ObjectTools;
  * 
  **/
 
-public class StringTools {
+public final class StringTools {
 
 	public static String getFirstChar(String s) {
 		return s.substring(0, 1);

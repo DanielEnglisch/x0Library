@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.Log;
+package org.xeroserver.x0library.log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.xeroserver.x0_Library.IO.FileOutput;
+import org.xeroserver.x0library.io.FileOutput;
 
 /**
  * This class provides the ability to manage logging in your program. You not
@@ -21,7 +21,7 @@ import org.xeroserver.x0_Library.IO.FileOutput;
  * 
  **/
 
-public class Logger {
+public final class Logger {
 
 	private String name = "";
 

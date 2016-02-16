@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.Parser;
+package org.xeroserver.x0library.parser;
 
 /**
  * This class provides the ability to parse command-line arguments.
@@ -14,10 +14,10 @@ package org.xeroserver.x0_Library.Parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xeroserver.x0_Library.Log.Logger;
-import org.xeroserver.x0_Library.ObjectTools.StringTools;
+import org.xeroserver.x0library.log.Logger;
+import org.xeroserver.x0library.objtools.StringTools;
 
-public class ArgumentParser {
+public final class ArgumentParser {
 
 	// LoggerBlock:
 	private Logger l = new Logger("ArgParser", Logger.SILENT);

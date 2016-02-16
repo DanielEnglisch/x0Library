@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.IO;
+package org.xeroserver.x0library.io;
 
 /**
  * This class provides the ability to write certain data to file.
@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
-public class FileOutput {
+public final class FileOutput {
 
 	public static boolean writeStringList(List<String> a, File f) {
 		BufferedWriter out = null;

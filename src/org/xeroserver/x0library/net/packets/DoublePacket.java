@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.net.UDP.Packet;
+package org.xeroserver.x0library.net.packets;
 
 public class DoublePacket implements Packet {
 

@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.net.UDP;
+package org.xeroserver.x0library.net.udp;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,12 +13,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import org.xeroserver.x0_Library.Log.Logger;
-import org.xeroserver.x0_Library.net.UDP.Packet.DoublePacket;
-import org.xeroserver.x0_Library.net.UDP.Packet.FloatPacket;
-import org.xeroserver.x0_Library.net.UDP.Packet.IntPacket;
-import org.xeroserver.x0_Library.net.UDP.Packet.Packet;
-import org.xeroserver.x0_Library.net.UDP.Packet.StringPacket;
+import org.xeroserver.x0library.log.Logger;
+import org.xeroserver.x0library.net.packets.DoublePacket;
+import org.xeroserver.x0library.net.packets.FloatPacket;
+import org.xeroserver.x0library.net.packets.IntPacket;
+import org.xeroserver.x0library.net.packets.Packet;
+import org.xeroserver.x0library.net.packets.StringPacket;
 
 public class SingleUDP implements Runnable {
 

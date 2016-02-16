@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.IO;
+package org.xeroserver.x0library.io;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * 
  **/
 
-public class FileInput {
+public final class FileInput {
 
 	public static ArrayList<String> readStringList(File f) {
 

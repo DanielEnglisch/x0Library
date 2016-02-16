@@ -1,4 +1,4 @@
-package org.xeroserver.x0_Library.Config;
+package org.xeroserver.x0library.config;
 
 /**
  * This class provides the ability to create and manage config files.
@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xeroserver.x0_Library.Log.Logger;
-import org.xeroserver.x0_Library.ObjectTools.StringTools;
+import org.xeroserver.x0library.log.Logger;
+import org.xeroserver.x0library.objtools.StringTools;
 
-public class ConfigFile {
+public final class ConfigFile {
 
 	// LoggerBlock:
 	private Logger l = new Logger("ConfigFile", Logger.ERRORS_ONLY);
@@ -44,6 +44,7 @@ public class ConfigFile {
 		file = f;
 
 		parseContents();
+		
 	}
 
 	public boolean exists() {
