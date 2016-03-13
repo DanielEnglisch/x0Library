@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
     <jar path="x0_Library/build/x0_Library.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/x0_Library/export_jar.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/x0_Library/export_jar.jardesc" exportErrors="false" exportWarnings="false" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
-        <sealing sealJar="false">
+        <sealing sealJar="true">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=x0_Library/src"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.gui"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.net"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.parser"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.net.udp"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.objtools"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.net.packets"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.log"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.config"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.io"/>
     </selectedElements>
 </jardesc>

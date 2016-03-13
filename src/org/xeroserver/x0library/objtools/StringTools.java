@@ -13,6 +13,8 @@ package org.xeroserver.x0library.objtools;
 
 public final class StringTools {
 
+	private StringTools(){/*Avoid Instantiating*/}
+	
 	public static String getFirstChar(String s) {
 		return s.substring(0, 1);
 	}

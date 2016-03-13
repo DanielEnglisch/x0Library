@@ -16,6 +16,8 @@ import java.io.FileWriter;
 import java.util.List;
 
 public final class FileOutput {
+	
+	private FileOutput(){/*Avoid Instantiating*/}
 
 	public static boolean writeStringList(List<String> a, File f) {
 		BufferedWriter out = null;

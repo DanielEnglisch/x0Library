@@ -16,6 +16,9 @@ import java.util.ArrayList;
  **/
 
 public final class FileInput {
+	
+	private FileInput(){/*Avoid Instantiating*/}
+
 
 	public static ArrayList<String> readStringList(File f) {
 

@@ -28,10 +28,10 @@ import org.xeroserver.x0library.log.Logger;
 
 public final class AppUpdater {
 
-	private String checkSumFile = "*.php";
-	private String downloadFile = ".exe";
+	private String checkSumFile = "http://myServer.org/myAppChecksup.php";
+	private String downloadFile = "http://myServer.org/MyApp.jar";
 
-	private String name = "CMM_Editor.jar";
+	private String name = "MyApp.jar";
 
 	private String localChecksum = "checksum";
 	private String remoteChecksum = "checksum";
