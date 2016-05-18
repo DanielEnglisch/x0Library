@@ -13,6 +13,7 @@ package org.xeroserver.x0library.gui;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -44,13 +45,19 @@ public class X0InputField extends JTextField {
 	// Conditions:
 			NO_SPACES = 8,
 			// Imperatives:
-			CLEAR_SPACES = 9;
+			CLEAR_SPACES = 9,
+					CLEAR_ON_ENTER = 10,
+					NO_COLOR = 11,
+					CONSOLE_HISTORY = 12;
 
 	private int[] flags = new int[] {};
 
 	private double doubleValue = 0;
 	private int integerValue = 0;
 	private String stringValue = "";
+	
+	private ArrayList<String> history = new ArrayList<String>();
+	private int history_nav = 0;
 
 	private Color errorColor = Color.RED;
 	private Color editColor = Color.ORANGE;
@@ -61,6 +68,13 @@ public class X0InputField extends JTextField {
 		this.flags = flags;
 		this.displayErrors = display;
 		registerKeyListener();
+		
+		if(contains(NO_COLOR))
+		{
+			errorColor = Color.BLACK;
+			editColor = Color.BLACK;
+		}
+					
 	}
 
 	public X0InputField(int[] flags) {
@@ -82,6 +96,21 @@ public class X0InputField extends JTextField {
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
+				
+				//Console Mechanism
+				if (arg0.getKeyCode() == KeyEvent.VK_UP) {
+					
+					if(!contains(CONSOLE_HISTORY))
+						return;
+					
+					if(history.size() != 0 && history.size() - 1 - history_nav >= 0 )
+						setText(history.get(history.size() - 1 - history_nav));
+					
+					history_nav++;
+			
+				}
+				
+								
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 					if (processValue()) {
 						setForeground(Color.GREEN);
@@ -216,7 +245,21 @@ public class X0InputField extends JTextField {
 		}
 
 		stringValue = content;
-
+		
+		
+		if(contains(CLEAR_ON_ENTER)){
+			setText("");
+		}
+		
+		
+		
+		if(contains(CONSOLE_HISTORY))
+		{
+			history.add("" + content);
+			history_nav = 0;
+		}
+			
+		
 		return true;
 
 	}
