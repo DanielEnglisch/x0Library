@@ -1,7 +1,7 @@
 package org.xeroserver.x0library.gui;
 
 /**
- * This class is an extension of JTextField and adds the ability to set certain flags to filter inputted values.
+ * This class is an extension of JTextField and adds the ability to set certain flags to filter incoming values.
  * 
  * @author Daniel 'Xer0' Englisch
  * @since 2015-08-31
@@ -46,9 +46,9 @@ public class X0InputField extends JTextField {
 			NO_SPACES = 8,
 			// Imperatives:
 			CLEAR_SPACES = 9,
-					CLEAR_ON_ENTER = 10,
-					NO_COLOR = 11,
-					CONSOLE_HISTORY = 12;
+			CLEAR_ON_ENTER = 10,
+			NO_COLOR = 11,
+			CONSOLE_HISTORY = 12;
 
 	private int[] flags = new int[] {};
 
@@ -106,7 +106,21 @@ public class X0InputField extends JTextField {
 					if(history.size() != 0 && history.size() - 1 - history_nav >= 0 )
 						setText(history.get(history.size() - 1 - history_nav));
 					
+					if(history_nav < history.size() -1)
 					history_nav++;
+			
+				}
+				
+				if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
+					
+					if(!contains(CONSOLE_HISTORY))
+						return;
+					
+					if(history.size() != 0 && history.size() - 1 - history_nav >= 0 )
+						setText(history.get(history.size() - 1 - history_nav));
+					
+					if(history_nav > 0)
+						history_nav--;
 			
 				}
 				
