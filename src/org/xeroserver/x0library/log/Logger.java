@@ -69,7 +69,7 @@ public final class Logger {
 		frame = new JFrame("Logger - " + name);
 		frame.setLocationRelativeTo(null);
 		frame.setSize(450, 300);
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		scroll = new JTextArea();
 		scroll.setEditable(false);
 		JScrollPane pane = new JScrollPane(scroll);
