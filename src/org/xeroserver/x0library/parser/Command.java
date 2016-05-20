@@ -1,5 +1,7 @@
 package org.xeroserver.x0library.parser;
 
+import java.util.Map;
+
 public class Command {
 	
 	public static final int 
@@ -8,8 +10,8 @@ public class Command {
 
 	private int type = -1;
 	private String head = null;
-	private Flag[] flags = null;
-	private Argument[] arguments = null;
+	private String[] flags = null;
+	private Map<String,String> arguments = null;
 	private String[] values = null;
 	
 	//VALUE_CHAIN
@@ -20,7 +22,7 @@ public class Command {
 	}
 	
 	//DASHED_ARGS_AND_FLAGS
-	public Command(String head, Argument[] arguments,Flag[] flags, String[] values ){
+	public Command(String head, Map<String,String> arguments,String[] flags, String[] values ){
 		this.head = head;
 		this.flags = flags;
 		this.arguments = arguments;
@@ -28,11 +30,11 @@ public class Command {
 		this.type = Command.SINGLE_ARGS_FLAGS_VALUES;
 	}
 	
-	public final Flag[] getFlags() {
+	public final String[] getFlags() {
 		return flags;
 	}
 
-	public final Argument[] getArguments() {
+	public final Map<String,String> getArguments() {
 		return arguments;
 	}
 

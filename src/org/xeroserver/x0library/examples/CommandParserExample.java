@@ -8,8 +8,8 @@ public class CommandParserExample {
 	
 	public static void main(String[] args){
 		
-		Logger l = new Logger("SwaggerLogger");
-		l.showGUI();
+		Logger l = new Logger("CommandParser");
+		//l.showGUI();
 		
 		String cmd = "apt-get install mysql-server php5 apache2 \"x0 Framework\"";
 		l.log("INPUT: "+cmd);
@@ -25,5 +25,31 @@ public class CommandParserExample {
 			l.log(s);
 		
 		l.log("#############");
+		String cmd2 = "app_update csgo --yolo -fx 22 -dir \"C:\\yolo negev\" pipi --force";
+
+
+		l.log("INPUT: " + cmd2);
+		Command d = cp.parse(cmd2, Command.SINGLE_ARGS_FLAGS_VALUES);
+		
+		
+		l.log("Head: " + d.getHead());
+		l.log("Type: "+ d.getType());
+
+		
+		l.log("### Flags: ###");
+		for(String s: d.getFlags())
+			l.log(s);
+		
+		
+		l.log("### Args - Values: ###");
+		d.getArguments().forEach((k,v) ->{
+			l.log(k + " - " + v);
+		});
+		
+		
+		l.log("### Values: ###");
+		for(String s: d.getValues())
+			l.log(s);
+		
 	}
 }
