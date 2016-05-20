@@ -11,6 +11,14 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=x0_Library/src"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.gui"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.net"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.parser"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.net.udp"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.objtools"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.net.packets"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.log"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.config"/>
+        <javaElement handleIdentifier="=x0_Library/src&lt;org.xeroserver.x0library.io"/>
     </selectedElements>
 </jardesc>
