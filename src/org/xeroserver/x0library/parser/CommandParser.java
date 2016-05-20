@@ -10,11 +10,34 @@ import org.xeroserver.x0library.objtools.StringTools;
 public class CommandParser {
 		
 	public final Command parse(String cmd, int type){
+		
+		//Trim spaces before and after
+		cmd = cmd.replaceAll("^\\s+", "");
+		cmd = cmd.replaceAll("\\s+$", "");
+
 		return parse(cmd.split("\\s"), type);
 	}
 	
 	public final Command parse(String[] cmd, int type)
 	{
+		
+		try{
+			
+			if(cmd.length == 0 || cmd[0].replaceAll("\\s", "").equals(""))
+				throw new EmptyCommandException();
+			
+		}catch(EmptyCommandException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
+		
+		//Trim spaces before and after
+		cmd[0] = cmd[0].replace("\\s", "");
+		cmd[cmd.length-1] = cmd[cmd.length-1].replace("\\s", "");
+
+		
 		try{
 			switch(type)
 			{
@@ -36,20 +59,13 @@ public class CommandParser {
 	    ArrayList<String> cmds = new ArrayList<String>( Arrays.asList( cmd ) );
 
   		
-		ArrayList<String> flags = null;
-		ArrayList<String> values = null;
-		HashMap<String, String> arguments = null;
+		ArrayList<String> flags = new ArrayList<String>();;
+		ArrayList<String> values = new ArrayList<String>();
+		HashMap<String, String> arguments = new HashMap<String, String>();
 		
 		if(cmd.length > 1)
 		{
-			
-			 flags = new ArrayList<String>();
-			 values = new ArrayList<String>();
-			 arguments = new HashMap<String, String>();
-			
-			//Init flags,values,args when neccesary
-			//Parse that shit
-			
+					
 			 //Filter Flags
 			for(int i = 1; i< cmds.size(); i++)
 			{
@@ -123,11 +139,10 @@ public class CommandParser {
 	
 	private Command parseValueChain(String[] cmd){
 		
-		ArrayList<String> values = null;
+		ArrayList<String> values  =  new ArrayList<String>();
 		
 		if(cmd.length > 1)
 		{
-			values =  new ArrayList<String>();
 			for(int i = 1; i < cmd.length; i++)
 			{
 				String value = "";
@@ -165,5 +180,11 @@ public class CommandParser {
 class UnknownCommandTypeException extends Exception{
 
 	private static final long serialVersionUID = 1946439405140135280L;
+	
+}
+
+class EmptyCommandException extends Exception{
+
+	private static final long serialVersionUID = 1491999797810276213L;
 	
 }

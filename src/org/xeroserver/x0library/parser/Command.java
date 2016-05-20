@@ -14,6 +14,12 @@ public class Command {
 	private Map<String,String> arguments = null;
 	private String[] values = null;
 	
+	//Null command
+	public Command()
+	{
+		
+	}
+	
 	//VALUE_CHAIN
 	public Command(String head, String[] values){
 		this.head = head;
@@ -50,7 +56,25 @@ public class Command {
 		return head;
 	}
 	
+	public final String getValue(int index){
+		
+		try
+		{
+			if(index < values.length && index >= 0)
+				return values[index];
+			else
+				throw new ValueIndexOutOfBoundException();	
+		}catch(ValueIndexOutOfBoundException e){
+			e.printStackTrace();
+			return "";
+		}
+			
+	}	
+	
+}
 
+class ValueIndexOutOfBoundException extends Exception{
 
+	private static final long serialVersionUID = 1L;
 	
 }
