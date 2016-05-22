@@ -168,7 +168,7 @@ public final class ConfigFile {
 
 	public String getProperty(String property) {
 
-		if (!exists(property)) {
+		if (!hasProperty(property)) {
 			return null;
 		}
 		return properties.get(property);
@@ -177,7 +177,7 @@ public final class ConfigFile {
 
 	public void setProperty(String property, String value) {
 
-		if (exists(property)) {
+		if (hasProperty(property)) {
 			properties.replace(property, value);
 			l.info("replaced [" + property + " - " + value + "];");
 
@@ -189,7 +189,7 @@ public final class ConfigFile {
 
 	}
 
-	public boolean exists(String property) {
+	public boolean hasProperty(String property) {
 		return properties.containsKey(property);
 	}
 

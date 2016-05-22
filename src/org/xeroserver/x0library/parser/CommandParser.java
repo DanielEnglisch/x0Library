@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import org.xeroserver.x0library.objtools.StringTools;
 
-public class CommandParser {
+public final class CommandParser {
 		
 	public final Command parse(String cmd, int type){
 		

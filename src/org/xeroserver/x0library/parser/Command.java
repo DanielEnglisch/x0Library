@@ -1,5 +1,15 @@
 package org.xeroserver.x0library.parser;
 
+/**
+ * This class provides acts as a struct class for any command.
+ * 
+ * @author Daniel 'Xer0' Englisch
+ * @since 2016-05-19
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
+ **/
+
 import java.util.Arrays;
 import java.util.Map;
 
