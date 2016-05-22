@@ -58,7 +58,8 @@ local.properties
 .loadpath
 
 build/
-.jardesc
+*.jardesc
+
 
 
 # Eclipse Core
