@@ -11,6 +11,8 @@ public class CommandParserExample {
 		Logger l = new Logger("CommandParser");
 		//l.showGUI();
 		
+		l.log("##### VALUES_ONLY #####");
+		
 		String cmd = "apt-get install mysql-server php5 apache2 \"x0 Framework\"";
 		l.log("INPUT: "+cmd);
 		
@@ -24,7 +26,7 @@ public class CommandParserExample {
 		for(String s: c.getValues())
 			l.log(s);
 		
-		l.log("#############");
+		l.log("##### SINGLE_ARGS_FLAGS_VALUES #####");
 		String cmd2 = "app_update csgo --yolo -fx 22 -dir \"C:\\yolo negev\" pipi --force";
 
 
@@ -51,5 +53,16 @@ public class CommandParserExample {
 		for(String s: d.getValues())
 			l.log(s);
 		
+		//Checking and Getting
+		if(d.hasFlag("force"))
+		{
+			l.log("Forcing...");
+
+			if(d.hasArgument("fx"))
+			{
+				l.log("-fx="+d.getArgumentValue("fx"));
+			}
+		}
+			
 	}
 }

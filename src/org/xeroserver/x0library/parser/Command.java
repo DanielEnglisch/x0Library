@@ -1,5 +1,6 @@
 package org.xeroserver.x0library.parser;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class Command {
@@ -15,10 +16,7 @@ public class Command {
 	private String[] values = null;
 	
 	//Null command
-	public Command()
-	{
-		
-	}
+	public Command(){}
 	
 	//VALUE_CHAIN
 	public Command(String head, String[] values){
@@ -69,7 +67,19 @@ public class Command {
 			return "";
 		}
 			
-	}	
+	}
+	
+	public final boolean hasFlag(String flag){
+		return Arrays.asList(flags).contains(flag);
+	}
+	
+	public final boolean hasArgument(String argument){
+		return arguments.containsKey(argument);
+	}
+	
+	public final String getArgumentValue(String argument){
+		return arguments.get(argument);
+	}
 	
 }
 
