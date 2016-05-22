@@ -29,9 +29,4 @@
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target name="CommandParserExample">
-        <java classname="org.xeroserver.x0library.examples.CommandParserExample" failonerror="true" fork="yes">
-            <classpath refid="x0_Library.classpath"/>
-        </java>
-    </target>
 </project>
