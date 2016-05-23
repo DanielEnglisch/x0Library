@@ -41,6 +41,9 @@ public final class ConfigFile {
 	}
 
 	private void parseContents() {
+		
+		if(!exists())
+			return;
 
 		BufferedReader in = null;
 
@@ -139,6 +142,8 @@ public final class ConfigFile {
 	}
 
 	public void reload() {
+		if(!exists())
+			return;
 		properties.clear();
 		parseContents();
 	}
