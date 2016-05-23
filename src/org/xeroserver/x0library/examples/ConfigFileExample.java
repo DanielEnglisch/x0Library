@@ -1,5 +1,15 @@
 package org.xeroserver.x0library.examples;
 
+/**
+ * Example class for ConfigFile
+ * 
+ * @author Daniel 'Xer0' Englisch
+ * @since 2015-05-23
+ * @website http://xeroserver.org/
+ * @source http://github.com/DanielEnglisch/x0_Library
+ * 
+ **/
+
 import java.io.File;
 
 import org.xeroserver.x0library.config.ConfigFile;
@@ -29,10 +39,7 @@ public class ConfigFileExample {
 		f.removeProperty("myProperty");
 		
 		f.save();
-		
-		
-
-		
+				
 	}
 
 }

@@ -21,18 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xeroserver.x0library.log.Logger;
-import org.xeroserver.x0library.objtools.StringTools;
-
 public final class ConfigFile {
-
-	// LoggerBlock:
-	private Logger l = new Logger("ConfigFile", Logger.ERRORS_ONLY);
-
-	public Logger getLogger() {
-		return l;
-	}
-	// -----------
 
 	private File file = null;
 	private String name = "NULL";
@@ -44,7 +33,7 @@ public final class ConfigFile {
 		file = f;
 
 		parseContents();
-		
+
 	}
 
 	public boolean exists() {
@@ -52,11 +41,6 @@ public final class ConfigFile {
 	}
 
 	private void parseContents() {
-
-		if (!exists()) {
-			l.warning("Config File doesn't exist (yet): " + name);
-			return;
-		}
 
 		BufferedReader in = null;
 
@@ -81,7 +65,7 @@ public final class ConfigFile {
 					properties.put(property, value);
 
 				} catch (Exception ex) {
-					l.warning("Failed to parse line: " + s);
+					ex.printStackTrace();
 				}
 
 			}
@@ -94,7 +78,6 @@ public final class ConfigFile {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			l.error("Error reading file!");
 			e.printStackTrace();
 
 		}
@@ -105,13 +88,14 @@ public final class ConfigFile {
 		return properties;
 	}
 
-	public void save() {
+	public boolean save() {
 
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
+				return false;
 			}
 		}
 
@@ -143,16 +127,18 @@ public final class ConfigFile {
 				out.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
+
 			}
-			l.error("Error writing file!");
 			ex.printStackTrace();
+
+			return false;
+
 		}
 
-		l.info("Saved " + name);
+		return true;
 	}
 
 	public void reload() {
-		l.log("Reloading " + name + ":");
 		properties.clear();
 		parseContents();
 	}
@@ -163,28 +149,30 @@ public final class ConfigFile {
 
 	public void removeProperty(String property) {
 		properties.remove(property);
-		l.info("removed [" + property + "];");
 	}
 
 	public String getProperty(String property) {
 
-		if (!hasProperty(property)) {
+		try {
+
+			if (!hasProperty(property)) {
+				throw new UnknownPropertyException();
+			} else
+				return properties.get(property);
+
+		} catch (UnknownPropertyException e) {
+			e.printStackTrace();
 			return null;
 		}
-		return properties.get(property);
-
 	}
 
 	public void setProperty(String property, String value) {
 
 		if (hasProperty(property)) {
 			properties.replace(property, value);
-			l.info("replaced [" + property + " - " + value + "];");
 
 		} else {
 			properties.put(property, value);
-			l.info("created [" + property + " - " + value + "];");
-
 		}
 
 	}
@@ -193,20 +181,10 @@ public final class ConfigFile {
 		return properties.containsKey(property);
 	}
 
-	public void listProperties() {
-		Logger g = new Logger("ConfigFile");
-		g.log("#####Contents of " + name + ":#####");
-		for (Map.Entry<String, String> entry : properties.entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
+}
 
-			if (!StringTools.getFirstChar(key).equals("#")) {
-				g.log(key + " = " + value);
-			}
+class UnknownPropertyException extends Exception {
 
-		}
-		g.log("#####End of Contents#####");
-		g = null;
+	private static final long serialVersionUID = 1L;
 
-	}
 }
