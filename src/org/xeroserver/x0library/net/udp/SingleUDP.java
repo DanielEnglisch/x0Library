@@ -13,7 +13,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import org.xeroserver.x0library.log.Logger;
 import org.xeroserver.x0library.net.packets.DoublePacket;
 import org.xeroserver.x0library.net.packets.FloatPacket;
 import org.xeroserver.x0library.net.packets.IntPacket;
@@ -51,12 +50,11 @@ public class SingleUDP implements Runnable {
 			server = new DatagramSocket(serverport);
 
 		} catch (Exception e) {
-			l.fatal("Couldn't start the server!");
+			System.err.println("Couldn't start the server!");
 			e.printStackTrace();
 			return;
 		}
 
-		l.info("Server started!");
 		running = true;
 
 		startReceiveThread();
@@ -65,7 +63,6 @@ public class SingleUDP implements Runnable {
 
 	public void registerReceiver(SingleUDPReceiver rec) {
 		this.receivers.add(rec);
-		l.info("Sucessfully registered receiver!");
 	}
 
 	private void startReceiveThread() {
@@ -78,7 +75,7 @@ public class SingleUDP implements Runnable {
 					try {
 						server.receive(packet);
 					} catch (Exception e) {
-						l.error("Error receiving a packet!");
+						System.err.println("Error receiving a packet!");
 					}
 
 					Packet p = reconstructPacket(packet.getData());
@@ -88,7 +85,6 @@ public class SingleUDP implements Runnable {
 		};
 
 		receive.start();
-		l.info("Started listening on port " + serverport);
 	}
 
 	private void processPacket(Packet p) {
@@ -118,29 +114,24 @@ public class SingleUDP implements Runnable {
 			remotePort = port;
 
 		} catch (UnknownHostException e) {
-			l.error("Invalid address/port!");
+			System.err.println("Invalid address/port!");
 			e.printStackTrace();
 		}
 
 		this.connectionSet = true;
-		l.info("Connection established to " + address + ":" + port);
-
 	}
 
 	public void disconnect() {
 		this.connectionSet = false;
-		l.info("Connection disconnected!");
-
 	}
 
 	public void stop() {
-		l.info("Stopping server...");
 		running = false;
 	}
 
 	public void send(Packet p) {
 		if (!connectionSet || !running) {
-			l.error("Can't send packet with no connection information! Is the server even running?");
+			System.err.println("Can't send packet with no connection information! Is the server even running?");
 			return;
 		}
 
@@ -153,11 +144,10 @@ public class SingleUDP implements Runnable {
 				try {
 					server.send(packet);
 				} catch (IOException e) {
-					l.error("Couldn't send packet!");
+					System.err.println("Couldn't send packet!");
 					e.printStackTrace();
 				}
 
-				l.info("Sent Packet!");
 
 			}
 		};
@@ -175,16 +165,16 @@ public class SingleUDP implements Runnable {
 			p = (Packet) in.readObject();
 
 		} catch (ClassNotFoundException e) {
-			l.error("Error reconstructing packet!");
+			System.err.println("Error reconstructing packet!");
 			e.printStackTrace();
 		} catch (IOException e) {
-			l.error("Error reconstructing packet!");
+			System.err.println("Error reconstructing packet!");
 			e.printStackTrace();
 		} finally {
 			try {
 				bis.close();
 			} catch (IOException ex) {
-				l.error("Error reconstructing packet!");
+				System.err.println("Error reconstructing packet!");
 				ex.printStackTrace();
 			}
 			try {
@@ -192,7 +182,7 @@ public class SingleUDP implements Runnable {
 					in.close();
 				}
 			} catch (IOException ex) {
-				l.error("Error reconstructing packet!");
+				System.err.println("Error reconstructing packet!");
 				ex.printStackTrace();
 			}
 		}
@@ -213,7 +203,7 @@ public class SingleUDP implements Runnable {
 			yourBytes = bos.toByteArray();
 
 		} catch (IOException e) {
-			l.error("Error constructing packet!");
+			System.err.println("Error constructing packet!");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -221,13 +211,13 @@ public class SingleUDP implements Runnable {
 					out.close();
 				}
 			} catch (IOException ex) {
-				l.error("Error constructing packet!");
+				System.err.println("Error constructing packet!");
 				ex.printStackTrace();
 			}
 			try {
 				bos.close();
 			} catch (IOException ex) {
-				l.error("Error constructing packet!");
+				System.err.println("Error constructing packet!");
 				ex.printStackTrace();
 			}
 		}
@@ -235,13 +225,5 @@ public class SingleUDP implements Runnable {
 		return yourBytes;
 
 	}
-
-	// LoggerBlock:
-	private Logger l = new Logger("SimpleUDP", Logger.ERRORS_ONLY);
-
-	public Logger getLogger() {
-		return l;
-	}
-	// --
 
 }

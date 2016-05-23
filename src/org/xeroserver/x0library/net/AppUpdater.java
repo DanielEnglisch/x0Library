@@ -24,8 +24,6 @@ import java.security.MessageDigest;
 
 import javax.swing.JOptionPane;
 
-import org.xeroserver.x0library.log.Logger;
-
 public final class AppUpdater {
 
 	private String checkSumFile = "http://myServer.org/myAppChecksup.php";
@@ -37,13 +35,6 @@ public final class AppUpdater {
 	private String remoteChecksum = "checksum";
 	private boolean cancelled = false;;
 
-	// LoggerBlock:
-	private Logger l = new Logger("AppUpdater", Logger.SILENT);
-
-	public Logger getLogger() {
-		return l;
-	}
-	// -----------
 
 	/**
 	 * Constructor
@@ -70,7 +61,7 @@ public final class AppUpdater {
 
 		if (localChecksum.equals("x0_fail") || remoteChecksum.equals("x0_fail")) {
 			cancelled = true;
-			l.fatal("Update checking failed... check HTTP links or internet connection!");
+			System.err.println("Update checking failed... check HTTP links or internet connection!");
 		}
 
 	}

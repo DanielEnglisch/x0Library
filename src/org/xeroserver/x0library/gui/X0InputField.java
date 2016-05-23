@@ -18,19 +18,9 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.xeroserver.x0library.log.Logger;
-
 public class X0InputField extends JTextField {
 
 	private static final long serialVersionUID = 1L;
-
-	// LoggerBlock:
-	private Logger l = new Logger("X0InputField", Logger.ERRORS_ONLY);
-
-	public final Logger getLogger() {
-		return l;
-	}
-	// -----------
 
 	// Mode enum
 	final public static int
@@ -184,9 +174,8 @@ public class X0InputField extends JTextField {
 			try {
 				d = Double.parseDouble(txt);
 			} catch (Exception e) {
-				l.error("Failed to convert input to double!");
+				e.printStackTrace();
 				error(DOUBLE);
-				// e.printStackTrace();
 				return false;
 			}
 
@@ -231,6 +220,7 @@ public class X0InputField extends JTextField {
 					integerValue = (int) (d);
 
 				} catch (Exception e) {
+					e.printStackTrace();
 					error(INT);
 					return false;
 				}
@@ -327,11 +317,12 @@ public class X0InputField extends JTextField {
 
 	//Override
 	public void handleError(int flag) {
-		l.error("Override handleError(int flag) to handle input errors!");
+		System.err.println("An error occurred using the flag " + flag + "\nOverride this method to handle errors!");
 	}
 	
 	public void update() {
-		l.info("Override update() to get change events!");
+		System.err.println("The value of this X0InputField was updated\nOverride this method to handle updates!");
 	}
 
 }
+
