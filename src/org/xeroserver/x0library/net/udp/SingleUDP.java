@@ -92,18 +92,19 @@ public class SingleUDP implements Runnable {
 		for (SingleUDPReceiver r : receivers) {
 			switch (p.getPacketType()) {
 			case Packet.STRING:
-				r.receiveString(((StringPacket) p).getString(),((StringPacket) p).getIdentifier());
+				r.receiveString(((StringPacket) p).getString(), ((StringPacket) p).getIdentifier());
 				break;
 			case Packet.INT:
-				r.receiveInt(((IntPacket) p).getInt(),((IntPacket) p).getIdentifier());
+				r.receiveInt(((IntPacket) p).getInt(), ((IntPacket) p).getIdentifier());
 				break;
 			case Packet.DOUBLE:
-				r.receiveDouble(((DoublePacket) p).getDouble(),((DoublePacket) p).getIdentifier());
+				r.receiveDouble(((DoublePacket) p).getDouble(), ((DoublePacket) p).getIdentifier());
 				break;
 			case Packet.FLOAT:
-				r.receiveFloat(((FloatPacket) p).getFloat(),((FloatPacket) p).getIdentifier());
+				r.receiveFloat(((FloatPacket) p).getFloat(), ((FloatPacket) p).getIdentifier());
 				break;
-				default: r.receiveCustom(p, p.getIdentifier());
+			default:
+				r.receiveCustom(p, p.getIdentifier());
 			}
 		}
 	}
@@ -147,7 +148,6 @@ public class SingleUDP implements Runnable {
 					System.err.println("Couldn't send packet!");
 					e.printStackTrace();
 				}
-
 
 			}
 		};

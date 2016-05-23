@@ -19,12 +19,9 @@ public class SingleUDPReceiver {
 	public void receiveFloat(float f, String id) {
 		// Do Something
 	}
-	
+
 	public void receiveCustom(Packet p, String id) {
 		// Do Something
 	}
-	
-	
-	
 
 }

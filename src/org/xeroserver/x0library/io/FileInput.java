@@ -5,20 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-/**
- * This class provides the ability to read certain data from file.
- * 
- * @author Daniel 'Xer0' Englisch
- * @since 2015-07-31
- * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
- * 
- **/
-
 public final class FileInput {
-	
-	private FileInput(){/*Avoid Instantiating*/}
 
+	private FileInput() {
+		/* Avoid Instantiating */}
 
 	public static ArrayList<String> readStringList(File f) {
 

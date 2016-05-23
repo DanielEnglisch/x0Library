@@ -6,7 +6,7 @@ package org.xeroserver.x0library.examples;
  * @author Daniel 'Xer0' Englisch
  * @since 2015-05-23
  * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
+ * Source http://github.com/DanielEnglisch/x0_Library
  * 
  **/
 

@@ -9,18 +9,6 @@ import javax.swing.JTextArea;
 
 import org.xeroserver.x0library.io.FileOutput;
 
-/**
- * This class provides the ability to manage logging in your program. You not
- * only have control over the different types of log-outputs but also if and
- * what will be logged.
- * 
- * @author Daniel 'Xer0' Englisch
- * @since 2015-07-12
- * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
- * 
- **/
-
 public final class Logger {
 
 	private String name = "";

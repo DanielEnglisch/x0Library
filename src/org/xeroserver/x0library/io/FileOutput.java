@@ -1,23 +1,14 @@
 package org.xeroserver.x0library.io;
 
-/**
- * This class provides the ability to write certain data to file.
- * 
- * @author Daniel 'Xer0' Englisch
- * @since 2015-07-24
- * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
- * 
- **/
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
 public final class FileOutput {
-	
-	private FileOutput(){/*Avoid Instantiating*/}
+
+	private FileOutput() {
+		/* Avoid Instantiating */}
 
 	public static boolean writeStringList(List<String> a, File f) {
 		BufferedWriter out = null;

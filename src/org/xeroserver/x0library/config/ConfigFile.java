@@ -1,15 +1,5 @@
 package org.xeroserver.x0library.config;
 
-/**
- * This class provides the ability to create and manage config files.
- * 
- * @author Daniel 'Xer0' Englisch
- * @since 2015-07-11
- * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
- * 
- **/
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,7 +15,7 @@ public final class ConfigFile {
 
 	private File file = null;
 	private String name = "NULL";
-	private HashMap<String, String> properties = new HashMap<String, String>();
+	private Map<String, String> properties = new HashMap<String, String>();
 
 	public ConfigFile(File f) {
 
@@ -41,8 +31,8 @@ public final class ConfigFile {
 	}
 
 	private void parseContents() {
-		
-		if(!exists())
+
+		if (!exists())
 			return;
 
 		BufferedReader in = null;
@@ -87,7 +77,7 @@ public final class ConfigFile {
 
 	}
 
-	public HashMap<String, String> getProperties() {
+	public Map<String, String> getProperties() {
 		return properties;
 	}
 
@@ -142,7 +132,7 @@ public final class ConfigFile {
 	}
 
 	public void reload() {
-		if(!exists())
+		if (!exists())
 			return;
 		properties.clear();
 		parseContents();

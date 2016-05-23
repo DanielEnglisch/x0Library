@@ -1,15 +1,5 @@
 package org.xeroserver.x0library.gui;
 
-/**
- * This class is an extension of JTextField and adds the ability to set certain flags to filter incoming values.
- * 
- * @author Daniel 'Xer0' Englisch
- * @since 2015-08-31
- * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
- * 
- **/
-
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,21 +21,18 @@ public class X0InputField extends JTextField {
 			// Imperatives
 			ROUND_UP = 5, ROUND_DOWN = 6, ROUND = 7,
 
-	// StringFlags:
-	// Conditions:
+			// StringFlags:
+			// Conditions:
 			NO_SPACES = 8,
 			// Imperatives:
-			CLEAR_SPACES = 9,
-			CLEAR_ON_ENTER = 10,
-			NO_COLOR = 11,
-			CONSOLE_HISTORY = 12;
+			CLEAR_SPACES = 9, CLEAR_ON_ENTER = 10, NO_COLOR = 11, CONSOLE_HISTORY = 12;
 
 	private int[] flags = new int[] {};
 
 	private double doubleValue = 0;
 	private int integerValue = 0;
 	private String stringValue = "";
-	
+
 	private ArrayList<String> history = new ArrayList<String>();
 	private int history_nav = 0;
 
@@ -58,13 +45,12 @@ public class X0InputField extends JTextField {
 		this.flags = flags;
 		this.displayErrors = display;
 		registerKeyListener();
-		
-		if(contains(NO_COLOR))
-		{
+
+		if (contains(NO_COLOR)) {
 			errorColor = Color.BLACK;
 			editColor = Color.BLACK;
 		}
-					
+
 	}
 
 	public X0InputField(int[] flags) {
@@ -86,35 +72,34 @@ public class X0InputField extends JTextField {
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				
-				//Console Mechanism
+
+				// Console Mechanism
 				if (arg0.getKeyCode() == KeyEvent.VK_UP) {
-					
-					if(!contains(CONSOLE_HISTORY))
+
+					if (!contains(CONSOLE_HISTORY))
 						return;
-					
-					if(history.size() != 0 && history.size() - 1 - history_nav >= 0 )
+
+					if (history.size() != 0 && history.size() - 1 - history_nav >= 0)
 						setText(history.get(history.size() - 1 - history_nav));
-					
-					if(history_nav < history.size() -1)
-					history_nav++;
-			
+
+					if (history_nav < history.size() - 1)
+						history_nav++;
+
 				}
-				
+
 				if (arg0.getKeyCode() == KeyEvent.VK_DOWN) {
-					
-					if(!contains(CONSOLE_HISTORY))
+
+					if (!contains(CONSOLE_HISTORY))
 						return;
-					
-					if(history.size() != 0 && history.size() - 1 - history_nav >= 0 )
+
+					if (history.size() != 0 && history.size() - 1 - history_nav >= 0)
 						setText(history.get(history.size() - 1 - history_nav));
-					
-					if(history_nav > 0)
+
+					if (history_nav > 0)
 						history_nav--;
-			
+
 				}
-				
-								
+
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 					if (processValue()) {
 						setForeground(Color.GREEN);
@@ -249,21 +234,16 @@ public class X0InputField extends JTextField {
 		}
 
 		stringValue = content;
-		
-		
-		if(contains(CLEAR_ON_ENTER)){
+
+		if (contains(CLEAR_ON_ENTER)) {
 			setText("");
 		}
-		
-		
-		
-		if(contains(CONSOLE_HISTORY))
-		{
+
+		if (contains(CONSOLE_HISTORY)) {
 			history.add("" + content);
 			history_nav = 0;
 		}
-			
-		
+
 		return true;
 
 	}
@@ -304,7 +284,6 @@ public class X0InputField extends JTextField {
 		JOptionPane.showMessageDialog(null, msg);
 	}
 
-	
 	private boolean contains(int i) {
 
 		for (Integer x : flags) {
@@ -315,14 +294,13 @@ public class X0InputField extends JTextField {
 		return false;
 	}
 
-	//Override
+	// Override
 	public void handleError(int flag) {
 		System.err.println("An error occurred using the flag " + flag + "\nOverride this method to handle errors!");
 	}
-	
+
 	public void update() {
 		System.err.println("The value of this X0InputField was updated\nOverride this method to handle updates!");
 	}
 
 }
-

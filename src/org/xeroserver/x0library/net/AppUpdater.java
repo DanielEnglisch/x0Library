@@ -1,15 +1,5 @@
 package org.xeroserver.x0library.net;
 
-/**
- * This class provides the ability to automatically check for updates and even update your application.
- * 
- * @author Daniel 'Xer0' Englisch
- * @since 2015-08-27
- * @website http://xeroserver.org/
- * @source http://github.com/DanielEnglisch/x0_Library
- * 
- **/
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,21 +25,6 @@ public final class AppUpdater {
 	private String remoteChecksum = "checksum";
 	private boolean cancelled = false;;
 
-
-	/**
-	 * Constructor
-	 * 
-	 * @param checkSumFile
-	 *            HTTP link to the php/html file on your server which prints /
-	 *            generates the checksum of the newest version of your
-	 *            application.
-	 * @param donwloadFile
-	 *            HTTP link to the application that should be downloaded once an
-	 *            update is available.
-	 * @param defaultName
-	 *            Default name to which the downloaded update will be saved to
-	 *            if it fails to get the current filename.
-	 */
 	public AppUpdater(String checkSumFile, String donwloadFile, String defaultName) {
 
 		this.checkSumFile = checkSumFile;
