@@ -9,7 +9,7 @@ public class CommandParserExample {
 
 		System.out.println("##### VALUES_ONLY #####");
 
-		String cmd = "apt-get install mysql-server php5 apache2 \"x0 Framework\"";
+		String cmd = "apt-get install mysql_server php5 apache2 \"x0 Framework\"";
 		System.out.println("INPUT: " + cmd);
 
 		CommandParser cp = new CommandParser();
