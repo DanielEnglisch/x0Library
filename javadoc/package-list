@@ -1,10 +1,2 @@
 org.xeroserver.x0library.config
-org.xeroserver.x0library.examples
 org.xeroserver.x0library.gui
-org.xeroserver.x0library.io
-org.xeroserver.x0library.log
-org.xeroserver.x0library.net
-org.xeroserver.x0library.net.packets
-org.xeroserver.x0library.net.udp
-org.xeroserver.x0library.objtools
-org.xeroserver.x0library.parser

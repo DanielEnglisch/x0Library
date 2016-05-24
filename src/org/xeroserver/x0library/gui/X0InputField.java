@@ -16,7 +16,7 @@ import javax.swing.JTextField;
  * needs to be enabled. To learn more, take a look at the X0Inputfile Example
  * class.</h3>
  * 
- * @author Daniel 'Xer0' Englisch
+ * @author Daniel 'Xer0' Englisch <xeroserver.org>
  *
  */
 public class X0InputField extends JTextField {
