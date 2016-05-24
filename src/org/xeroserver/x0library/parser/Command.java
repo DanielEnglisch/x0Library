@@ -19,10 +19,6 @@ public class Command {
 	private Map<String, String> arguments = null;
 	private String[] values = null;
 
-	// Null command
-	public Command() {
-	}
-
 	// VALUE_CHAIN
 	public Command(String head, String[] values) {
 		this.head = head;

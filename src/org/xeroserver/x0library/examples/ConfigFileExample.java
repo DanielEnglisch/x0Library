@@ -26,7 +26,6 @@ public class ConfigFileExample {
 			System.out.println("Key is " + f.getProperty("key"));
 
 		f.removeProperty("myProperty");
-
 		f.save();
 
 	}

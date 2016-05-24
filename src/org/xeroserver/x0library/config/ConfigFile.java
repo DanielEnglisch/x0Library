@@ -11,21 +11,38 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <h3>A class to load, save and edit simple configuration files with a 'key =
+ * value' format.</h3>
+ * 
+ * @author Daniel 'Xer0' Englisch
+ *
+ */
 public final class ConfigFile {
 
 	private File file = null;
 	private String name = "NULL";
 	private Map<String, String> properties = new HashMap<String, String>();
 
-	public ConfigFile(File f) {
+	/**
+	 * 
+	 * @param file
+	 *            The file pointing to the desired configuration file.
+	 */
+	public ConfigFile(File file) {
 
-		name = f.getName();
-		file = f;
+		name = file.getName();
+		this.file = file;
 
 		parseContents();
 
 	}
 
+	/**
+	 * Checks weather this ConfigFile was already saved to disk.
+	 * 
+	 * @return Returns a boolean if the ConfigFile was saved to disk.
+	 */
 	public boolean exists() {
 		return file.exists();
 	}
@@ -77,10 +94,21 @@ public final class ConfigFile {
 
 	}
 
+	/**
+	 * Returns a Map of all parsed / existing properties of this ConfigFile.
+	 * 
+	 * @return Returns a Map of all parsed / existing properties of this
+	 *         ConfigFile.
+	 */
 	public Map<String, String> getProperties() {
 		return properties;
 	}
 
+	/**
+	 * Saves the ConfigFile to disk.
+	 * 
+	 * @return Returns a boolean indicating the success of the saving process.
+	 */
 	public boolean save() {
 
 		if (!file.exists()) {
@@ -131,6 +159,11 @@ public final class ConfigFile {
 		return true;
 	}
 
+	/**
+	 * Clears loaded / added properties from the memory and freshly parses the
+	 * configuration file on disk. If this ConfigFile wasn't saved before, all
+	 * properties will be lost!
+	 */
 	public void reload() {
 		if (!exists())
 			return;
@@ -138,14 +171,32 @@ public final class ConfigFile {
 		parseContents();
 	}
 
+	/**
+	 * Returns the name of the configuration file on disk.
+	 * 
+	 * @return Returns the name of the configuration file on disk.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Removes a property from this CofigFile
+	 * 
+	 * @param property
+	 *            Removes a property from this ConfigFile
+	 */
 	public void removeProperty(String property) {
 		properties.remove(property);
 	}
 
+	/**
+	 * Returns the value of the given property if it exists.
+	 * 
+	 * @param property
+	 *            The key of the desired property.
+	 * @return Returns the value of the given property if it exists.
+	 */
 	public String getProperty(String property) {
 
 		try {
@@ -161,6 +212,14 @@ public final class ConfigFile {
 		}
 	}
 
+	/**
+	 * Adds / Overrides a new property.
+	 * 
+	 * @param property
+	 *            Name of the property.
+	 * @param value
+	 *            Value of the property.
+	 */
 	public void setProperty(String property, String value) {
 
 		if (hasProperty(property)) {
@@ -172,6 +231,13 @@ public final class ConfigFile {
 
 	}
 
+	/**
+	 * Returns a boolean weather the given property exists or not.
+	 * 
+	 * @param property
+	 *            The name of the desired property.
+	 * @return Returns a boolean weather the given property exists or not.
+	 */
 	public boolean hasProperty(String property) {
 		return properties.containsKey(property);
 	}
