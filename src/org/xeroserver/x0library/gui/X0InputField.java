@@ -190,6 +190,14 @@ public class X0InputField extends JTextField {
 	}
 
 	/**
+	 * Clears the input history if enabled.
+	 */
+	public final void clearHistory() {
+		if (contains(CONSOLE_HISTORY))
+			history.clear();
+	}
+
+	/**
 	 * Returns the string value of the InputField.
 	 * 
 	 * @return Returns the string value of the InputField.
@@ -319,6 +327,11 @@ public class X0InputField extends JTextField {
 		}
 
 		if (contains(CONSOLE_HISTORY)) {
+
+			// Limit the number of entries to 50
+			if (history.size() == 50)
+				history.remove(0);
+
 			history.add("" + content);
 			history_nav = 0;
 		}
