@@ -15,7 +15,7 @@ import java.util.Map;
  * <h3>A class to load, save and edit simple configuration files with a 'key =
  * value' format.</h3>
  * 
- * @author Daniel 'Xer0' Englisch <xeroserver.org>
+ * @author Daniel 'Xer0' Englisch
  *
  */
 public final class ConfigFile {
