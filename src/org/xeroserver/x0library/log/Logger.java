@@ -9,26 +9,18 @@ import javax.swing.JTextArea;
 
 import org.xeroserver.x0library.io.FileOutput;
 
-public final class Logger {
+public class Logger {
 
 	private String name = "";
 
-	// Mode
 	public static int NORMAL = 0, ERRORS_ONLY = 1, SILENT = 2;
 	private int mode = NORMAL;
-	// --------
 
-	// Gui
 	private boolean isGUIInitialized = false;
 	private JFrame frame = null;
 	private JTextArea scroll = null;
-	// ----------------------
 
-	// Log/Gui
 	private ArrayList<String> log = new ArrayList<String>();
-	// ----------
-
-	// Constructors
 
 	public Logger() {
 		this("", NORMAL);
@@ -50,9 +42,7 @@ public final class Logger {
 		this.mode = mode;
 	}
 
-	// -----------------
 
-	// Private methods
 	private void initGUI() {
 		frame = new JFrame("Logger - " + name);
 		frame.setLocationRelativeTo(null);
@@ -84,10 +74,8 @@ public final class Logger {
 		return "[" + name + "] ";
 	}
 
-	// ------------------
 
-	// GUI related methods
-	public void showGUI() {
+	public final void showGUI() {
 		if (!isGUIInitialized) {
 			initGUI();
 		}
@@ -95,36 +83,31 @@ public final class Logger {
 		frame.setVisible(true);
 	}
 
-	public void hideGUI() {
+	public final void hideGUI() {
 		if (isGUIInitialized) {
 			frame.setVisible(false);
 		}
 
 	}
-	// -------------------
 
-	// Setter/Getter
-	public void setMode(int mode) {
+	public final void setMode(int mode) {
 		this.mode = mode;
 	}
 
-	public int getMode() {
+	public final int getMode() {
 		return mode;
 	}
-	// ---------
 
-	// IO
-	public void write(File f) {
+	public final void write(File f) {
 
 		if (FileOutput.writeStringList(log, f))
 			info("Successfully wrote file " + f.getAbsolutePath());
 		else
 			error("Failed to write log!");
 	}
-	// -------
 
-	// Logging:
-	public void log(String s) {
+
+	public final void log(String s) {
 
 		if (mode == ERRORS_ONLY || mode == SILENT)
 			return;
@@ -134,7 +117,7 @@ public final class Logger {
 		flush(lg);
 	}
 
-	public void info(String s) {
+	public final void info(String s) {
 
 		if (mode == ERRORS_ONLY || mode == SILENT)
 			return;
@@ -145,7 +128,7 @@ public final class Logger {
 
 	}
 
-	public void warning(String s) {
+	public final void warning(String s) {
 
 		if (mode == ERRORS_ONLY || mode == SILENT)
 			return;
@@ -156,7 +139,7 @@ public final class Logger {
 
 	}
 
-	public void error(String s) {
+	public final void error(String s) {
 
 		if (mode == SILENT)
 			return;
@@ -167,7 +150,7 @@ public final class Logger {
 
 	}
 
-	public void fatal(String s) {
+	public final void fatal(String s) {
 
 		String lg = getHead() + "[FATAL] " + s;
 
@@ -175,7 +158,7 @@ public final class Logger {
 
 	}
 
-	public void custom(String type, String s) {
+	public final void custom(String type, String s) {
 
 		if (mode == ERRORS_ONLY || mode == SILENT)
 			return;
@@ -185,5 +168,5 @@ public final class Logger {
 		flush(lg);
 
 	}
-
+	
 }
