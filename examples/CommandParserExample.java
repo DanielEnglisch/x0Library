@@ -7,29 +7,15 @@ public class CommandParserExample {
 
 	public static void main(String[] args) {
 
-		System.out.println("##### VALUES_ONLY #####");
-
-		String cmd = "apt-get install mysql_server php5 apache2 \"x0 Framework\"";
-		System.out.println("INPUT: " + cmd);
-
 		CommandParser cp = new CommandParser();
-		Command c = cp.parse(cmd, Command.VALUES_ONLY);
-
-		System.out.println("Head: " + c.getHead());
-		System.out.println("Type: " + c.getType());
-		System.out.println("### Values: ###");
-
-		for (String s : c.getValues())
-			System.out.println(s);
-
-		System.out.println("##### SINGLE_ARGS_FLAGS_VALUES #####");
+		
+		System.out.println("##### Default flag and arg prefix #####");
 		String cmd2 = "app_update csgo --yolo -fx 22 -dir \"C:\\yolo negev\" pipi --force";
 
 		System.out.println("INPUT: " + cmd2);
-		Command d = cp.parse(cmd2, Command.SINGLE_ARGS_FLAGS_VALUES);
+		Command d = cp.parse(cmd2);
 
 		System.out.println("Head: " + d.getHead());
-		System.out.println("Type: " + d.getType());
 
 		System.out.println("### Flags: ###");
 		for (String s : d.getFlags())
@@ -50,6 +36,38 @@ public class CommandParserExample {
 
 			if (d.hasArgument("fx")) {
 				System.out.println("-fx=" + d.getArgumentValue("fx"));
+			}
+		}
+		
+		cp = new CommandParser("#","/");
+		
+		System.out.println("##### Modified flag and arg prefix (# and /) #####");
+		String cmd = "app_remove rust #delconfig /timeout 60 /dir \"C:\\rust dedicated\" xer0 #force";
+
+		System.out.println("INPUT: " + cmd);
+		Command d2 = cp.parse(cmd);
+
+		System.out.println("Head: " + d2.getHead());
+
+		System.out.println("### Flags: ###");
+		for (String s : d2.getFlags())
+			System.out.println(s);
+
+		System.out.println("### Args - Values: ###");
+		d2.getArguments().forEach((k, v) -> {
+			System.out.println(k + " - " + v);
+		});
+
+		System.out.println("### Values: ###");
+		for (String s : d2.getValues())
+			System.out.println(s);
+
+		// Checking and Getting
+		if (d2.hasFlag("force")) {
+			System.out.println("Forcing...");
+
+			if (d2.hasArgument("timeout")) {
+				System.out.println("/timeout=" + d.getArgumentValue("timeout"));
 			}
 		}
 

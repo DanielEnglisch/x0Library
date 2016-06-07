@@ -8,17 +8,31 @@ import java.util.HashMap;
 import org.xeroserver.x0library.objtools.StringTools;
 
 public final class CommandParser {
+	
+	private String flag_prefix = null;
+	private String arg_prefix = null;
+	
+	public CommandParser(){
+		flag_prefix = "--";
+		arg_prefix = "-";
+	}
+	
+	public CommandParser(String flag_prefix, String arg_prefix){
+		this.flag_prefix = flag_prefix;
+		this.arg_prefix = arg_prefix;
+	}
 
-	public final Command parse(String cmd, int type) {
+
+	public final Command parse(String cmd) {
 
 		// Trim spaces before and after
 		cmd = cmd.replaceAll("^\\s+", "");
 		cmd = cmd.replaceAll("\\s+$", "");
 
-		return parse(cmd.split("\\s"), type);
+		return parse(cmd.split("\\s"));
 	}
 
-	public final Command parse(String[] cmd, int type) {
+	public final Command parse(String[] cmd) {
 
 		try {
 
@@ -33,21 +47,8 @@ public final class CommandParser {
 		// Trim spaces before and after
 		cmd[0] = cmd[0].replace("\\s", "");
 		cmd[cmd.length - 1] = cmd[cmd.length - 1].replace("\\s", "");
-
-		try {
-			switch (type) {
-			case Command.VALUES_ONLY:
-				return parseValueChain(cmd);
-			case Command.SINGLE_ARGS_FLAGS_VALUES:
+			
 				return parseSingleArgsFlagsValues(cmd);
-			default:
-				throw new UnknownCommandTypeException();
-			}
-
-		} catch (UnknownCommandTypeException ex) {
-			ex.printStackTrace();
-			return null;
-		}
 
 	}
 
@@ -64,16 +65,16 @@ public final class CommandParser {
 
 			// Filter Flags
 			for (int i = 1; i < cmds.size(); i++) {
-				if (cmds.get(i).startsWith("--")) {
-					flags.add(StringTools.removeFirstChar(StringTools.removeFirstChar(cmds.get(i))));
+				if (cmds.get(i).startsWith(flag_prefix)) {
+					flags.add(cmds.get(i).substring(flag_prefix.length()));
 					cmds.remove(i);
 				}
 			}
 
 			// Filter Args
 			for (int i = 1; i < cmds.size(); i++) {
-				if (cmds.get(i).startsWith("-")) {
-					String key = StringTools.removeFirstChar(cmds.get(i));
+				if (cmds.get(i).startsWith(arg_prefix)) {
+					String key = cmds.get(i).substring(arg_prefix.length());
 					String value = "";
 
 					cmds.set(i, "");
@@ -119,7 +120,7 @@ public final class CommandParser {
 				values.toArray(new String[values.size()]));
 	}
 
-	private Command parseValueChain(String[] cmd) {
+	/*private Command parseValueChain(String[] cmd) {
 
 		ArrayList<String> values = new ArrayList<String>();
 
@@ -149,14 +150,10 @@ public final class CommandParser {
 		}
 
 		return new Command(cmd[0], values.toArray(new String[values.size()]));
-	}
+	}*/
 }
 
-class UnknownCommandTypeException extends Exception {
 
-	private static final long serialVersionUID = 1946439405140135280L;
-
-}
 
 class EmptyCommandException extends Exception {
 
