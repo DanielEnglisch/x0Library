@@ -17,6 +17,18 @@ public class Command {
 		this.arguments = arguments;
 		this.values = values;
 	}
+	
+	public final int numberOfValues(){
+		return values.length;
+	}
+	
+	public final int numberOfArguments(){
+		return arguments.size();
+	}
+	
+	public final int numberOfFlags(){
+		return flags.length;
+	}
 
 	public final String[] getFlags() {
 		return flags;
@@ -43,7 +55,7 @@ public class Command {
 				throw new ValueIndexOutOfBoundException();
 		} catch (ValueIndexOutOfBoundException e) {
 			e.printStackTrace();
-			return "";
+			return null;
 		}
 
 	}
