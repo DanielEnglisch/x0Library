@@ -1,7 +1,7 @@
 package org.xeroserver.x0library.examples;
 
-import org.xeroserver.x0library.parser.Command;
-import org.xeroserver.x0library.parser.CommandParser;
+import org.xeroserver.x0library.command.CommandParser;
+import org.xeroserver.x0library.command.CommandParser.Command;
 
 public class CommandParserExample {
 
@@ -10,11 +10,11 @@ public class CommandParserExample {
 		CommandParser cp = new CommandParser();
 		
 		System.out.println("##### Default flag and arg prefix #####");
-		String cmd2 = "app_update csgo --yolo -fx 22 -dir \"C:\\yolo negev\" pipi --force";
+		String cmd2 = "app_update csgo --yolo -fx '22 - 22 = 0' -dir \"C:\\yolo negev\" pipi --force";
 
 		System.out.println("INPUT: " + cmd2);
 		Command d = cp.parse(cmd2);
-
+		
 		System.out.println("Head: " + d.getHead());
 
 		System.out.println("### Flags: ###");
@@ -72,4 +72,7 @@ public class CommandParserExample {
 		}
 
 	}
+	
+	
+
 }

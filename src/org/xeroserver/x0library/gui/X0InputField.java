@@ -15,9 +15,6 @@ import javax.swing.JTextField;
  * rounding. There is also a console like mode where the the console-history
  * needs to be enabled. To learn more, take a look at the X0Inputfile Example
  * class.</h3>
- * 
- * @author Daniel 'Xer0' Englisch
- *
  */
 public class X0InputField extends JTextField {
 

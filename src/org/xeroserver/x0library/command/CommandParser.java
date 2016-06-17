@@ -1,27 +1,27 @@
-package org.xeroserver.x0library.parser;
+package org.xeroserver.x0library.command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.xeroserver.x0library.objtools.StringTools;
 
 public final class CommandParser {
-	
+
 	private String flag_prefix = null;
 	private String arg_prefix = null;
-	
-	public CommandParser(){
+
+	public CommandParser() {
 		flag_prefix = "--";
 		arg_prefix = "-";
 	}
-	
-	public CommandParser(String flag_prefix, String arg_prefix){
+
+	public CommandParser(String flag_prefix, String arg_prefix) {
 		this.flag_prefix = flag_prefix;
 		this.arg_prefix = arg_prefix;
 	}
-
 
 	public final Command parse(String cmd) {
 
@@ -47,8 +47,8 @@ public final class CommandParser {
 		// Trim spaces before and after
 		cmd[0] = cmd[0].replace("\\s", "");
 		cmd[cmd.length - 1] = cmd[cmd.length - 1].replace("\\s", "");
-			
-				return parseSingleArgsFlagsValues(cmd);
+
+		return parseSingleArgsFlagsValues(cmd);
 
 	}
 
@@ -120,43 +120,88 @@ public final class CommandParser {
 				values.toArray(new String[values.size()]));
 	}
 
-	/*private Command parseValueChain(String[] cmd) {
 
-		ArrayList<String> values = new ArrayList<String>();
+	public class Command {
+		private String head = null;
+		private String[] flags = null;
+		private Map<String, String> arguments = null;
+		private String[] values = null;
 
-		if (cmd.length > 1) {
-			for (int i = 1; i < cmd.length; i++) {
-				String value = "";
-
-				if (cmd[i].startsWith("\'") || cmd[i].startsWith("\"")) {
-					cmd[i] = StringTools.removeFirstChar(cmd[i]);
-
-					for (int x = i; x < cmd.length; x++) {
-						if (!cmd[x].endsWith("\'") && !cmd[x].endsWith("\"")) {
-							value += cmd[x] + " ";
-						} else {
-							cmd[x] = StringTools.removeLastChar(cmd[x]);
-							value += cmd[x];
-							i = x;
-							break;
-						}
-					}
-				} else {
-					value = cmd[i];
-				}
-
-				values.add(value);
-			}
+		private Command(){};
+		
+		// DASHED_ARGS_AND_FLAGS
+		private  Command(String head, Map<String, String> arguments, String[] flags, String[] values) {
+			this.head = head;
+			this.flags = flags;
+			this.arguments = arguments;
+			this.values = values;
 		}
 
-		return new Command(cmd[0], values.toArray(new String[values.size()]));
-	}*/
-}
+		public final int numberOfValues() {
+			return values.length;
+		}
 
+		public final int numberOfArguments() {
+			return arguments.size();
+		}
 
+		public final int numberOfFlags() {
+			return flags.length;
+		}
 
-class EmptyCommandException extends Exception {
+		public final String[] getFlags() {
+			return flags;
+		}
 
-	private static final long serialVersionUID = 1491999797810276213L;
+		public final Map<String, String> getArguments() {
+			return arguments;
+		}
 
+		public final String[] getValues() {
+			return values;
+		}
+
+		public final String getHead() {
+			return head;
+		}
+
+		public final String getValue(int index) {
+
+			try {
+				if (index < values.length && index >= 0)
+					return values[index];
+				else
+					throw new ValueIndexOutOfBoundException();
+			} catch (ValueIndexOutOfBoundException e) {
+				e.printStackTrace();
+				return null;
+			}
+
+		}
+
+		public final boolean hasFlag(String flag) {
+			return Arrays.asList(flags).contains(flag);
+		}
+
+		public final boolean hasArgument(String argument) {
+			return arguments.containsKey(argument);
+		}
+
+		public final String getArgumentValue(String argument) {
+			return arguments.get(argument);
+		}
+
+		private class ValueIndexOutOfBoundException extends Exception {
+
+			private static final long serialVersionUID = 1L;
+
+		}
+
+	}
+
+	class EmptyCommandException extends Exception {
+
+		private static final long serialVersionUID = 1491999797810276213L;
+
+	}
 }
