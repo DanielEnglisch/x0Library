@@ -42,7 +42,6 @@ public class Logger {
 		this.mode = mode;
 	}
 
-
 	private void initGUI() {
 		frame = new JFrame("Logger - " + name);
 		frame.setLocationRelativeTo(null);
@@ -74,7 +73,6 @@ public class Logger {
 		return "[" + name + "] ";
 	}
 
-
 	public final void showGUI() {
 		if (!isGUIInitialized) {
 			initGUI();
@@ -105,7 +103,6 @@ public class Logger {
 		else
 			error("Failed to write log!");
 	}
-
 
 	public final void log(String s) {
 
@@ -168,5 +165,5 @@ public class Logger {
 		flush(lg);
 
 	}
-	
+
 }

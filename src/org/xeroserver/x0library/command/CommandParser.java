@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.xeroserver.x0library.command.CommandRule.CommandReport;
 import org.xeroserver.x0library.objtools.StringTools;
 
 public final class CommandParser {
@@ -18,7 +19,7 @@ public final class CommandParser {
 		arg_prefix = "-";
 	}
 
-	public CommandParser(String flag_prefix, String arg_prefix) {
+	public CommandParser(String arg_prefix, String flag_prefix) {
 		this.flag_prefix = flag_prefix;
 		this.arg_prefix = arg_prefix;
 	}
@@ -80,27 +81,36 @@ public final class CommandParser {
 					cmds.set(i, "");
 
 					if (i + 1 < cmds.size()) {
-						if (cmds.get(i + 1).startsWith("\"") || cmds.get(i + 1).startsWith("\'")) {
 
-							value += StringTools.removeFirstChar(cmds.get(i + 1)) + " ";
+						if ((cmds.get(i + 1).startsWith("\"") || cmds.get(i + 1).startsWith("\'"))
+								&& (cmds.get(i + 1).endsWith("\"") || cmds.get(i + 1).endsWith("\'"))) {
+
+							value = StringTools.removeFirstChar(cmds.get(i + 1));
+							value = StringTools.removeLastChar(value);
 							cmds.set(i + 1, "");
-
-							i += 2;
-
-							while (!cmds.get(i).endsWith("\"") && !cmds.get(i).endsWith("\'")) {
-								value += cmds.get(i) + " ";
-								cmds.set(i, "");
-								i++;
-							}
-
-							value += StringTools.removeLastChar(cmds.get(i));
-							cmds.set(i, "");
 
 						} else {
-							value = cmds.get(i + 1);
-							cmds.set(i + 1, "");
-						}
+							if (cmds.get(i + 1).startsWith("\"") || cmds.get(i + 1).startsWith("\'")) {
 
+								value += StringTools.removeFirstChar(cmds.get(i + 1)) + " ";
+								cmds.set(i + 1, "");
+
+								i += 2;
+
+								while (!cmds.get(i).endsWith("\"") && !cmds.get(i).endsWith("\'")) {
+									value += cmds.get(i) + " ";
+									cmds.set(i, "");
+									i++;
+								}
+
+								value += StringTools.removeLastChar(cmds.get(i));
+								cmds.set(i, "");
+
+							} else {
+								value = cmds.get(i + 1);
+								cmds.set(i + 1, "");
+							}
+						}
 					}
 
 					arguments.put(key, value);
@@ -117,24 +127,32 @@ public final class CommandParser {
 		}
 
 		return new Command(cmd[0], Collections.unmodifiableMap(arguments), flags.toArray(new String[flags.size()]),
-				values.toArray(new String[values.size()]));
+				values.toArray(new String[values.size()]), cmd);
 	}
 
-
 	public class Command {
+
+		private String[] commandParts;
 		private String head = null;
 		private String[] flags = null;
 		private Map<String, String> arguments = null;
 		private String[] values = null;
 
-		private Command(){};
-		
+		private Command() {
+		};
+
 		// DASHED_ARGS_AND_FLAGS
-		private  Command(String head, Map<String, String> arguments, String[] flags, String[] values) {
+		private Command(String head, Map<String, String> arguments, String[] flags, String[] values,
+				String[] commandParts) {
 			this.head = head;
 			this.flags = flags;
 			this.arguments = arguments;
 			this.values = values;
+			this.commandParts = commandParts;
+		}
+
+		public final String[] getSplitCommand() {
+			return commandParts;
 		}
 
 		public final int numberOfValues() {
@@ -191,17 +209,21 @@ public final class CommandParser {
 			return arguments.get(argument);
 		}
 
-		private class ValueIndexOutOfBoundException extends Exception {
-
-			private static final long serialVersionUID = 1L;
-
+		public final CommandReport matches(CommandRule rule) {
+			return rule.isValid(this);
 		}
 
 	}
 
-	class EmptyCommandException extends Exception {
+	private class EmptyCommandException extends Exception {
 
 		private static final long serialVersionUID = 1491999797810276213L;
+
+	}
+
+	private class ValueIndexOutOfBoundException extends Exception {
+
+		private static final long serialVersionUID = 1L;
 
 	}
 }
