@@ -100,7 +100,10 @@ public class CommandRule {
 
 		// If the head doesn't match
 		if (!c.getHead().equals(head))
+		{
 			report.addErrorMessage("Header missmatch!");
+			report.headerMissmatch = true;	
+		}
 
 		// Check mandatory arguments
 		for (String arg : mandatoryArguments) {
@@ -152,6 +155,7 @@ public class CommandRule {
 
 		private boolean hasErrors = false;
 		private ArrayList<String> errorMessages = new ArrayList<String>();
+		public boolean headerMissmatch = false;
 
 		public CommandReport() {
 		}
@@ -163,6 +167,12 @@ public class CommandRule {
 
 		public boolean hasErrors() {
 			return hasErrors;
+		}
+		
+		public String[] getErrorMessages(){
+			String[] errors = new String[errorMessages.size()];
+			errors = errorMessages.toArray(errors);
+			return errors;
 		}
 
 		public void list() {
