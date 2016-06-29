@@ -13,12 +13,12 @@ public final class StringTools {
 		return s.substring(s.length() - 1);
 	}
 
-	public static String removeFirstChar(String s) {
-		return s.substring(1);
+	public static String removeXCharsFromStart(String s, int x) {
+		return s.substring(x);
 	}
 
-	public static String removeLastChar(String s) {
-		return s.substring(0, s.length() - 1);
+	public static String removeXCharsFromEnd(String s, int x) {
+		return s.substring(0, s.length() - x);
 	}
 
 }

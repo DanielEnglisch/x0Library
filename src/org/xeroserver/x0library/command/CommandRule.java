@@ -62,36 +62,41 @@ public class CommandRule {
 		return this;
 	}
 
-	public void list() {
-		System.out.println("CommandRule for command '" + head + "'");
+	public String toString() {
 
-		System.out.print("Mandatory Arguments: ");
+		String ret = "";
+
+		ret += "CommandRule for command '" + head + "'\n";
+
+		ret += "Mandatory Arguments: ";
 		for (String s : mandatoryArguments)
-			System.out.print(s + " ");
-		System.out.print("\n");
+			ret += (s + " ");
+		ret += ("\n");
 
-		System.out.print("Optional Arguments: ");
+		ret += ("Optional Arguments: ");
 		for (String s : optionalArguments)
-			System.out.print(s + " ");
-		System.out.print("\n");
+			ret += (s + " ");
+		ret += ("\n");
 
-		System.out.print("Allowed Flags: ");
+		ret += ("Allowed Flags: ");
 		for (String s : allowedFlags)
-			System.out.print(s + " ");
-		System.out.print("\n");
+			ret += (s + " ");
+		ret += ("\n");
 
-		System.out.println("Allowed Values at Positions: ");
+		ret += ("Allowed Values at Positions: \n");
 
-		allowedValuesAtPosition.forEach((pos, values) -> {
-			System.out.print("Pos " + pos + ": ");
-			for (String s : values)
-				System.out.print(s + " ");
-			System.out.print("\n");
-		});
+		for (Integer pos : allowedValuesAtPosition.keySet()) {
+			ret += ("Pos " + pos + ": ");
+			for (String s : allowedValuesAtPosition.get(pos))
+				ret += (s + " ");
+			ret += ("\n");
+		}
 
-		System.out.println("Value range: " + minValues + " < numOfValues < " + maxValues);
+		ret += ("Value range: " + minValues + " < numOfValues < " + maxValues + "\n");
 
-		System.out.println("#########################");
+		ret += ("#########################");
+
+		return ret;
 	}
 
 	public CommandReport isValid(Command c) {
@@ -99,10 +104,9 @@ public class CommandRule {
 		CommandReport report = new CommandReport();
 
 		// If the head doesn't match
-		if (!c.getHead().equals(head))
-		{
+		if (!c.getHead().equals(head)) {
 			report.addErrorMessage("Header missmatch!");
-			report.headerMissmatch = true;	
+			report.headerMissmatch = true;
 		}
 
 		// Check mandatory arguments
@@ -168,22 +172,24 @@ public class CommandRule {
 		public boolean hasErrors() {
 			return hasErrors;
 		}
-		
-		public String[] getErrorMessages(){
+
+		public String[] getErrorMessages() {
 			String[] errors = new String[errorMessages.size()];
 			errors = errorMessages.toArray(errors);
 			return errors;
 		}
 
-		public void list() {
+		public String toString() {
+			String ret = "";
 			if (hasErrors) {
 				for (String s : errorMessages) {
-					System.out.println(s);
+					ret += (s + "\n");
 				}
 
 			} else {
-				System.out.println("No errors found!");
+				ret += ("No errors found!\n");
 			}
+			return ret;
 		}
 
 	}

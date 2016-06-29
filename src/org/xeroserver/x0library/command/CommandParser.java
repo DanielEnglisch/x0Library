@@ -13,6 +13,7 @@ public final class CommandParser {
 
 	private String flag_prefix = null;
 	private String arg_prefix = null;
+	private String[] forbittenPrefix = new String[] { "\"", "\'", " " };
 
 	public CommandParser() {
 		flag_prefix = "--";
@@ -20,6 +21,22 @@ public final class CommandParser {
 	}
 
 	public CommandParser(String arg_prefix, String flag_prefix) {
+
+		try {
+			if (flag_prefix.equalsIgnoreCase(arg_prefix))
+				throw new InvalidPrefixException();
+
+			if (Arrays.asList(forbittenPrefix).contains(arg_prefix)
+					|| Arrays.asList(forbittenPrefix).contains(flag_prefix))
+				throw new InvalidPrefixException();
+
+			if (arg_prefix.equals("") || flag_prefix.equals(""))
+				throw new InvalidPrefixException();
+
+		} catch (InvalidPrefixException e) {
+			e.printStackTrace();
+		}
+
 		this.flag_prefix = flag_prefix;
 		this.arg_prefix = arg_prefix;
 	}
@@ -85,14 +102,14 @@ public final class CommandParser {
 						if ((cmds.get(i + 1).startsWith("\"") || cmds.get(i + 1).startsWith("\'"))
 								&& (cmds.get(i + 1).endsWith("\"") || cmds.get(i + 1).endsWith("\'"))) {
 
-							value = StringTools.removeFirstChar(cmds.get(i + 1));
-							value = StringTools.removeLastChar(value);
+							value = StringTools.removeXCharsFromEnd(cmds.get(i + 1), 1);
+							value = StringTools.removeXCharsFromEnd(value, 1);
 							cmds.set(i + 1, "");
 
 						} else {
 							if (cmds.get(i + 1).startsWith("\"") || cmds.get(i + 1).startsWith("\'")) {
 
-								value += StringTools.removeFirstChar(cmds.get(i + 1)) + " ";
+								value += StringTools.removeXCharsFromEnd(cmds.get(i + 1), 1) + " ";
 								cmds.set(i + 1, "");
 
 								i += 2;
@@ -103,7 +120,7 @@ public final class CommandParser {
 									i++;
 								}
 
-								value += StringTools.removeLastChar(cmds.get(i));
+								value += StringTools.removeXCharsFromEnd(cmds.get(i), 1);
 								cmds.set(i, "");
 
 							} else {
@@ -141,7 +158,6 @@ public final class CommandParser {
 		private Command() {
 		};
 
-		// DASHED_ARGS_AND_FLAGS
 		private Command(String head, Map<String, String> arguments, String[] flags, String[] values,
 				String[] commandParts) {
 			this.head = head;
@@ -149,6 +165,37 @@ public final class CommandParser {
 			this.arguments = arguments;
 			this.values = values;
 			this.commandParts = commandParts;
+		}
+
+		public String toString() {
+			String ret = "";
+
+			ret += "Command '" + head + "'\n";
+			ret += "Raw: ";
+			for (String s : commandParts)
+				ret += s + " ";
+			ret += "\n";
+
+			ret += "Arguments(" + numberOfArguments() + "): ";
+			for (String k : arguments.keySet())
+				ret += k + "=" + arguments.get(k) + ", ";
+			ret = StringTools.removeXCharsFromEnd(ret, 2);
+			ret += "\n";
+
+			ret += "Flags(" + numberOfFlags() + "): ";
+			for (String s : flags)
+				ret += s + ", ";
+			ret = StringTools.removeXCharsFromEnd(ret, 2);
+			ret += "\n";
+
+			ret += "Values(" + numberOfValues() + "): ";
+			for (String s : values)
+				ret += s + ", ";
+			ret = StringTools.removeXCharsFromEnd(ret, 2);
+			ret += "\n######################";
+
+			return ret;
+
 		}
 
 		public final String[] getSplitCommand() {
@@ -224,6 +271,10 @@ public final class CommandParser {
 	private class ValueIndexOutOfBoundException extends Exception {
 
 		private static final long serialVersionUID = 1L;
+	}
 
+	private class InvalidPrefixException extends Exception {
+
+		private static final long serialVersionUID = 1L;
 	}
 }
