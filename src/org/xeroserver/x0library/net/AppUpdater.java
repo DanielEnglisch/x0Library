@@ -5,69 +5,33 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.security.MessageDigest;
 
 import javax.swing.JOptionPane;
 
-public final class AppUpdater {
+import org.xeroserver.x0library.objtools.StringTools;
 
-	private String checkSumFile = "http://myServer.org/myAppChecksup.php";
-	private String downloadFile = "http://myServer.org/MyApp.jar";
-
-	private String name = "MyApp.jar";
-
-	private String localChecksum = "checksum";
-	private String remoteChecksum = "checksum";
-	private boolean cancelled = false;;
-
-	public AppUpdater(String checkSumFile, String donwloadFile, String defaultName) {
-
-		this.checkSumFile = checkSumFile;
-		this.downloadFile = donwloadFile;
-		name = defaultName;
-
-		localChecksum = getLocalChecksum();
-		remoteChecksum = getRemoteChecksum();
-
-		if (localChecksum.equals("x0_fail") || remoteChecksum.equals("x0_fail")) {
-			cancelled = true;
-			System.err.println("Update checking failed... check HTTP links or internet connection!");
-		}
-
+public class AppUpdater {
+	
+	private String updateURL = null;
+	
+	public AppUpdater(String updateURL){
+		this.updateURL = updateURL;
 	}
-
-	public void checkForUpdate() {
-		if (isUpdateAvailable()) {
-			Object[] options = { "Yes", "No" };
-			int n = JOptionPane.showOptionDialog(null, "There is an update available! Do you want to download it?",
-					"Updater", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-			if (n == 0) {
-				boolean success = downloadUpdate();
-
-				if (success) {
-					JOptionPane.showMessageDialog(null, "Successfully applied update! Please restart the program!");
-
-					System.exit(0);
-
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"Update failed! Check your internet connection and try again later!");
-				}
-			}
-
-		}
+	
+	public boolean isUpdateAvailable(){
+		return !getRemoteChecksum().equals(getLocalChecksum());
 	}
-
-	private boolean downloadUpdate() {
-
+	
+	public boolean update(){
 		try {
-			URL website = new URL(downloadFile);
+			String name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getName();
+			URL website = new URL(getDownloadLink());
 			ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 			FileOutputStream fos = new FileOutputStream(new File(".", name));
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -75,86 +39,133 @@ public final class AppUpdater {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			return false;
-
 		}
 
 		return true;
-
 	}
+	
+	public void showUpdateDialog(){
+		Object[] options = { "Yes", "No" };
+		int n = JOptionPane.showOptionDialog(null, "There is an update available! Do you want to download it?",
+				"Updater", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-	private boolean isUpdateAvailable() {
+		if (n == 0) {
+			boolean success = update();
 
-		if (cancelled)
-			return false;
+			if (success) {
+				JOptionPane.showMessageDialog(null, "Successfully applied update! Please restart the program!");
 
-		return !localChecksum.equals(remoteChecksum);
-	}
+				System.exit(0);
 
-	private String getRemoteChecksum() {
-		String res = "x0_fail";
-		HttpURLConnection connection = null;
-
-		try {
-			URL url = new URL(checkSumFile);
-
-			connection = (HttpURLConnection) url.openConnection();
-
-			connection.setRequestMethod("GET");
-			connection.connect();
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine;
-			while ((inputLine = in.readLine()) != null)
-				res = inputLine;
-			in.close();
-
-		} catch (Exception ex) {
-			return "x0_fail";
-
-		}
-
-		return res;
-
-	}
-
-	private String getLocalChecksum() {
-
-		File f = null;
-		try {
-			f = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-			name = f.getName();
-		} catch (URISyntaxException e1) {
-			e1.printStackTrace();
-		}
-		String res = "";
-
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA1");
-			FileInputStream fis = new FileInputStream(f);
-			byte[] dataBytes = new byte[1024];
-
-			int nread = 0;
-
-			while ((nread = fis.read(dataBytes)) != -1) {
-				md.update(dataBytes, 0, nread);
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"Update failed! Check your internet connection and try again later!");
 			}
-			;
+		}
 
-			byte[] mdbytes = md.digest();
+	}
+	
+	public String getLocalChecksum(){
 
-			StringBuffer sb = new StringBuffer("");
-			for (int i = 0; i < mdbytes.length; i++) {
-				sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+			File f = null;
+			try {
+				f = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			} catch (URISyntaxException e1) {
+				e1.printStackTrace();
+			}
+			String res = "";
+
+			try {
+				MessageDigest md = MessageDigest.getInstance("SHA1");
+				FileInputStream fis = new FileInputStream(f);
+				byte[] dataBytes = new byte[1024];
+
+				int nread = 0;
+
+				while ((nread = fis.read(dataBytes)) != -1) {
+					md.update(dataBytes, 0, nread);
+				}
+				;
+
+				byte[] mdbytes = md.digest();
+
+				StringBuffer sb = new StringBuffer("");
+				for (int i = 0; i < mdbytes.length; i++) {
+					sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+				}
+
+				res = sb.toString();
+				fis.close();
+
+			} catch (Exception e) {
+				return "ERROR";
 			}
 
-			res = sb.toString();
-			fis.close();
-
-		} catch (Exception e) {
-			return "x0_fail";
-		}
-
-		return res;
+			return res;
+		
 	}
+	
+	public String getRemoteChecksum(){
+		String json = getUpdateData();
+		json = json.replaceAll("\\s", "");
+		json = json.replaceAll("\"", "");
+		json = json.replaceAll("\\{", "");
+		json = json.replaceAll("\\}", "");
+
+		String[] split = json.split(",");
+		String sum = "UNKNOWN";
+		for(String s : split){
+			if(s.startsWith("checksum")){
+				sum = s.split(":")[1].replaceAll("\"", "");
+			}
+		}
+		
+		return sum;
+		
+	}
+	
+	public String getDownloadLink(){
+		
+		String json = getUpdateData();
+				
+		json = json.replaceAll("\\s", "");
+		json = json.replaceAll("\"", "");
+		json = json.replaceAll("\\{", "");
+		json = json.replaceAll("\\}", "");
+
+		String[] split = json.split(",");
+		String dw = "UNKNOWN";
+		for(String s : split){
+			if(s.startsWith("download")){
+				dw = StringTools.removeXCharsFromStart(s, 9);
+			}
+		}
+		
+		return dw;
+	}
+	
+	private String getUpdateData(){
+		
+	String data = "";
+		
+	try {
+
+		URL url = new URL(updateURL);
+        URLConnection conn = url.openConnection();
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		
+		while(in.ready()){
+			data+=in.readLine();
+		}
+		
+		in.close();
+	} catch (Exception e) {
+		e.printStackTrace();
+		return "ERROR";
+	}
+				
+		return data;
+	}
+	
 
 }
