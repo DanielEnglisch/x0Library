@@ -6,6 +6,8 @@ public class AppUpdaterExample {
 
 	public static void main(String[] args) {
 		
+		
+		
 		AppUpdater up = new AppUpdater("http://linkToJSONData/data.php");
 		if (up.isUpdateAvailable()) {
 			up.showUpdateDialog();
