@@ -10,7 +10,7 @@ public class AppUpdaterExample {
 		
 		AppUpdater up = new AppUpdater("http://linkToJSONData/data.php");
 		if (up.isUpdateAvailable()) {
-			up.showUpdateDialog();
+			up.showUpdateDialog("Updater", "<html><center>There is an update available!<br>Do you want to update?</center></html>");
 		}
 
 		/*

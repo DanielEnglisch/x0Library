@@ -1,5 +1,9 @@
 package org.xeroserver.x0library.net;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,14 +14,19 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import org.xeroserver.x0library.objtools.StringTools;
 
 public class AppUpdater {
-	private JProgressBar p = null;
 
 	private String updateURL = null;
 
@@ -30,7 +39,7 @@ public class AppUpdater {
 		return !getRemoteChecksum().equals(getLocalChecksum()) && !getRemoteChecksum().equals("UNKNOWN");
 	}
 
-	public boolean update(boolean showProgress) {
+	private boolean update(UpdaterGUI gui) {
 
 		String name = null;
 		try {
@@ -39,65 +48,25 @@ public class AppUpdater {
 			e.printStackTrace();
 		}
 
-		JFrame f = null;
-
-		if (showProgress) {
-			f = new JFrame();
-			p = new JProgressBar(0, 100);
-			p.setSize(500, 30);
-			f.add(p);
-			f.pack();
-			f.setResizable(false);
-			f.setLocationRelativeTo(null);
-			f.setVisible(true);
-		}
-
 		FileDownloader fd = new FileDownloader(new File(".", name), getDownloadLink()) {
 			@Override
 			public void progressUpdate(double progress) {
-				System.out.println("Update Progress: " + progress);
-
-				if (showProgress) {
-					p.setValue((int) progress);
-				}
+				gui.updateProgressbar(progress);
 			}
 		};
 
 		return fd.download();
 	}
 
+	public void showUpdateDialog(String title, String description) {
+		UpdaterGUI gui = new UpdaterGUI(this, title, description);
+		gui.setVisible(true);
+	}
+
 	public void showUpdateDialog() {
-		Object[] options = { "Yes", "No" };
-		int n = JOptionPane.showOptionDialog(null, "There is an update available! Do you want to download it?",
-				"Updater", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-
-		if (n == 0) {
-			boolean success = update(true);
-
-			if (success) {
-				String name = null;
-				try {
-					name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
-							.getName();
-				} catch (URISyntaxException e1) {
-					e1.printStackTrace();
-				}
-
-				JOptionPane.showMessageDialog(null,
-						"Successfully applied update! The program will now restart (hopefully) !");
-				try {
-					Runtime.getRuntime().exec("java -jar " + name);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				System.exit(0);
-
-			} else {
-				JOptionPane.showMessageDialog(null,
-						"Update failed! Check your internet connection and try again later!");
-			}
-		}
-
+		UpdaterGUI gui = new UpdaterGUI(this, "Updater",
+				"<html><center>There is an update available!<br>Do you want to update?</center></html>");
+		gui.setVisible(true);
 	}
 
 	public String getLocalChecksum() {
@@ -207,6 +176,86 @@ public class AppUpdater {
 		}
 
 		return data;
+	}
+
+	private class UpdaterGUI extends JDialog {
+
+		private static final long serialVersionUID = 1L;
+		private final JPanel contentPanel = new JPanel();
+		public JProgressBar progressBar = new JProgressBar();
+
+		public void updateProgressbar(double p) {
+			progressBar.setValue((int) p);
+		}
+
+		public UpdaterGUI(AppUpdater parent, String title, String text) {
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setResizable(false);
+			setTitle(title);
+			setAlwaysOnTop(true);
+			setBounds(100, 100, 250, 160);
+			getContentPane().setLayout(new BorderLayout());
+			setLocationRelativeTo(null);
+			contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+			getContentPane().add(contentPanel, BorderLayout.CENTER);
+			contentPanel.setLayout(null);
+			{
+				progressBar.setStringPainted(true);
+				progressBar.setBounds(10, 57, 224, 30);
+				contentPanel.add(progressBar);
+			}
+
+			JLabel lblEsIstEin = new JLabel(text);
+			lblEsIstEin.setHorizontalAlignment(SwingConstants.CENTER);
+			lblEsIstEin.setBounds(10, 11, 224, 35);
+			contentPanel.add(lblEsIstEin);
+			{
+				JPanel buttonPane = new JPanel();
+				buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+				getContentPane().add(buttonPane, BorderLayout.SOUTH);
+				{
+					JButton okButton = new JButton("NO");
+					okButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							dispose();
+						}
+					});
+					buttonPane.add(okButton);
+					getRootPane().setDefaultButton(okButton);
+				}
+				{
+					JButton cancelButton = new JButton("YES");
+					cancelButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if (parent.update(UpdaterGUI.this)) {
+								String name = null;
+								try {
+									name = new File(getClass().getProtectionDomain().getCodeSource().getLocation()
+											.toURI().getPath()).getName();
+								} catch (URISyntaxException e2) {
+									e2.printStackTrace();
+								}
+
+								JOptionPane.showMessageDialog(null,
+										"Update process finished! The application will now restart!");
+								try {
+									Runtime.getRuntime().exec("java -jar " + name);
+								} catch (IOException e1) {
+									e1.printStackTrace();
+									JOptionPane.showMessageDialog(null,
+											"Couldn't restart the application! Please restart it manually!");
+
+								}
+								System.exit(0);
+							} else
+								JOptionPane.showMessageDialog(null, "There was an error updating the application!");
+							System.exit(0);
+						}
+					});
+					buttonPane.add(cancelButton);
+				}
+			}
+		}
 	}
 
 }
