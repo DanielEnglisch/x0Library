@@ -3,6 +3,7 @@ package org.xeroserver.x0library.net;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,7 +26,8 @@ public class AppUpdater {
 	}
 
 	public boolean isUpdateAvailable() {
-		return !getRemoteChecksum().equals(getLocalChecksum());
+
+		return !getRemoteChecksum().equals(getLocalChecksum()) && !getRemoteChecksum().equals("UNKNOWN");
 	}
 
 	public boolean update(boolean showProgress) {
@@ -73,8 +75,21 @@ public class AppUpdater {
 			boolean success = update(true);
 
 			if (success) {
-				JOptionPane.showMessageDialog(null, "Successfully applied update! Please restart the program!");
+				String name = null;
+				try {
+					name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+							.getName();
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
 
+				JOptionPane.showMessageDialog(null,
+						"Successfully applied update! The program will now restart (hopefully) !");
+				try {
+					Runtime.getRuntime().exec("java -jar " + name);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				System.exit(0);
 
 			} else {
@@ -127,13 +142,17 @@ public class AppUpdater {
 
 	public String getRemoteChecksum() {
 		String json = getUpdateData();
+		String sum = "UNKNOWN";
+
+		if (json.equals("ERROR"))
+			return sum;
+
 		json = json.replaceAll("\\s", "");
 		json = json.replaceAll("\"", "");
 		json = json.replaceAll("\\{", "");
 		json = json.replaceAll("\\}", "");
 
 		String[] split = json.split(",");
-		String sum = "UNKNOWN";
 		for (String s : split) {
 			if (s.startsWith("checksum")) {
 				sum = s.split(":")[1].replaceAll("\"", "");
@@ -147,6 +166,10 @@ public class AppUpdater {
 	public String getDownloadLink() {
 
 		String json = getUpdateData();
+		String dw = "UNKNOWN";
+
+		if (json.equals("ERROR"))
+			return dw;
 
 		json = json.replaceAll("\\s", "");
 		json = json.replaceAll("\"", "");
@@ -154,7 +177,6 @@ public class AppUpdater {
 		json = json.replaceAll("\\}", "");
 
 		String[] split = json.split(",");
-		String dw = "UNKNOWN";
 		for (String s : split) {
 			if (s.startsWith("download")) {
 				dw = StringTools.removeXCharsFromStart(s, 9);

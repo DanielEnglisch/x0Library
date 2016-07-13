@@ -19,23 +19,35 @@ public class FileDownloader implements DLProgressListener {
 	private String link = null;
 
 	public boolean download() {
+		
+		if(!replaceFile.exists())
+			try {
+				replaceFile.createNewFile();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		
+		if(!replaceFile.canWrite()){
+			System.out.println("No write permission for " + replaceFile.getAbsolutePath());
+			return false;
+
+		}
+		
 		FileOutputStream fos;
 		ReadableByteChannel rbc;
 		URL url;
 
 		try {
 			url = new URL(link);
-			rbc = new ReadableByteChannelWrapper(Channels.newChannel(url.openStream()), contentLength(url), this);
+			int ln = contentLength(url);
+			if(ln == -1) return false;
+			rbc = new ReadableByteChannelWrapper(Channels.newChannel(url.openStream()), ln , this);
 			fos = new FileOutputStream(replaceFile);
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-		} catch (Exception e) {
-			System.err.println("Uh oh: " + e.getMessage());
-			return false;
-		}
-		try {
 			fos.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 		
 		return true;
@@ -56,15 +68,11 @@ public class FileDownloader implements DLProgressListener {
 		int contentLength = -1;
 
 		try {
-			HttpURLConnection.setFollowRedirects(false);
-
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("HEAD");
-
 			contentLength = connection.getContentLength();
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 
 		return contentLength;

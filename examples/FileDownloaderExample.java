@@ -8,15 +8,20 @@ public class FileDownloaderExample {
 	
 	public static void main(String[] args) throws InterruptedException {
 		
-		FileDownloader fd = new FileDownloader(new File("C:\\Users\\Xer0\\Desktop\\test.x0"), "http://xeroserver.org/tmp/vid.avi"){
+		FileDownloader fd = new FileDownloader(new File("C:\\Users\\Xer0\\Desktop\\test.avi"), "http://xeroserver.org/tmp/vid.avi"){
 			@Override
 			public void progressUpdate(double progress) {
-				System.out.println("CurrentProgress: " + progress);
+				System.out.println("Download Progress: " + progress);
 			}
 		};
-		System.out.println("Waiting 2 seconds...");
-		Thread.sleep(2000);
-		fd.download();
+		
+		
+		if(!fd.download()){
+			System.out.println("Download failed!");
+		}else
+			System.out.println("Success!");
+		
+		
 	}
 
 }
