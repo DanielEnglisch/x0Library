@@ -4,13 +4,14 @@ import org.xeroserver.x0library.net.AppUpdater;
 
 public class AppUpdaterExample {
 
-	public static void main(String[] args) {
-		
-		
-		
-		AppUpdater up = new AppUpdater("http://linkToJSONData/data.php");
+	public static void main(String[] args) throws InterruptedException {
+
+		AppUpdater up = new AppUpdater("http://localhost/api/updater.php");
 		if (up.isUpdateAvailable()) {
-			up.showUpdateDialog("Updater", "<html><center>There is an update available!<br>Do you want to update?</center></html>");
+			// up.showUpdateDialog("Updater", "Do you want to update?",
+			// "Successfully updated! Pleaser restart.", "An error occured!");
+			up.showUpdateDialog();
+
 		}
 
 		/*
@@ -24,7 +25,7 @@ public class AppUpdaterExample {
 		 * $json= '{ "checksum": "'.$sha1.'", "download":
 		 * "http://download.me/MyProgram.jar" }';
 		 * 
-		 * echo($json); 
+		 * echo($json);
 		 * 
 		 * ?>
 		 * 

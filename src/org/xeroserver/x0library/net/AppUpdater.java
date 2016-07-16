@@ -1,73 +1,110 @@
 package org.xeroserver.x0library.net;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 import org.xeroserver.x0library.objtools.StringTools;
 
-public class AppUpdater {
+public final class AppUpdater {
 
 	private String updateURL = null;
+	private JFrame gui = null;
+	private JProgressBar pb = null;
 
 	public AppUpdater(String updateURL) {
 		this.updateURL = updateURL;
+		initGUI();
+	}
+	
+	private void initGUI(){
+		gui = new JFrame("Update Progress");
+		pb = new JProgressBar();
+		pb.setStringPainted(true);
+		gui.setLayout(null);
+		pb.setSize(300, 40);
+		gui.add(pb);
+		gui.setSize(300,65);
+		gui.setLocationRelativeTo(null);
+		gui.setResizable(false);
+		gui.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 
 	public boolean isUpdateAvailable() {
 
 		return !getRemoteChecksum().equals(getLocalChecksum()) && !getRemoteChecksum().equals("UNKNOWN");
 	}
+	
+	public boolean showUpdateDialog(){
+		return showUpdateDialog("Updater","There is an update available! Do you want to download it?",
+				"Update successful! Please restart your application.", "An error occured!");
+	}
+	
+	public boolean showUpdateDialog(String title, String description, String success, String fail){
+		boolean ret = false;
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog(null,
+				description, title,
+				dialogButton);
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			if (update(true)) {
+				JOptionPane.showMessageDialog(null, success);
+				ret = true;
+			} else
+				JOptionPane.showMessageDialog(null, fail);
+		}
+		return ret;
+	}
 
-	private boolean update(UpdaterGUI gui) {
+	public boolean update(boolean showProgress) {
+		
+		if(showProgress){
+			new Thread(new Runnable(){
 
+				@Override
+				public void run() {
+					gui.setVisible(true);
+				}
+				
+			}).start();
+		}
+		
 		String name = null;
 		try {
 			name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getName();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
+			gui.dispose();
 		}
-
+		
 		FileDownloader fd = new FileDownloader(new File(".", name), getDownloadLink()) {
 			@Override
 			public void progressUpdate(double progress) {
-				gui.updateProgressbar(progress);
+				System.out.println("Update Progress " +  progress +"%");
+				pb.setValue((int)progress);
+				
+				if((int)progress == 100)
+					gui.dispose();
+				
 			}
 		};
 
-		return fd.download();
+		boolean ret = fd.download();
+		if(ret == false)
+			gui.dispose();
+		
+		return ret;
 	}
 
-	public void showUpdateDialog(String title, String description) {
-		UpdaterGUI gui = new UpdaterGUI(this, title, description);
-		gui.setVisible(true);
-	}
-
-	public void showUpdateDialog() {
-		UpdaterGUI gui = new UpdaterGUI(this, "Updater",
-				"<html><center>There is an update available!<br>Do you want to update?</center></html>");
-		gui.setVisible(true);
-	}
 
 	public String getLocalChecksum() {
 
@@ -178,84 +215,5 @@ public class AppUpdater {
 		return data;
 	}
 
-	private class UpdaterGUI extends JDialog {
-
-		private static final long serialVersionUID = 1L;
-		private final JPanel contentPanel = new JPanel();
-		public JProgressBar progressBar = new JProgressBar();
-
-		public void updateProgressbar(double p) {
-			progressBar.setValue((int) p);
-		}
-
-		public UpdaterGUI(AppUpdater parent, String title, String text) {
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setResizable(false);
-			setTitle(title);
-			setAlwaysOnTop(true);
-			setBounds(100, 100, 250, 160);
-			getContentPane().setLayout(new BorderLayout());
-			setLocationRelativeTo(null);
-			contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-			getContentPane().add(contentPanel, BorderLayout.CENTER);
-			contentPanel.setLayout(null);
-			{
-				progressBar.setStringPainted(true);
-				progressBar.setBounds(10, 57, 224, 30);
-				contentPanel.add(progressBar);
-			}
-
-			JLabel lblEsIstEin = new JLabel(text);
-			lblEsIstEin.setHorizontalAlignment(SwingConstants.CENTER);
-			lblEsIstEin.setBounds(10, 11, 224, 35);
-			contentPanel.add(lblEsIstEin);
-			{
-				JPanel buttonPane = new JPanel();
-				buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-				getContentPane().add(buttonPane, BorderLayout.SOUTH);
-				{
-					JButton okButton = new JButton("NO");
-					okButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							dispose();
-						}
-					});
-					buttonPane.add(okButton);
-					getRootPane().setDefaultButton(okButton);
-				}
-				{
-					JButton cancelButton = new JButton("YES");
-					cancelButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							if (parent.update(UpdaterGUI.this)) {
-								String name = null;
-								try {
-									name = new File(getClass().getProtectionDomain().getCodeSource().getLocation()
-											.toURI().getPath()).getName();
-								} catch (URISyntaxException e2) {
-									e2.printStackTrace();
-								}
-
-								JOptionPane.showMessageDialog(null,
-										"Update process finished! The application will now restart!");
-								try {
-									Runtime.getRuntime().exec("java -jar " + name);
-								} catch (IOException e1) {
-									e1.printStackTrace();
-									JOptionPane.showMessageDialog(null,
-											"Couldn't restart the application! Please restart it manually!");
-
-								}
-								System.exit(0);
-							} else
-								JOptionPane.showMessageDialog(null, "There was an error updating the application!");
-							System.exit(0);
-						}
-					});
-					buttonPane.add(cancelButton);
-				}
-			}
-		}
-	}
 
 }

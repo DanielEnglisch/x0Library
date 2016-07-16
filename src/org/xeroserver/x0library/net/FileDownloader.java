@@ -19,19 +19,28 @@ public class FileDownloader implements DLProgressListener {
 	private String link = null;
 
 	public boolean download() {
-		
-		if(!replaceFile.exists())
+
+		if (!replaceFile.exists())
 			try {
 				replaceFile.createNewFile();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-		
-		if(!replaceFile.canWrite()){
+
+		if (!replaceFile.canWrite()) {
 			System.out.println("No write permission for " + replaceFile.getAbsolutePath());
 			return false;
 
 		}
+
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				
+			}
+			
+		}).start();
 		
 		FileOutputStream fos;
 		ReadableByteChannel rbc;
@@ -40,8 +49,9 @@ public class FileDownloader implements DLProgressListener {
 		try {
 			url = new URL(link);
 			int ln = contentLength(url);
-			if(ln == -1) return false;
-			rbc = new ReadableByteChannelWrapper(Channels.newChannel(url.openStream()), ln , this);
+			if (ln == -1)
+				return false;
+			rbc = new ReadableByteChannelWrapper(Channels.newChannel(url.openStream()), ln, this);
 			fos = new FileOutputStream(replaceFile);
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close();
@@ -49,7 +59,7 @@ public class FileDownloader implements DLProgressListener {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 	}
 
