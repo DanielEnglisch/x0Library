@@ -7,242 +7,305 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * <h3>A class to load, save and edit simple configuration files with a 'key =
- * value' format.</h3>
- */
-public final class ConfigFile {
+public class ConfigFile {
 
 	private File file = null;
-	private String name = "NULL";
-	private Map<String, String> properties = new HashMap<String, String>();
+	private ArrayList<Line> lines = new ArrayList<Line>();
 
-	/**
-	 * 
-	 * @param file
-	 *            The file pointing to the desired configuration file.
-	 */
 	public ConfigFile(File file) {
-
-		name = file.getName();
 		this.file = file;
 
-		parseContents();
-
+		if (file.exists())
+			parse();
 	}
 
-	/**
-	 * Checks weather this ConfigFile was already saved to disk.
-	 * 
-	 * @return Returns a boolean if the ConfigFile was saved to disk.
-	 */
 	public boolean exists() {
 		return file.exists();
 	}
 
-	private void parseContents() {
+	public void save() {
 
-		if (!exists())
-			return;
+		if (!file.canWrite()) {
+			System.out.println("No permission to write ConfigFile '" + file.getName() + "' !");
+		}
+
+		BufferedWriter out = null;
+
+		try {
+
+			out = new BufferedWriter(new FileWriter(file));
+
+			for (Line l : lines) {
+				if (l.isComment())
+					out.write(l.getComment());
+				else
+					out.write(l.getKey() + " = " + l.getValue());
+
+				out.write("\n");
+				out.flush();
+			}
+
+			out.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private void parse() {
 
 		BufferedReader in = null;
-
 		try {
 			in = new BufferedReader(new FileReader(file));
 
 			while (in.ready()) {
 
-				String s = in.readLine();
+				String ln = in.readLine();
 
-				try {
-					String[] sp = s.split("=");
-					String property = sp[0].replaceAll("\\s", "");
-					String valueRaw = sp[1];
-					String value = "NULL";
-					if (valueRaw.substring(0, 1).equals(" ")) {
-						value = valueRaw.substring(1);
-					} else {
-						value = valueRaw;
+				if (ln.startsWith("#") || ln.equals("")) {
+					lines.add(new Line(ln));
+				} else {
+
+					Line l = null;
+					String k, v = null;
+
+					try {
+
+						String[] spl = ln.split("\\s=\\s");
+						k = spl[0].replaceAll("\\s", "");
+
+						if (spl[1].startsWith("\'")) {
+							v = spl[1].split("\'")[1];
+						} else if (spl[1].startsWith("\"")) {
+							v = spl[1].split("\"")[1];
+						} else {
+							v = spl[1].replaceAll("\\s", "");
+						}
+
+						l = new Line(k, v);
+
+					} catch (Exception e) {
+						System.err.println("Invalid line in ConfigFile " + file.getName() + ": '" + ln + "'");
+						l = null;
 					}
 
-					properties.put(property, value);
+					if (l != null)
+						lines.add(l);
 
-				} catch (Exception ex) {
-					ex.printStackTrace();
 				}
 
 			}
 
-			in.close();
-
-		} catch (Exception e) {
+		} catch (IOException e) {
 			try {
 				in.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
-
 		}
 
 	}
 
-	/**
-	 * Returns a Map of all parsed / existing properties of this ConfigFile.
-	 * 
-	 * @return Returns a Map of all parsed / existing properties of this
-	 *         ConfigFile.
-	 */
-	public Map<String, String> getProperties() {
-		return properties;
-	}
-
-	/**
-	 * Saves the ConfigFile to disk.
-	 * 
-	 * @return Returns a boolean indicating the success of the saving process.
-	 */
-	public boolean save() {
-
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-
-		BufferedWriter out = null;
-
-		try {
-			out = new BufferedWriter(new FileWriter(file));
-
-			ArrayList<String> outputList = new ArrayList<String>();
-
-			for (Map.Entry<String, String> entry : properties.entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
-
-				outputList.add(key + " = " + value);
-
-			}
-
-			Collections.reverse(outputList);
-
-			for (String s : outputList) {
-				out.write(s + "\n");
-				out.flush();
-			}
-
-			out.close();
-		} catch (Exception ex) {
-			try {
-				out.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-
-			}
-			ex.printStackTrace();
-
-			return false;
-
-		}
-
-		return true;
-	}
-
-	/**
-	 * Clears loaded / added properties from the memory and freshly parses the
-	 * configuration file on disk. If this ConfigFile wasn't saved before, all
-	 * properties will be lost!
-	 */
-	public void reload() {
-		if (!exists())
-			return;
-		properties.clear();
-		parseContents();
-	}
-
-	/**
-	 * Returns the name of the configuration file on disk.
-	 * 
-	 * @return Returns the name of the configuration file on disk.
-	 */
 	public String getName() {
-		return name;
+		return file.getName();
 	}
 
-	/**
-	 * Removes a property from this CofigFile
-	 * 
-	 * @param property
-	 *            Removes a property from this ConfigFile
-	 */
-	public void removeProperty(String property) {
-		properties.remove(property);
+	public void clear() {
+		lines.clear();
 	}
 
-	/**
-	 * Returns the value of the given property if it exists.
-	 * 
-	 * @param property
-	 *            The key of the desired property.
-	 * @return Returns the value of the given property if it exists.
-	 */
-	public String getProperty(String property) {
+	public boolean hasKey(String key) {
 
-		try {
+		for (Line l : lines) {
+			if (!l.isComment()) {
+				if (key.equals(l.getKey()))
+					return true;
+			}
+		}
 
-			if (!hasProperty(property)) {
-				throw new UnknownPropertyException();
-			} else
-				return properties.get(property);
+		return false;
 
-		} catch (UnknownPropertyException e) {
-			e.printStackTrace();
-			return null;
+	}
+
+	public void removeProperty(String key) {
+
+		if (!hasKey(key))
+			return;
+
+		for (int i = 0; i < lines.size(); i++) {
+			Line l = lines.get(i);
+
+			if (!l.isComment()) {
+				if (l.getKey().equals(key)) {
+					lines.remove(i);
+					return;
+				}
+			}
+
+		}
+
+	}
+
+	public String[] getKeys() {
+		ArrayList<String> keysList = new ArrayList<String>();
+
+		for (Line l : lines) {
+			if (!l.isComment()) {
+				keysList.add(l.getKey());
+			}
+		}
+
+		return keysList.toArray(new String[0]);
+
+	}
+
+	public Map<String, String> getProperties() {
+
+		HashMap<String, String> map = new HashMap<String, String>();
+
+		for (Line l : lines) {
+			if (!l.isComment()) {
+				map.put(l.getKey(), l.getValue());
+			}
+		}
+
+		return map;
+	}
+
+	public void renameKey(String key, String newKey) {
+		if (!hasKey(key)) {
+			System.err.println("Renaming failed! Unknown key '" + key + "' in ConfigFile '" + file.getName() + "' !");
+			return;
+		}
+
+		if (key.equals(newKey))
+			return;
+
+		if (hasKey(newKey)) {
+			System.err.println(
+					"Renaming failed! Key '" + key + "' already exists in ConfigFile '" + file.getName() + "' !");
+			return;
+		}
+
+		for (Line l : lines) {
+			if (!l.isComment()) {
+				if (key.equals(l.getKey()))
+					l.setKey(newKey);
+			}
+		}
+
+	}
+
+	public void removeComments() {
+		for (int i = 0; i < lines.size(); i++) {
+			Line l = lines.get(i);
+
+			if (l.isComment()) {
+				System.out.println("Removing comment: " + l.getComment());
+				lines.remove(i);
+				i--;
+			}
+
 		}
 	}
 
-	/**
-	 * Adds / Overrides a new property.
-	 * 
-	 * @param property
-	 *            Name of the property.
-	 * @param value
-	 *            Value of the property.
-	 */
-	public void setProperty(String property, String value) {
+	public String getValue(String key) {
 
-		if (hasProperty(property)) {
-			properties.replace(property, value);
+		if (!hasKey(key))
+			return null;
+
+		for (Line l : lines) {
+			if (!l.isComment()) {
+				if (key.equals(l.getKey()))
+					return l.getValue();
+			}
+		}
+
+		return null;
+
+	}
+
+	public void setProperty(String key, String value) {
+
+		value = value.replaceAll("\n", "");
+
+		if (value.matches(".*\\s+.*"))
+			value = "\"" + value + "\"";
+
+		if (hasKey(key)) {
+
+			for (Line l : lines) {
+				if (!l.isComment()) {
+					if (l.getKey().equals(key)) {
+						l.setValue(value);
+						return;
+					}
+				}
+			}
 
 		} else {
-			properties.put(property, value);
+			lines.add(new Line(key, value));
 		}
 
 	}
 
-	/**
-	 * Returns a boolean weather the given property exists or not.
-	 * 
-	 * @param property
-	 *            The name of the desired property.
-	 * @return Returns a boolean weather the given property exists or not.
-	 */
-	public boolean hasProperty(String property) {
-		return properties.containsKey(property);
+	public void addComment(String comment) {
+		comment = "#" + comment.replaceAll("\n", "");
+		lines.add(new Line(comment));
 	}
 
+	public void addNewLine() {
+		lines.add(new Line(""));
+	}
 }
 
-class UnknownPropertyException extends Exception {
+class Line {
 
-	private static final long serialVersionUID = 1L;
+	public final int COMMENT = 0, PROPERTY = 1;
+	private String comment, key, value;
+	private boolean isComment = false;
+
+	public Line(String comment) {
+		this.comment = comment;
+		this.isComment = true;
+	}
+
+	public Line(String key, String value) {
+		this.key = key;
+		this.value = value;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public boolean isComment() {
+		return isComment;
+	}
 
 }

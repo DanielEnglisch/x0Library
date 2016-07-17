@@ -25,15 +25,15 @@ public final class AppUpdater {
 		this.updateURL = updateURL;
 		initGUI();
 	}
-	
-	private void initGUI(){
+
+	private void initGUI() {
 		gui = new JFrame("Update Progress");
 		pb = new JProgressBar();
 		pb.setStringPainted(true);
 		gui.setLayout(null);
 		pb.setSize(300, 40);
 		gui.add(pb);
-		gui.setSize(300,65);
+		gui.setSize(300, 65);
 		gui.setLocationRelativeTo(null);
 		gui.setResizable(false);
 		gui.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -43,18 +43,16 @@ public final class AppUpdater {
 
 		return !getRemoteChecksum().equals(getLocalChecksum()) && !getRemoteChecksum().equals("UNKNOWN");
 	}
-	
-	public boolean showUpdateDialog(){
-		return showUpdateDialog("Updater","There is an update available! Do you want to download it?",
+
+	public boolean showUpdateDialog() {
+		return showUpdateDialog("Updater", "There is an update available! Do you want to download it?",
 				"Update successful! Please restart your application.", "An error occured!");
 	}
-	
-	public boolean showUpdateDialog(String title, String description, String success, String fail){
+
+	public boolean showUpdateDialog(String title, String description, String success, String fail) {
 		boolean ret = false;
 		int dialogButton = JOptionPane.YES_NO_OPTION;
-		int dialogResult = JOptionPane.showConfirmDialog(null,
-				description, title,
-				dialogButton);
+		int dialogResult = JOptionPane.showConfirmDialog(null, description, title, dialogButton);
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			if (update(true)) {
 				JOptionPane.showMessageDialog(null, success);
@@ -66,18 +64,18 @@ public final class AppUpdater {
 	}
 
 	public boolean update(boolean showProgress) {
-		
-		if(showProgress){
-			new Thread(new Runnable(){
+
+		if (showProgress) {
+			new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					gui.setVisible(true);
 				}
-				
+
 			}).start();
 		}
-		
+
 		String name = null;
 		try {
 			name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getName();
@@ -85,26 +83,25 @@ public final class AppUpdater {
 			e.printStackTrace();
 			gui.dispose();
 		}
-		
+
 		FileDownloader fd = new FileDownloader(new File(".", name), getDownloadLink()) {
 			@Override
 			public void progressUpdate(double progress) {
-				System.out.println("Update Progress " +  progress +"%");
-				pb.setValue((int)progress);
-				
-				if((int)progress == 100)
+				System.out.println("Update Progress " + progress + "%");
+				pb.setValue((int) progress);
+
+				if ((int) progress == 100)
 					gui.dispose();
-				
+
 			}
 		};
 
 		boolean ret = fd.download();
-		if(ret == false)
+		if (ret == false)
 			gui.dispose();
-		
+
 		return ret;
 	}
-
 
 	public String getLocalChecksum() {
 
@@ -214,6 +211,5 @@ public final class AppUpdater {
 
 		return data;
 	}
-
 
 }

@@ -18,12 +18,15 @@ public class ConfigFileExample {
 			System.out.println("This config instance was freshly created and has to be saved!");
 
 		f.setProperty("myProperty", "x0");
-		f.setProperty("key", "dD2dnoi2d2D");
+		f.addComment("MyComment");
+		f.addNewLine();
+		f.addComment("Da Keys:");
+		f.setProperty("key", "dD2 dno i2d2 D");
 
 		f.save();
 
-		if (f.hasProperty("key"))
-			System.out.println("Key is " + f.getProperty("key"));
+		if (f.hasKey("key"))
+			System.out.println("Key is " + f.getValue("key"));
 
 		f.removeProperty("myProperty");
 		f.save();

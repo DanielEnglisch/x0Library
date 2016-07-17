@@ -170,7 +170,7 @@ public class CommandRule {
 		public CommandReport(String error) {
 			this.hasErrors = true;
 			this.errorMessages.add(error);
-			this.headerMissmatch=true;
+			this.headerMissmatch = true;
 		}
 
 		public void addErrorMessage(String errorMessage) {

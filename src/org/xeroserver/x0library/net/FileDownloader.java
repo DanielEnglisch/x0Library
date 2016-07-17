@@ -33,15 +33,15 @@ public class FileDownloader implements DLProgressListener {
 
 		}
 
-		new Thread(new Runnable(){
+		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				
+
 			}
-			
+
 		}).start();
-		
+
 		FileOutputStream fos;
 		ReadableByteChannel rbc;
 		URL url;
