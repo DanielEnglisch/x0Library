@@ -4,16 +4,16 @@ import javax.swing.JFrame;
 
 import org.xeroserver.x0library.gui.X0InputField;
 import org.xeroserver.x0library.log.Logger;
-import org.xeroserver.x0library.net.packets.StringPacket;
-import org.xeroserver.x0library.net.udp.SingleUDP;
-import org.xeroserver.x0library.net.udp.SingleUDPReceiver;
+import org.xeroserver.x0library.net.Packet;
+import org.xeroserver.x0library.net.SingleUDP;
+import org.xeroserver.x0library.net.SingleUDP.PacketReceiver;
 
 /*
  * This simple program demonstrates how quickly you can create something rather complex as a network chat application with under 60 lines of code by using x0_Library.
  * Used Classes: SingleUDP (Networking), SingleUDPReceiver (Networking), Logger (Displaying received messaged), X0InputField (Processing input)
  */
 
-public class ChatDemo extends SingleUDPReceiver {
+public class ChatDemo implements PacketReceiver {
 
 	private Logger l;
 
@@ -38,8 +38,10 @@ public class ChatDemo extends SingleUDPReceiver {
 		f.setResizable(false);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		@SuppressWarnings("serial")
 		X0InputField xif = new X0InputField(new int[] { X0InputField.CLEAR_ON_ENTER, X0InputField.NO_COLOR }, false) {
+
+			private static final long serialVersionUID = -6751565266815075263L;
+
 			@Override
 			public void update() {
 				udp.send(new StringPacket("[" + port + "] " + getStringValue()));
@@ -53,8 +55,28 @@ public class ChatDemo extends SingleUDPReceiver {
 	}
 
 	@Override
-	public void receiveString(String s, String id) {
-		l.log("Received: " + s);
+	public void recievePacket(Packet p) {
+
+		if (p.getIdentifier().equals("string_msg"))
+			l.log(((StringPacket) p).getStringValue());
+	}
+}
+
+class StringPacket implements Packet {
+
+	private static final long serialVersionUID = 369662039919894568L;
+	private String s = null;
+
+	public StringPacket(String msg) {
+		s = msg;
 	}
 
+	public String getStringValue() {
+		return s;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "string_msg";
+	}
 }

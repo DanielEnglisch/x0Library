@@ -1,4 +1,4 @@
-package org.xeroserver.x0library.net.udp;
+package org.xeroserver.x0library.net;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -13,12 +13,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import org.xeroserver.x0library.net.packets.DoublePacket;
-import org.xeroserver.x0library.net.packets.FloatPacket;
-import org.xeroserver.x0library.net.packets.IntPacket;
-import org.xeroserver.x0library.net.packets.Packet;
-import org.xeroserver.x0library.net.packets.StringPacket;
-
 public class SingleUDP implements Runnable {
 
 	private Thread run, send, receive;
@@ -30,7 +24,7 @@ public class SingleUDP implements Runnable {
 	private InetAddress remoteAddress;
 	private int remotePort;
 
-	private ArrayList<SingleUDPReceiver> receivers = new ArrayList<SingleUDPReceiver>();
+	private ArrayList<PacketReceiver> receivers = new ArrayList<PacketReceiver>();
 
 	public SingleUDP(int serverport) {
 
@@ -61,7 +55,7 @@ public class SingleUDP implements Runnable {
 
 	}
 
-	public void registerReceiver(SingleUDPReceiver rec) {
+	public void registerReceiver(PacketReceiver rec) {
 		this.receivers.add(rec);
 	}
 
@@ -89,23 +83,8 @@ public class SingleUDP implements Runnable {
 
 	private void processPacket(Packet p) {
 
-		for (SingleUDPReceiver r : receivers) {
-			switch (p.getPacketType()) {
-			case Packet.STRING:
-				r.receiveString(((StringPacket) p).getString(), ((StringPacket) p).getIdentifier());
-				break;
-			case Packet.INT:
-				r.receiveInt(((IntPacket) p).getInt(), ((IntPacket) p).getIdentifier());
-				break;
-			case Packet.DOUBLE:
-				r.receiveDouble(((DoublePacket) p).getDouble(), ((DoublePacket) p).getIdentifier());
-				break;
-			case Packet.FLOAT:
-				r.receiveFloat(((FloatPacket) p).getFloat(), ((FloatPacket) p).getIdentifier());
-				break;
-			default:
-				r.receiveCustom(p, p.getIdentifier());
-			}
+		for (PacketReceiver r : receivers) {
+			r.recievePacket(p);
 		}
 	}
 
@@ -223,6 +202,12 @@ public class SingleUDP implements Runnable {
 		}
 
 		return yourBytes;
+
+	}
+
+	public interface PacketReceiver {
+
+		public void recievePacket(Packet p);
 
 	}
 
