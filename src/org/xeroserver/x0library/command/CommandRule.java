@@ -101,6 +101,9 @@ public class CommandRule {
 
 	public CommandReport isValid(Command c) {
 
+		if (c.getHead().equals(""))
+			return new CommandReport("EmptyCommand!");
+
 		CommandReport report = new CommandReport();
 
 		// If the head doesn't match
@@ -162,6 +165,12 @@ public class CommandRule {
 		public boolean headerMissmatch = false;
 
 		public CommandReport() {
+		}
+
+		public CommandReport(String error) {
+			this.hasErrors = true;
+			this.errorMessages.add(error);
+			this.headerMissmatch=true;
 		}
 
 		public void addErrorMessage(String errorMessage) {

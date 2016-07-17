@@ -58,8 +58,7 @@ public final class CommandParser {
 				throw new EmptyCommandException();
 
 		} catch (EmptyCommandException e) {
-			e.printStackTrace();
-			return null;
+			return new Command();
 		}
 
 		// Trim spaces before and after
@@ -155,8 +154,10 @@ public final class CommandParser {
 		private Map<String, String> arguments = null;
 		private String[] values = null;
 
-		private Command() {
-		};
+	
+		private Command(){
+			this.head="";
+		}
 
 		private Command(String head, Map<String, String> arguments, String[] flags, String[] values,
 				String[] commandParts) {
