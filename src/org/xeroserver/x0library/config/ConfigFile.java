@@ -78,13 +78,16 @@ public class ConfigFile {
 						String[] spl = ln.split("\\s=\\s");
 						k = spl[0].replaceAll("\\s", "");
 
+						/*
 						if (spl[1].startsWith("\'")) {
 							v = spl[1].split("\'")[1];
 						} else if (spl[1].startsWith("\"")) {
 							v = spl[1].split("\"")[1];
 						} else {
 							v = spl[1].replaceAll("\\s", "");
-						}
+						}*/
+						
+						v = spl[1];
 
 						l = new Line(k, v);
 
@@ -214,7 +217,7 @@ public class ConfigFile {
 		}
 	}
 
-	public String getValue(String key) {
+	public PropertyValue getValue(String key) {
 
 		if (!hasKey(key))
 			return null;
@@ -222,7 +225,7 @@ public class ConfigFile {
 		for (Line l : lines) {
 			if (!l.isComment()) {
 				if (key.equals(l.getKey()))
-					return l.getValue();
+					return new PropertyValue(l.getValue());
 			}
 		}
 
@@ -262,7 +265,50 @@ public class ConfigFile {
 	public void addNewLine() {
 		lines.add(new Line(""));
 	}
+	
+	public class PropertyValue {
+
+		private String stringValue;
+
+		private PropertyValue(String stringValue) {
+			this.stringValue = stringValue;
+		}
+
+		public String toString() {
+			return stringValue;
+		}
+
+		public Double toDouble() {
+
+			double d = -0.0d;
+
+			try {
+				d = Double.parseDouble(stringValue);
+			} catch (Exception e) {
+				System.err.println("Couldn't cast '" + stringValue + "' to double!");
+			}
+
+			return d;
+		}
+		
+		public Integer toInt() {
+
+			int i = -0;
+
+			try {
+				i = Integer.parseInt(stringValue);
+			} catch (Exception e) {
+				System.err.println("Couldn't cast '" + stringValue + "' to int!");
+			}
+
+			return i;
+		}
+
+	}
+
+	
 }
+
 
 class Line {
 

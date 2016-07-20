@@ -14,22 +14,32 @@ public class ConfigFileExample {
 
 		if (f.exists())
 			System.out.println("This config instance is loaded from a file.");
-		else
+		else{
 			System.out.println("This config instance was freshly created and has to be saved!");
-
-		f.setProperty("myProperty", "x0");
-		f.addComment("MyComment");
-		f.addNewLine();
-		f.addComment("Da Keys:");
-		f.setProperty("key", "dD2 dno i2d2 D");
-
-		f.save();
-
-		if (f.hasKey("key"))
-			System.out.println("Key is " + f.getValue("key"));
-
-		f.removeProperty("myProperty");
-		f.save();
+			f.addComment("myConfig file example file");
+			f.addNewLine();
+			f.addComment("Please don't delete my configuration!");
+			f.setProperty("name", "Daniel Englisch");
+			f.setProperty("age", "19");
+			f.setProperty("hobby", "java");
+			f.addComment("End of config!");
+			f.save();
+		}
+		
+		
+		f.renameKey("age", "myAge");
+		int age = f.getValue("myAge").toInt();
+		
+		if(age > 18){
+			System.out.println(f.getValue("name") + " is over 10 years old! He is " + age );
+		}
+		
+		
+		if(f.hasKey("hobby")){
+			System.out.println("His hobby is " + f.getValue("hobby").toString());
+		}
+		
+		
 
 	}
 
