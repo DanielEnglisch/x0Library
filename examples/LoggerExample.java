@@ -7,30 +7,26 @@ import org.xeroserver.x0library.log.Logger;
 public class LoggerExample {
 
 	public static void main(String[] args) {
+		Logger rootLogger = new Logger("Root");
+		
+		rootLogger.info("Logger loaded!");
+		
+		Logger subLogger1 = new Logger(rootLogger,"Programm1");
+		Logger subLogger2 = new Logger(rootLogger,"Programm2");
 
-		Logger l1 = new Logger("Example Logger");
-
-		l1.showGUI();
-
-		l1.log("NORMAL");
-		l1.info("This is an informational message");
-		l1.warning("This is my only warning");
-		l1.error("An error occurred");
-		l1.fatal("A fatal error occured during the execution...");
-		l1.custom("CustomType", "This is a custom message");
-
-		System.out.println("###################################");
-
-		Logger l2 = new Logger(Logger.ERRORS_ONLY);
-		l2.log("NORMAL");
-		l2.info("This is an informational message");
-		l2.warning("This is my only warning");
-		l2.error("An error occurred");
-		l2.fatal("A fatal error occured during the execution...");
-		l2.custom("CustomType", "This is a custom message");
-
-		l2.write(new File(".\\tmp\\report.log"));
-
+		subLogger1.error("There was an error!");
+		subLogger1.warning("A warning!");
+		subLogger2.info("Everything is fine!");
+		
+		Logger subsubLogger = new Logger(subLogger1, "SubSub");
+		subsubLogger.fatal("I am a yellow submarine!");
+		
+		File f = new File("tmp/tmpLog.txt");
+		
+		if(rootLogger.dump(f))
+			rootLogger.info("Successfully wrote log!");
+		
+		rootLogger.clear();
 	}
 
 }

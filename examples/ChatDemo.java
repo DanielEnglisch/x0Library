@@ -1,6 +1,8 @@
 package org.xeroserver.x0library.examples;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.xeroserver.x0library.gui.X0InputField;
 import org.xeroserver.x0library.log.Logger;
@@ -24,8 +26,25 @@ public class ChatDemo implements PacketReceiver {
 
 	public ChatDemo(String remote_address, int remotePort, int port) {
 
-		l = new Logger("Logger - " + port);
-		l.showGUI();
+		//l.showGUI();
+		JFrame frame = new JFrame("Logger - " + port);
+		final JTextArea scroll = new JTextArea();
+
+		frame.setLocationRelativeTo(null);
+		frame.setSize(450, 300);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		scroll.setEditable(false);
+		JScrollPane pane = new JScrollPane(scroll);
+		frame.add(pane);
+				
+		l = new Logger(){
+			public void output(String msg, boolean error){
+				scroll.setText(scroll.getText() + msg + "\n");
+			}
+		};
+		
+		frame.setVisible(true);
+
 
 		SingleUDP udp = new SingleUDP(port);
 		udp.setConnection(remote_address, remotePort);
