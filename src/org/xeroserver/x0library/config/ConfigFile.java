@@ -10,10 +10,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.xeroserver.x0library.log.Logger;
+
 public class ConfigFile {
 
 	private File file = null;
 	private ArrayList<Line> lines = new ArrayList<Line>();
+	
+	private Logger logger = new Logger();
+	public Logger getLogger(){
+		return this.logger;
+	}
 
 	public ConfigFile(File file) {
 		this.file = file;
@@ -29,7 +36,7 @@ public class ConfigFile {
 	public void save() {
 
 		if (!file.canWrite()) {
-			System.out.println("No permission to write ConfigFile '" + file.getName() + "' !");
+			logger.error("No permission to write ConfigFile '" + file.getName() + "' !");
 		}
 
 		BufferedWriter out = null;
@@ -51,6 +58,7 @@ public class ConfigFile {
 			out.close();
 
 		} catch (IOException e) {
+			logger.fatal("There was an error saving the ConfigFile '" + getName() + "' !");
 			e.printStackTrace();
 		}
 
@@ -77,22 +85,12 @@ public class ConfigFile {
 
 						String[] spl = ln.split("\\s=\\s");
 						k = spl[0].replaceAll("\\s", "");
-
-						/*
-						if (spl[1].startsWith("\'")) {
-							v = spl[1].split("\'")[1];
-						} else if (spl[1].startsWith("\"")) {
-							v = spl[1].split("\"")[1];
-						} else {
-							v = spl[1].replaceAll("\\s", "");
-						}*/
-						
 						v = spl[1];
 
 						l = new Line(k, v);
 
 					} catch (Exception e) {
-						System.err.println("Invalid line in ConfigFile " + file.getName() + ": '" + ln + "'");
+						logger.warning("Invalid line in ConfigFile " + file.getName() + ": '" + ln + "'");
 						l = null;
 					}
 
@@ -107,8 +105,10 @@ public class ConfigFile {
 			try {
 				in.close();
 			} catch (IOException e1) {
+				logger.fatal("There was an error parsing the ConfigFile '" + getName() + "' !");
 				e1.printStackTrace();
 			}
+			logger.fatal("There was an error parsing the ConfigFile '" + getName() + "' !");
 			e.printStackTrace();
 		}
 
@@ -182,7 +182,7 @@ public class ConfigFile {
 
 	public void renameKey(String key, String newKey) {
 		if (!hasKey(key)) {
-			System.err.println("Renaming failed! Unknown key '" + key + "' in ConfigFile '" + file.getName() + "' !");
+			logger.error("Renaming failed! Unknown key '" + key + "' in ConfigFile '" + file.getName() + "' !");
 			return;
 		}
 
@@ -190,8 +190,7 @@ public class ConfigFile {
 			return;
 
 		if (hasKey(newKey)) {
-			System.err.println(
-					"Renaming failed! Key '" + key + "' already exists in ConfigFile '" + file.getName() + "' !");
+			logger.error("Renaming failed! Key '" + key + "' already exists in ConfigFile '" + file.getName() + "' !");
 			return;
 		}
 
@@ -209,7 +208,6 @@ public class ConfigFile {
 			Line l = lines.get(i);
 
 			if (l.isComment()) {
-				System.out.println("Removing comment: " + l.getComment());
 				lines.remove(i);
 				i--;
 			}
@@ -285,7 +283,7 @@ public class ConfigFile {
 			try {
 				d = Double.parseDouble(stringValue);
 			} catch (Exception e) {
-				System.err.println("Couldn't cast '" + stringValue + "' to double!");
+				logger.error("Couldn't cast '" + stringValue + "' to double!");
 			}
 
 			return d;
@@ -298,7 +296,7 @@ public class ConfigFile {
 			try {
 				i = Integer.parseInt(stringValue);
 			} catch (Exception e) {
-				System.err.println("Couldn't cast '" + stringValue + "' to int!");
+				logger.error("Couldn't cast '" + stringValue + "' to int!");
 			}
 
 			return i;
