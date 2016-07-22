@@ -26,7 +26,7 @@ public class ChatDemo implements PacketReceiver {
 
 	public ChatDemo(String remote_address, int remotePort, int port) {
 
-		//l.showGUI();
+		// l.showGUI();
 		JFrame frame = new JFrame("Logger - " + port);
 		final JTextArea scroll = new JTextArea();
 
@@ -36,15 +36,14 @@ public class ChatDemo implements PacketReceiver {
 		scroll.setEditable(false);
 		JScrollPane pane = new JScrollPane(scroll);
 		frame.add(pane);
-				
-		l = new Logger(){
-			public void output(String msg, boolean error){
+
+		l = new Logger() {
+			public void output(String msg, boolean error) {
 				scroll.setText(scroll.getText() + msg + "\n");
 			}
 		};
-		
-		frame.setVisible(true);
 
+		frame.setVisible(true);
 
 		SingleUDP udp = new SingleUDP(port);
 		udp.setConnection(remote_address, remotePort);

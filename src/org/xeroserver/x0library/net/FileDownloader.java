@@ -33,15 +33,6 @@ public class FileDownloader implements DLProgressListener {
 
 		}
 
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-			}
-
-		}).start();
-
 		FileOutputStream fos;
 		ReadableByteChannel rbc;
 		URL url;
@@ -55,12 +46,18 @@ public class FileDownloader implements DLProgressListener {
 			fos = new FileOutputStream(replaceFile);
 			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 			fos.close();
+			rbc.close();
+
+			if (replaceFile.length() == ln) {
+				return true;
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		return true;
+		return false;
 	}
 
 	public FileDownloader(File replaceFile, String link) {

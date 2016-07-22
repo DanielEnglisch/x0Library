@@ -8,15 +8,15 @@ import org.xeroserver.x0library.log.Logger;
 public class ConfigFileExample {
 
 	public static void main(String[] args) {
-		
+
 		Logger l = new Logger("ConfigFileExample");
 
-		ConfigFile f = new ConfigFile(new File(".\\tmp\\myConfig.conf"));		
+		ConfigFile f = new ConfigFile(new File(".\\tmp\\myConfig.conf"));
 		l.log("Working with " + f.getName());
 
 		if (f.exists())
 			l.log("This config instance is loaded from a file.");
-		else{
+		else {
 			l.log("This config instance was freshly created and has to be saved!");
 			f.addComment("myConfig file example file");
 			f.addNewLine();
@@ -27,22 +27,17 @@ public class ConfigFileExample {
 			f.addComment("End of config!");
 			f.save();
 		}
-		
-		
-		
+
 		f.renameKey("age", "myAge");
 		int age = f.getValue("myAge").toInt();
-		
-		if(age > 18){
-			l.log(f.getValue("name") + " is over 10 years old! He is " + age );
+
+		if (age > 18) {
+			l.log(f.getValue("name") + " is over 10 years old! He is " + age);
 		}
-		
-		
-		if(f.hasKey("hobby")){
+
+		if (f.hasKey("hobby")) {
 			l.log("His hobby is " + f.getValue("hobby").toString());
 		}
-		
-		
 
 	}
 

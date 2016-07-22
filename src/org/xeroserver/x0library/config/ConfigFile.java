@@ -16,9 +16,10 @@ public class ConfigFile {
 
 	private File file = null;
 	private ArrayList<Line> lines = new ArrayList<Line>();
-	
+
 	private Logger logger = new Logger();
-	public Logger getLogger(){
+
+	public Logger getLogger() {
 		return this.logger;
 	}
 
@@ -263,7 +264,7 @@ public class ConfigFile {
 	public void addNewLine() {
 		lines.add(new Line(""));
 	}
-	
+
 	public class PropertyValue {
 
 		private String stringValue;
@@ -288,7 +289,7 @@ public class ConfigFile {
 
 			return d;
 		}
-		
+
 		public Integer toInt() {
 
 			int i = -0;
@@ -304,9 +305,7 @@ public class ConfigFile {
 
 	}
 
-	
 }
-
 
 class Line {
 

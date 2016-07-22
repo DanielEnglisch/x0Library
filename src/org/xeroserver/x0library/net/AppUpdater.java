@@ -1,8 +1,11 @@
 package org.xeroserver.x0library.net;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,7 +49,7 @@ public final class AppUpdater {
 
 	public boolean showUpdateDialog() {
 		return showUpdateDialog("Updater", "There is an update available! Do you want to download it?",
-				"Update successful! Please restart your application.", "An error occured!");
+				"Update successful! Please restart your application.", "An error occurred!");
 	}
 
 	public boolean showUpdateDialog(String title, String description, String success, String fail) {
@@ -65,6 +68,56 @@ public final class AppUpdater {
 
 	public boolean update(boolean showProgress) {
 
+		File tmp = new File(".", getAppName() + ".tmp");
+		File ori = new File(".", getAppName());
+
+		if (!downloadToTmp(showProgress)) {
+			tmp.delete();
+			gui.dispose();
+			return false;
+		}
+
+		try {
+
+			BufferedWriter out = new BufferedWriter(new FileWriter(ori));
+			BufferedReader in = new BufferedReader(new FileReader(tmp));
+
+			while (in.ready()) {
+				out.write(in.readLine() + "\n");
+				out.flush();
+			}
+
+			out.close();
+			in.close();
+			tmp.delete();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			tmp.delete();
+			gui.dispose();
+			return false;
+
+		}
+
+		gui.dispose();
+
+		return true;
+
+	}
+
+	private String getAppName() {
+		String name = null;
+		try {
+			name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getName();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return name;
+	}
+
+	private boolean downloadToTmp(boolean showProgress) {
 		if (showProgress) {
 			new Thread(new Runnable() {
 
@@ -76,31 +129,21 @@ public final class AppUpdater {
 			}).start();
 		}
 
-		String name = null;
-		try {
-			name = new File(getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getName();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			gui.dispose();
-		}
-
-		FileDownloader fd = new FileDownloader(new File(".", name), getDownloadLink()) {
+		FileDownloader fd = new FileDownloader(new File(".", getAppName() + ".tmp"), getDownloadLink()) {
 			@Override
 			public void progressUpdate(double progress) {
 				System.out.println("Update Progress " + progress + "%");
 				pb.setValue((int) progress);
 
-				if ((int) progress == 100)
-					gui.dispose();
-
 			}
 		};
 
-		boolean ret = fd.download();
-		if (ret == false)
+		boolean downloaded = fd.download();
+
+		if (!downloaded)
 			gui.dispose();
 
-		return ret;
+		return downloaded;
 	}
 
 	public String getLocalChecksum() {

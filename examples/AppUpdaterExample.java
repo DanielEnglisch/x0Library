@@ -9,7 +9,7 @@ public class AppUpdaterExample {
 		AppUpdater up = new AppUpdater("http://localhost/api/updater.php");
 		if (up.isUpdateAvailable()) {
 			// up.showUpdateDialog("Updater", "Do you want to update?",
-			// "Successfully updated! Pleaser restart.", "An error occured!");
+			// "Successfully updated! Pleaser restart.", "An error occurred!");
 			up.showUpdateDialog();
 
 		}
