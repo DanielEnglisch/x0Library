@@ -11,6 +11,8 @@ public class Logger {
 	private String name = null;
 	private boolean muted = false;
 	private ArrayList<String> log = new ArrayList<String>();
+	private Long startTime = System.nanoTime();
+	private boolean timestampEnabled = false;
 
 	public Logger() {
 		this(null, null);
@@ -82,22 +84,22 @@ public class Logger {
 		log.clear();
 	}
 
-	public final boolean dump(File f){
+	public final boolean dump(File f) {
 		BufferedWriter out = null;
 		try {
 			out = new BufferedWriter(new FileWriter(f));
-			
-			for(String s : log){
+
+			for (String s : log) {
 				out.write(s + "\n");
 			}
-			
+
 			out.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -119,16 +121,19 @@ public class Logger {
 			msg = "{" + prefix + "}\t" + msg;
 		}
 
+		if (timestampEnabled) {
+			double time = (double) ((double) (System.nanoTime() - startTime) / 1000000 / 1000);
+			msg = "(" + String.format("%.5f", time) + "s) " + msg;
+
+		}
+
 		output(msg, error);
 		log.add(msg);
 	}
 
 	// Overridable for e.g adding to a JFrame
 	public void output(String msg, boolean error) {
-		if (error)
-			System.err.println(msg);
-		else
-			System.out.println(msg);
+		System.out.println(msg);
 	}
 
 	public final Logger getParentLogger() {
@@ -153,6 +158,14 @@ public class Logger {
 
 	public final void setMuted(boolean muted) {
 		this.muted = muted;
+	}
+
+	public final boolean isTimestampEnabled() {
+		return timestampEnabled;
+	}
+
+	public final void setTimestampEnabled(boolean timestampEnabled) {
+		this.timestampEnabled = timestampEnabled;
 	}
 
 }
