@@ -16,7 +16,7 @@ import javax.swing.JTextField;
  * needs to be enabled. To learn more, take a look at the X0Inputfile Example
  * class.</h3>
  */
-public class X0InputField extends JTextField {
+public class InputField extends JTextField {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,7 +74,7 @@ public class X0InputField extends JTextField {
 	 *            Boolean weather there should be a JOptionPane displaying the
 	 *            input error depending on the flag options.
 	 */
-	public X0InputField(int[] flags, boolean display) {
+	public InputField(int[] flags, boolean display) {
 		this.flags = flags;
 		this.displayErrors = display;
 		registerKeyListener();
@@ -91,7 +91,7 @@ public class X0InputField extends JTextField {
 	 * @param flags
 	 *            Options to customize this InputField.
 	 */
-	public X0InputField(int[] flags) {
+	public InputField(int[] flags) {
 		this(flags, false);
 	}
 
@@ -101,11 +101,11 @@ public class X0InputField extends JTextField {
 	 *            Boolean weather there should be a JOptionPane displaying the
 	 *            input error depending on the flag options.
 	 */
-	public X0InputField(boolean display) {
+	public InputField(boolean display) {
 		this(new int[] {}, display);
 	}
 
-	public X0InputField() {
+	public InputField() {
 		this(new int[] {}, false);
 	}
 
