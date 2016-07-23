@@ -65,16 +65,14 @@ public final class CommandParser {
 		cmd[0] = cmd[0].replace("\\s", "");
 		cmd[cmd.length - 1] = cmd[cmd.length - 1].replace("\\s", "");
 
-		return parseSingleArgsFlagsValues(cmd);
+		return parseCommand(cmd);
 
 	}
 
-	private Command parseSingleArgsFlagsValues(String[] cmd) {
+	private Command parseCommand(String[] cmd) {
 
 		ArrayList<String> cmds = new ArrayList<String>(Arrays.asList(cmd));
-
 		ArrayList<String> flags = new ArrayList<String>();
-		;
 		ArrayList<String> values = new ArrayList<String>();
 		HashMap<String, String> arguments = new HashMap<String, String>();
 
