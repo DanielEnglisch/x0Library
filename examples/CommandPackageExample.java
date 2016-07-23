@@ -11,7 +11,8 @@ public class CommandPackageExample {
 	public static void main(String[] args) {
 
 		CommandBuilder cmdBuilder = new CommandBuilder("app_update", "/", "#");
-		String inputCommand = cmdBuilder.addValue("csgo").addFlag("force").addArgument("dir", "C:\\csgo\\").build();
+		String inputCommand = cmdBuilder.addValue("csgo").addFlag("force")
+				.addArgument("dir", "C:\\csgo\\my Directory has spaces").build();
 
 		System.out.println("Input command: " + inputCommand);
 
@@ -24,7 +25,6 @@ public class CommandPackageExample {
 		rule.addFlag("force").addMandatoryArgument("dir").setMininalNumberOfValues(1).setMaximalNumberOfValues(1)
 				.setAllowedValuesAtPosition(0, new String[] { "csgo", "minecraft" });
 
-		System.out.println("Command rule: ");
 		System.out.println(rule);
 
 		CommandReport report = command.matches(rule);

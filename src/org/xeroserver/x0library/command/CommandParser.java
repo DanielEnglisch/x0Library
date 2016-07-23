@@ -102,13 +102,13 @@ public final class CommandParser {
 								&& (cmds.get(i + 1).endsWith("\"") || cmds.get(i + 1).endsWith("\'"))) {
 
 							value = StringTools.removeXCharsFromEnd(cmds.get(i + 1), 1);
-							value = StringTools.removeXCharsFromEnd(value, 1);
+							value = StringTools.removeXCharsFromStart(value, 1);
 							cmds.set(i + 1, "");
 
 						} else {
 							if (cmds.get(i + 1).startsWith("\"") || cmds.get(i + 1).startsWith("\'")) {
 
-								value += StringTools.removeXCharsFromEnd(cmds.get(i + 1), 1) + " ";
+								value += StringTools.removeXCharsFromStart(cmds.get(i + 1), 1) + " ";
 								cmds.set(i + 1, "");
 
 								i += 2;
