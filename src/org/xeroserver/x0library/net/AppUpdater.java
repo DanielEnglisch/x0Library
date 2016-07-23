@@ -132,7 +132,6 @@ public final class AppUpdater {
 		FileDownloader fd = new FileDownloader(new File(".", getAppName() + ".tmp"), getDownloadLink()) {
 			@Override
 			public void progressUpdate(double progress) {
-				System.out.println("Update Progress " + progress + "%");
 				pb.setValue((int) progress);
 
 			}

@@ -9,11 +9,21 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
+import org.xeroserver.x0library.log.Logger;
+
 interface DLProgressListener {
 	public void progressUpdate(double progress);
 }
 
 public class FileDownloader implements DLProgressListener {
+
+	// Loggerblock
+	private Logger logger = new Logger();
+
+	public Logger getLogger() {
+		return this.logger;
+	}
+	// -----------
 
 	private File replaceFile = null;
 	private String link = null;
@@ -28,7 +38,7 @@ public class FileDownloader implements DLProgressListener {
 			}
 
 		if (!replaceFile.canWrite()) {
-			System.out.println("No write permission for " + replaceFile.getAbsolutePath());
+			logger.fatal("No write permission for " + replaceFile.getAbsolutePath());
 			return false;
 
 		}
@@ -67,7 +77,7 @@ public class FileDownloader implements DLProgressListener {
 
 	@Override
 	public void progressUpdate(double progress) {
-		System.out.println("Progress: " + progress);
+		System.out.println("Progress: " + progress + "%");
 	}
 
 	private int contentLength(URL url) {

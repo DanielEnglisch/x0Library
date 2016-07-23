@@ -17,11 +17,12 @@ public class ConfigFile {
 	private File file = null;
 	private ArrayList<Line> lines = new ArrayList<Line>();
 
+	//Loggerblock
 	private Logger logger = new Logger();
-
 	public Logger getLogger() {
 		return this.logger;
 	}
+	//-----------
 
 	public ConfigFile(File file) {
 		this.file = file;
