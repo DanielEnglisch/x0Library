@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import org.xeroserver.x0library.log.Logger;
 
-public class TCPServer {
+public abstract class TCPServer {
 
 	private int port = -1;
 	private ServerSocket server = null;
@@ -24,23 +24,26 @@ public class TCPServer {
 		this.logger = new Logger();
 	}
 
-	public void start() {
+	public boolean start() {
 		if (!running) {
 			try {
 				server = new ServerSocket(port);
 			} catch (IOException e) {
 				logger.fatal("Failed to start server!");
 				e.printStackTrace();
-				return;
+				return false;
 
 			}
 
 			running = true;
 
 			startListening();
+			return true;
 
 		} else
 			logger.error("Server already running!");
+
+		return false;
 	}
 
 	public Logger getLogger() {
@@ -206,19 +209,13 @@ public class TCPServer {
 	}
 
 	// Override
-	public void onReceive(Packet p, ServerClient sc) {
-		logger.info("OVR: Received packet with id " + p.getID() + " from " + sc.getAddress());
-	}
+	public abstract void onReceive(Packet p, ServerClient sc);
 
 	// Override
-	public void onConnect(ServerClient sc) {
-		logger.info("OVR: Client connected " + sc.getAddress());
-	}
+	public abstract void onConnect(ServerClient sc);
 
 	// Override
-	public void onDisconnect(ServerClient sc) {
-		logger.info("OVR: Client disconnected " + sc.getAddress());
-	}
+	public abstract void onDisconnect(ServerClient sc);
 
 }
 

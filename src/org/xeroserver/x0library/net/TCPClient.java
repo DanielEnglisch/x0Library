@@ -9,7 +9,7 @@ import java.net.SocketException;
 
 import org.xeroserver.x0library.log.Logger;
 
-public class TCPClient {
+public abstract class TCPClient {
 
 	private Socket socket = null;
 	private Logger logger = null;
@@ -25,14 +25,14 @@ public class TCPClient {
 		logger = new Logger();
 	}
 
-	public void connect() {
+	public final boolean connect() {
 		if (!connected) {
 			try {
 				socket = new Socket(address, port);
 			} catch (IOException e) {
 				logger.fatal("Connection failed!");
 				e.printStackTrace();
-				return;
+				return false;
 			}
 
 			try {
@@ -41,14 +41,15 @@ public class TCPClient {
 			} catch (IOException e) {
 				logger.error("Failed to create stream!");
 				e.printStackTrace();
-				return;
+				return false;
 			}
 			connected = true;
-
 			startListening();
+			return true;
 		} else
 			logger.error("Client already connected!");
 
+		return false;
 	}
 
 	private void startListening() {
@@ -78,6 +79,7 @@ public class TCPClient {
 				if (p != null) {
 
 					if (p.getID().equals("DisconnectPacket")) {
+						onServerStop();
 						break;
 					} else
 						onReceive(p);
@@ -97,14 +99,13 @@ public class TCPClient {
 
 			connected = false;
 			closeRequest = false;
-			onDisconnect();
 		};
 
 		new Thread(task).start();
 
 	}
 
-	public void disconnect() {
+	public final void disconnect() {
 		if (connected) {
 			closeRequest = true;
 			try {
@@ -119,11 +120,11 @@ public class TCPClient {
 
 	}
 
-	public Logger getLogger() {
+	public final Logger getLogger() {
 		return this.logger;
 	}
 
-	public void send(Packet p) {
+	public final void send(Packet p) {
 		if (connected) {
 			try {
 				out.writeObject(p);
@@ -144,13 +145,9 @@ public class TCPClient {
 	}
 
 	// Override
-	public void onReceive(Packet p) {
-		logger.info("OVR: Received packer with id " + p.getID());
-	}
+	public abstract void onReceive(Packet p);
 
 	// Override
-	public void onDisconnect() {
-		logger.info("OVR: Server stopped or client disconnected!");
-	}
+	public abstract void onServerStop();
 
 }
