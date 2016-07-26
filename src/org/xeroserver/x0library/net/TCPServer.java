@@ -23,6 +23,10 @@ public abstract class TCPServer {
 		this.port = port;
 		this.logger = new Logger();
 	}
+	
+	public ServerClient[] getClients(){
+		return clients.toArray(new ServerClient[0]);
+	}
 
 	public boolean start() {
 		if (!running) {
@@ -157,15 +161,21 @@ public abstract class TCPServer {
 			try {
 				out.writeObject(p);
 			} catch (IOException e) {
-				logger.error("Failed to write packet with id " + p.getID());
-				e.printStackTrace();
+
+				if (!(e instanceof SocketException)) {
+					logger.error("Failed to write packet with id " + p.getID());
+					e.printStackTrace();
+				}
+
 			}
 
 			try {
 				out.flush();
 			} catch (IOException e) {
-				logger.error("Failed to flush packet with id " + p.getID());
-				e.printStackTrace();
+				if (!(e instanceof SocketException)) {
+					logger.error("Failed to flush packet with id " + p.getID());
+					e.printStackTrace();
+				}
 			}
 
 		}
@@ -180,7 +190,7 @@ public abstract class TCPServer {
 					e.printStackTrace();
 				} catch (IOException e) {
 
-					if (e instanceof EOFException) {
+					if (e instanceof EOFException | e instanceof SocketException) {
 						break;
 					}
 
@@ -191,16 +201,16 @@ public abstract class TCPServer {
 				onReceive(p, this);
 			}
 
+			isClosed = true;
+			clients.remove(this);
+
 			// Closing
 			try {
-				isClosed = true;
 				out.close();
 				in.close();
 				socket.close();
-				clients.remove(this);
 			} catch (IOException e) {
-				logger.error("Failed to close streams or socket!");
-				e.printStackTrace();
+				logger.warning("Failed to close streams or socket!");
 			}
 
 			onDisconnect(this);

@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -18,6 +19,7 @@ public abstract class TCPClient {
 	private boolean connected = false, closeRequest = false;
 	private ObjectOutputStream out = null;
 	private ObjectInputStream in = null;
+	private boolean sending = false;
 
 	public TCPClient(String addr, int port) {
 		this.address = addr;
@@ -72,6 +74,11 @@ public abstract class TCPClient {
 						break;
 					}
 
+					if (e instanceof StreamCorruptedException) {
+						onError();
+						break;
+					}
+
 					logger.error("Failed to receive packet!");
 					e.printStackTrace();
 				}
@@ -99,6 +106,8 @@ public abstract class TCPClient {
 
 			connected = false;
 			closeRequest = false;
+			logger.info("Connection closed!");
+
 		};
 
 		new Thread(task).start();
@@ -107,6 +116,17 @@ public abstract class TCPClient {
 
 	public final void disconnect() {
 		if (connected) {
+
+			// Wait until sendint finished!
+			while (sending) {
+				try {
+					logger.info("Send in progress sleeping for 100ms...");
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
 			closeRequest = true;
 			try {
 				socket.close();
@@ -126,11 +146,13 @@ public abstract class TCPClient {
 
 	public final void send(Packet p) {
 		if (connected) {
+			sending = true;
 			try {
 				out.writeObject(p);
 			} catch (IOException e) {
 				logger.error("Failed to write packet with id " + p.getID());
 				e.printStackTrace();
+				sending = false;
 			}
 
 			try {
@@ -138,7 +160,9 @@ public abstract class TCPClient {
 			} catch (IOException e) {
 				logger.error("Failed to flush packet with id " + p.getID());
 				e.printStackTrace();
+				sending = false;
 			}
+			sending = false;
 
 		} else
 			logger.error("Can't send packet! Client not connected!");
@@ -149,5 +173,7 @@ public abstract class TCPClient {
 
 	// Override
 	public abstract void onServerStop();
+
+	public abstract void onError();
 
 }
