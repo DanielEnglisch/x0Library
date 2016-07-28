@@ -74,7 +74,7 @@ public class InputField extends JTextField {
 	 *            Boolean weather there should be a JOptionPane displaying the
 	 *            input error depending on the flag options.
 	 */
-	public InputField(int[] flags, boolean display) {
+	public InputField(boolean display, int ... flags) {
 		this.flags = flags;
 		this.displayErrors = display;
 		registerKeyListener();
@@ -91,8 +91,8 @@ public class InputField extends JTextField {
 	 * @param flags
 	 *            Options to customize this InputField.
 	 */
-	public InputField(int[] flags) {
-		this(flags, false);
+	public InputField(int ... flags) {
+		this(false, flags);
 	}
 
 	/**
@@ -102,11 +102,11 @@ public class InputField extends JTextField {
 	 *            input error depending on the flag options.
 	 */
 	public InputField(boolean display) {
-		this(new int[] {}, display);
+		this(display, new int[] {});
 	}
 
 	public InputField() {
-		this(new int[] {}, false);
+		this(false, new int[] {});
 	}
 
 	private void registerKeyListener() {

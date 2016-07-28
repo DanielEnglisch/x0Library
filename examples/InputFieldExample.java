@@ -3,7 +3,7 @@ package org.xeroserver.x0library.examples;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.xeroserver.x0library.gui.X0InputField;
+import org.xeroserver.x0library.gui.InputField;
 
 public class X0InputFieldExample {
 
@@ -21,7 +21,7 @@ public class X0InputFieldExample {
 
 		// Most basic input Field
 		@SuppressWarnings("serial")
-		X0InputField xif1 = new X0InputField() {
+		InputField xif1 = new InputField() {
 			@Override
 			public void update() {
 				System.out.println("xif1: " + getStringValue());
@@ -37,8 +37,7 @@ public class X0InputFieldExample {
 
 		// InputField using Integers
 		@SuppressWarnings("serial")
-		X0InputField xif2 = new X0InputField(
-				new int[] { X0InputField.INT, X0InputField.POSITIVE, X0InputField.CLEAR_ON_ENTER }, true) {
+		InputField xif2 = new InputField(true, InputField.INT, InputField.POSITIVE, InputField.CLEAR_ON_ENTER ) {
 			@Override
 			public void update() {
 				System.out.println("xif2: " + getIntegerValue());
@@ -59,8 +58,7 @@ public class X0InputFieldExample {
 
 		// InputField using History and NoColor
 		@SuppressWarnings("serial")
-		X0InputField xif3 = new X0InputField(
-				new int[] { X0InputField.CONSOLE_HISTORY, X0InputField.NO_COLOR, X0InputField.CLEAR_ON_ENTER }, false) {
+		InputField xif3 = new InputField(false, InputField.CONSOLE_HISTORY, InputField.NO_COLOR, InputField.CLEAR_ON_ENTER) {
 			@Override
 			public void update() {
 				System.out.println("xif3: " + getStringValue());
