@@ -287,9 +287,13 @@ public class InputField extends JTextField {
 			if (contains(INT)) {
 				try {
 					integerValue = (int) (d);
-
 				} catch (Exception e) {
 					e.printStackTrace();
+					error(INT);
+					return false;
+				}
+				
+				if(d != Math.floor(d)){
 					error(INT);
 					return false;
 				}
