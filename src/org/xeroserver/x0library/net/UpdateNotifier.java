@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class UpdateNotifier {
 	
+	//TODO: Mehrere Produkte in der Datei zulassen und mit JSON Parsen, Download GUI, fertig, Alten Updater Löschen
+	
 	public static void checkForUpdate(String id, double currentVersion, String link, boolean display){
 		String removeVersion= null, downloadLink= null, remoteId = null;
 		
