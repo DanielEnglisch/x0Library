@@ -1,4 +1,4 @@
-package org.xeroserver.x0library.examples;
+package examples;
 
 import org.xeroserver.x0library.net.AppUpdater;
 
