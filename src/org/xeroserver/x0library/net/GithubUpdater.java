@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import org.xeroserver.x0library.objtools.StringTools;
 
 /**
- * For checking if there is an update available and get the dowload link of the latest release of a github repository
+ * For checking if there is an update available and get the download link of the latest release of a Github repository
  * @author Xer0
  *
  */
@@ -31,7 +31,7 @@ public class GithubUpdater {
 	/**
 	 * Constructor
 	 * @param token Generated "Personal Access Token" from https://github.com/settings/tokens
-	 * @param url Resource location
+	 * @param url Repository id "DanielEnglisch/x0_Library"
 	 * @param locVers Local application version
 	 */
 	public GithubUpdater(String token, String resource, String locVers) {
@@ -73,6 +73,16 @@ public class GithubUpdater {
 		return downloadLink;
 	}
 	
+	@Override
+	public String toString() {
+		return "GithubUpdater [isUpdateAvailable()=" + isUpdateAvailable() + ", getRemoteVersion()="
+				+ getRemoteVersion() + ", getLocalVersion()=" + getLocalVersion() + ", getDownloadLink()="
+				+ getDownloadLink() + "]";
+	}
+
+	/**
+	 * Shows update dialog with a download button
+	 */
 	public void showUpdateDialog(){
 		if(isUpdateAvailable() && !GraphicsEnvironment.isHeadless()){
 			
@@ -111,11 +121,12 @@ public class GithubUpdater {
 	/**
 	 * Function to request resources from the GithubAPI using OAuth
 	 * @param token Generated "Personal Access Token" from https://github.com/settings/tokens
-	 * @param url Resource location
+	 * @param repository id e.g. "DanielEnglisch/x0_Library"
 	 * @return Returns requested data
 	 */
 	private String getOAuthedResource(String token, String url) {
 		String ret = null;
+		url = "https://api.github.com/repos/"+url+"/releases/latest";
 
 		try {
 			URL myURL = new URL(url);
