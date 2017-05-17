@@ -18,7 +18,7 @@ public class ConfigFile {
 	private ArrayList<Line> lines = new ArrayList<Line>();
 
 	//Loggerblock
-	private Logger logger = new Logger();
+	private Logger logger = new Logger("ConfigFile");
 	public Logger getLogger() {
 		return this.logger;
 	}
