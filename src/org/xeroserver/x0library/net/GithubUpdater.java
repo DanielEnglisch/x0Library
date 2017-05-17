@@ -53,7 +53,7 @@ public class GithubUpdater {
 		String[] spl = m.group().replaceAll("\"", "").split(":");
 		for (int i = 1; i < spl.length; i++)
 			downloadLink += spl[i] + ":";
-		downloadLink = StringTools.removeXCharsFromEnd(downloadLink, 1);
+		downloadLink = downloadLink.substring(0, downloadLink.length() - 1);
 		
 	}
 	
