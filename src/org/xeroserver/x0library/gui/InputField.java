@@ -66,14 +66,7 @@ public class InputField extends JTextField {
 
 	private boolean displayErrors = false;
 
-	/**
-	 * 
-	 * @param flags
-	 *            Options to customize this InputField.
-	 * @param display
-	 *            Boolean weather there should be a JOptionPane displaying the
-	 *            input error depending on the flag options.
-	 */
+
 	public InputField(boolean display, int ... flags) {
 		this.flags = flags;
 		this.displayErrors = display;
@@ -86,21 +79,12 @@ public class InputField extends JTextField {
 
 	}
 
-	/**
-	 * 
-	 * @param flags
-	 *            Options to customize this InputField.
-	 */
+
 	public InputField(int ... flags) {
 		this(false, flags);
 	}
 
-	/**
-	 * 
-	 * @param display
-	 *            Boolean weather there should be a JOptionPane displaying the
-	 *            input error depending on the flag options.
-	 */
+
 	public InputField(boolean display) {
 		this(display, new int[] {});
 	}
@@ -168,68 +152,37 @@ public class InputField extends JTextField {
 
 	}
 
-	/**
-	 * Returns the parsed double value of the InputField.
-	 * 
-	 * @return Returns the parsed double value of the InputField.
-	 */
+
 	public final double getDoubleValue() {
 		return doubleValue;
 	}
 
-	/**
-	 * Returns the parsed integer value of the InputField.
-	 * 
-	 * @return Returns the parsed double value of the InputField.
-	 */
+
 	public final int getIntegerValue() {
 		return integerValue;
 	}
 
-	/**
-	 * Clears the input history if enabled.
-	 */
+
 	public final void clearHistory() {
 		if (contains(CONSOLE_HISTORY))
 			history.clear();
 	}
 
-	/**
-	 * Returns the string value of the InputField.
-	 * 
-	 * @return Returns the string value of the InputField.
-	 */
 	public final String getStringValue() {
 		return stringValue;
 	}
 
-	/**
-	 * Sets the color the text of the InputField should have while typing.
-	 * 
-	 * @param color
-	 *            The Color the text should have while editing.
-	 */
+
 	public final void setEditColor(Color color) {
 		editColor = color;
 	}
 
-	/**
-	 * Sets the color the text of the InputField when an input error occurred.
-	 * 
-	 * @param color
-	 *            The Color the text should have when an error occurred.
-	 */
+
 	public final void setErrorColor(Color color) {
 		errorColor = color;
 	}
 
-	/**
-	 * Sets weather a JOptionPane containing the error message should appear
-	 * when an error occurred.
-	 * 
-	 * @param display
-	 *            A boolean weather the JOptionPane sould be displayed.
-	 */
+
 	public final void setDisplayErrors(boolean display) {
 		displayErrors = display;
 	}
@@ -387,22 +340,12 @@ public class InputField extends JTextField {
 		return false;
 	}
 
-	/**
-	 * Overridable method which is triggered when an InputError occurred.
-	 * 
-	 * @param flag
-	 *            The Flag on which the error occurred.
-	 */
 	public void handleError(int flag) {
 		System.err.println("An error occurred using the flag " + flag + "\nOverride this method to handle errors!");
 	}
 
-	/**
-	 * Overridable method which is triggered when the user hits enter to apply
-	 * his input.
-	 */
 	public void update() {
-		System.err.println("The value of this X0InputField was updated\nOverride this method to handle updates!");
+		System.err.println("The value of this InputField was updated\nOverride this method to handle updates!");
 	}
 
 }
