@@ -17,11 +17,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.xeroserver.x0library.objtools.StringTools;
-
 /**
- * For checking if there is an update available and get the download link of the latest release of a Github repository
- * @author Xer0
+ * GithubUpdater checks the GithubAPI with a given repository to check for updates and obtain their download links. 
+ * @author Daniel 'Xer0' Englisch
+ * @since 14.5.2017
+ * @version 1.1
  *
  */
 public class GithubUpdater {
@@ -29,17 +29,18 @@ public class GithubUpdater {
 	private String remoteVersion, localVersion, downloadLink;
 	
 	/**
-	 * Constructor
-	 * @param token Generated "Personal Access Token" from https://github.com/settings/tokens
-	 * @param url Repository id "DanielEnglisch/x0_Library"
-	 * @param locVers Local application version
+	 * Constructor to initialize a GithubUpdater instance.
+	 * @param token "Personal Access Token" generated from https://github.com/settings/tokens
+	 * @param repository Repository slug e.g. "DanielEnglisch/x0Library"
+	 * @param localVersion Local application version
 	 */
-	public GithubUpdater(String token, String resource, String locVers) {
+	public GithubUpdater(String token, String repository, String locVers) {
 		this.localVersion = locVers;
 		
-		String jsonData = getOAuthedResource(token, resource);
-
-		//Parses the necessary data
+		//Gets the requested API page
+		String jsonData = getOAuthedResource(token, repository);
+		
+		//Regex parsing
 		Pattern version_p = Pattern.compile("tag_name\":\"[^\"]*\"");
 		Pattern download_p = Pattern.compile("browser_download_url\":\"[^\"]*\"");
 
@@ -57,18 +58,34 @@ public class GithubUpdater {
 		
 	}
 	
+	/**
+	 * To check if the local version differs from the remote one.
+	 * @return true if there is an update available
+	 */
 	public boolean isUpdateAvailable(){
 		return !localVersion.equals(remoteVersion);
 	}
 	
+	/**
+	 * To get the remote version of the latest repository release.
+	 * @return the remote version as a String e.g "1.2.3"
+	 */
 	public String getRemoteVersion(){
 		return remoteVersion;
 	}
 	
+	/**
+	 * To get the specified local version of the application.
+	 * @return the local version as a String e.g "1.2.3"
+	 */
 	public String getLocalVersion(){
 		return localVersion;
 	}
 	
+	/**
+	 * To get the download link of the latest repository release.
+	 * @return a download url e.g. "http://... .zip"
+	 */
 	public String getDownloadLink(){
 		return downloadLink;
 	}
@@ -79,9 +96,10 @@ public class GithubUpdater {
 				+ getRemoteVersion() + ", getLocalVersion()=" + getLocalVersion() + ", getDownloadLink()="
 				+ getDownloadLink() + "]";
 	}
-
+	
 	/**
-	 * Shows update dialog with a download button
+	 * If there is an update available it shows a simple dialog box containing information about
+	 * the version and the download link.
 	 */
 	public void showUpdateDialog(){
 		if(isUpdateAvailable() && !GraphicsEnvironment.isHeadless()){
@@ -119,10 +137,10 @@ public class GithubUpdater {
 	}
 	
 	/**
-	 * Function to request resources from the GithubAPI using OAuth
-	 * @param token Generated "Personal Access Token" from https://github.com/settings/tokens
-	 * @param repository id e.g. "DanielEnglisch/x0_Library"
-	 * @return Returns requested data
+	 * Function to request resources from the GithubAPI using OAuth.
+	 * @param token "Personal Access Token" generated from https://github.com/settings/tokens
+	 * @param repository slug e.g. "DanielEnglisch/x0Library"
+	 * @return requested API page
 	 */
 	private String getOAuthedResource(String token, String url) {
 		String ret = null;
@@ -133,9 +151,10 @@ public class GithubUpdater {
 			URLConnection connection = myURL.openConnection();
 			token = token + ":x-oauth-basic";
 			String authString = "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+			//Sets the token as Authorization Property of the request
 			connection.setRequestProperty("Authorization", authString);
 			InputStream webInputStream = connection.getInputStream();
-
+			//Reads the response and returns it
 			BufferedReader in = null;
 			in = new BufferedReader(new InputStreamReader(webInputStream));
 			while (in.ready()) {
