@@ -9,25 +9,15 @@ public class Logger {
 
 	private Logger parentLogger = null;
 	private String name = null;
-	private boolean muted = false;
 	private ArrayList<String> log = new ArrayList<String>();
 	private Long startTime = System.nanoTime();
 	private boolean timestampEnabled = false;
 
 	public Logger() {
-		this(null, null);
+		this(null);
 	}
 
 	public Logger(String name) {
-		this(null, name);
-	}
-
-	public Logger(Logger parentLogger) {
-		this(parentLogger, null);
-	}
-
-	public Logger(Logger parentLogger, String name) {
-		this.parentLogger = parentLogger;
 		this.name = name;
 	}
 
@@ -37,7 +27,7 @@ public class Logger {
 		if (parentLogger != null)
 			parentLogger.log(msg);
 		else
-			flush(null, msg, false);
+			flush(null, msg);
 	}
 
 	public final void info(String msg) {
@@ -46,7 +36,7 @@ public class Logger {
 		if (parentLogger != null)
 			parentLogger.info(msg);
 		else
-			flush("INFO", msg, false);
+			flush("INFO", msg);
 	}
 
 	public final void warning(String msg) {
@@ -55,7 +45,7 @@ public class Logger {
 		if (parentLogger != null)
 			parentLogger.warning(msg);
 		else
-			flush("WARN", msg, false);
+			flush("WARN", msg);
 	}
 
 	public final void error(String msg) {
@@ -64,7 +54,7 @@ public class Logger {
 		if (parentLogger != null)
 			parentLogger.error(msg);
 		else
-			flush("ERROR", msg, true);
+			flush("ERROR", msg);
 	}
 
 	public final void fatal(String msg) {
@@ -73,7 +63,7 @@ public class Logger {
 		if (parentLogger != null)
 			parentLogger.fatal(msg);
 		else
-			flush("FATAL", msg, true);
+			flush("FATAL", msg);
 	}
 
 	public final String[] getLog() {
@@ -103,37 +93,37 @@ public class Logger {
 		return true;
 	}
 
-	public final void custom(String prefix, String msg, boolean isError) {
+	public final void custom(String prefix, String msg) {
 		if (name != null)
 			msg = "[" + name + "] " + msg;
 		if (parentLogger != null)
-			parentLogger.custom(prefix, msg, isError);
+			parentLogger.custom(prefix, msg);
 		else
-			flush(prefix, msg, isError);
+			flush(prefix, msg);
 	}
 
-	private void flush(String prefix, String msg, boolean error) {
+	private final void flush(String prefix, String msg) {
+	
 
-		if (muted)
-			return;
-
-		if (prefix != null) {
-			msg = "{" + prefix + "}\t" + msg;
-		}
-
+		String formattedTime = null;
 		if (timestampEnabled) {
 			double time = (double) ((double) (System.nanoTime() - startTime) / 1000000 / 1000);
-			msg = "(" + String.format("%.5f", time) + "s) " + msg;
-
+			formattedTime = String.format("%.5f", time);
 		}
 
-		output(msg, error);
+		dataOutput(formattedTime,prefix,msg);
 		log.add(msg);
 	}
 
 	// Overridable for e.g adding to a JFrame
-	public void output(String msg, boolean error) {
-		System.out.println(msg);
+	public void dataOutput(String time, String prefix, String msg) {
+		String out = "";
+		if(time != null)
+			out += "(" + time + " s) ";
+		if(prefix != null)
+			out += "{" + prefix + "}\t";
+		out += msg;
+		System.out.println(out);
 	}
 
 	public final Logger getParentLogger() {
@@ -147,17 +137,9 @@ public class Logger {
 	public final String getName() {
 		return name;
 	}
-
+	
 	public final void setName(String name) {
 		this.name = name;
-	}
-
-	public final boolean isMuted() {
-		return muted;
-	}
-
-	public final void setMuted(boolean muted) {
-		this.muted = muted;
 	}
 
 	public final boolean isTimestampEnabled() {
@@ -166,6 +148,10 @@ public class Logger {
 
 	public final void setTimestampEnabled(boolean timestampEnabled) {
 		this.timestampEnabled = timestampEnabled;
+	}
+	
+	public final void resetTime(){
+		startTime = System.nanoTime();
 	}
 
 }
