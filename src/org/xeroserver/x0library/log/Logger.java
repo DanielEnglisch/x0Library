@@ -5,7 +5,40 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
+/**
+ * The Logger class is used to efficiently create log files featuring different levels (Info, Warning, Error, Fatal)
+ * and time logs. It is also possible to dump logs to file.
+ * @author Xer0
+ * @version 2.0
+ * @since 2012
+ */
 public class Logger {
+	
+	/**
+	 * Class that contains the data of the logger message (time, message, type)
+	 * @author Xer0
+	 * @version 1.0
+	 * @since 18.5.2017
+	 */
+	class LoggerData{
+		private String message, prefix,time;
+		
+		private LoggerData(String time, String prefix, String message){
+			this.time = time;
+			this.prefix = prefix;
+			this.message = message;
+		}
+		
+		public String getTime() {
+			return time;
+		}
+		public String getMessage() {
+			return message;
+		}
+		public String getPrefix() {
+			return prefix;
+		}
+	}
 
 	private Logger parentLogger = null;
 	private String name = null;
@@ -17,10 +50,18 @@ public class Logger {
 		this(null);
 	}
 
+	/**
+	 * Constructor
+	 * @param name The display name of the logger
+	 */
 	public Logger(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Logs a message without a prefix like ERROR or INFO.
+	 * @param msg The message
+	 */
 	public final void log(String msg) {
 		if (name != null)
 			msg = "[" + name + "] " + msg;
@@ -30,6 +71,10 @@ public class Logger {
 			flush(null, msg);
 	}
 
+	/**
+	 * Logs a message with the INFO prefix.
+	 * @param msg The message
+	 */
 	public final void info(String msg) {
 		if (name != null)
 			msg = "[" + name + "] " + msg;
@@ -39,6 +84,10 @@ public class Logger {
 			flush("INFO", msg);
 	}
 
+	/**
+	 * Logs a message with the WARN prefix.
+	 * @param msg The message
+	 */
 	public final void warning(String msg) {
 		if (name != null)
 			msg = "[" + name + "] " + msg;
@@ -48,6 +97,10 @@ public class Logger {
 			flush("WARN", msg);
 	}
 
+	/**
+	 * Logs a message with the ERROR prefix.
+	 * @param msg The message
+	 */
 	public final void error(String msg) {
 		if (name != null)
 			msg = "[" + name + "] " + msg;
@@ -57,6 +110,10 @@ public class Logger {
 			flush("ERROR", msg);
 	}
 
+	/**
+	 * Logs a message with the FATAL prefix.
+	 * @param msg The message
+	 */
 	public final void fatal(String msg) {
 		if (name != null)
 			msg = "[" + name + "] " + msg;
@@ -66,14 +123,39 @@ public class Logger {
 			flush("FATAL", msg);
 	}
 
+	/**
+	 * Logs a message with a custom prefix.
+	 * @param prefix The prefix e.g "FUNNY"
+	 * @param msg The message
+	 */
+	public final void custom(String prefix, String msg) {
+		if (name != null)
+			msg = "[" + name + "] " + msg;
+		if (parentLogger != null)
+			parentLogger.custom(prefix, msg);
+		else
+			flush(prefix, msg);
+	}
+	
+	/**
+	 * Gets the saved log.
+	 */
 	public final String[] getLog() {
 		return log.toArray(new String[0]);
 	}
 
+	/**
+	 * Clears the saved log array.
+	 */
 	public final void clear() {
 		log.clear();
 	}
 
+	/**
+	 * Dumps the log to file.
+	 * @param f The file to which the log is saved to
+	 * @return weather or not the save was successful
+	 */
 	public final boolean dump(File f) {
 		BufferedWriter out = null;
 		try {
@@ -93,14 +175,7 @@ public class Logger {
 		return true;
 	}
 
-	public final void custom(String prefix, String msg) {
-		if (name != null)
-			msg = "[" + name + "] " + msg;
-		if (parentLogger != null)
-			parentLogger.custom(prefix, msg);
-		else
-			flush(prefix, msg);
-	}
+
 
 	private final void flush(String prefix, String msg) {
 	
@@ -111,18 +186,21 @@ public class Logger {
 			formattedTime = String.format("%.5f", time);
 		}
 
-		dataOutput(formattedTime,prefix,msg);
+		dataOutput(new LoggerData(formattedTime, prefix, msg));
 		log.add(msg);
 	}
 
-	// Overridable for e.g adding to a JFrame
-	public void dataOutput(String time, String prefix, String msg) {
+	/**
+	 * Overridable method to create a custom log format.
+	 * @param data The container in which the data of the message (prefix, message, time) is stored.
+	 */
+	public void dataOutput(LoggerData data) {
 		String out = "";
-		if(time != null)
-			out += "(" + time + " s) ";
-		if(prefix != null)
-			out += "{" + prefix + "}\t";
-		out += msg;
+		if(data.getTime() != null)
+			out += "(" + data.getTime() + " s) ";
+		if(data.getPrefix() != null)
+			out += "{" + data.getPrefix() + "}\t";
+		out += data.getMessage();
 		System.out.println(out);
 	}
 
