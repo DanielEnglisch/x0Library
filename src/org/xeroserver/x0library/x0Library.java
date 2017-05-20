@@ -3,7 +3,7 @@ package org.xeroserver.x0library;
 public final class x0Library {
 
 	/**
-	 * Gets the current verison of x0Library.
+	 * Gets the current version of x0Library.
 	 * 
 	 * @return the current version in String format
 	 */
