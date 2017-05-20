@@ -90,3 +90,4 @@ tmp/
 
 # TeXlipse plugin
 .texlipse
+build/x0library-0.37.jar

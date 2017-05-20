@@ -28,7 +28,7 @@ import javax.swing.JLabel;
  */
 public class GithubUpdater {
 
-	private String remoteVersion, localVersion, downloadLink;
+	private String remoteVersion, localVersion, downloadLink, repositoryName;
 
 	/**
 	 * Constructor to initialize a GithubUpdater instance.
@@ -43,6 +43,7 @@ public class GithubUpdater {
 	 */
 	public GithubUpdater(String token, String repository, String locVers) {
 		this.localVersion = locVers;
+		this.repositoryName = repository.split("/")[1];
 
 		// Gets the requested API page
 		String jsonData = getOAuthedResource(token, repository);
@@ -113,10 +114,20 @@ public class GithubUpdater {
 	 * information about the version and the download link.
 	 */
 	public void showUpdateDialog() {
-		if (GraphicsEnvironment.isHeadless())
+		
+		if (!isUpdateAvailable()){
+			System.out.println("There is no update available!");
 			return;
-		if (isUpdateAvailable()) {
+		}
+		
+		if (GraphicsEnvironment.isHeadless()){
+			
+			System.out.println("=== " + repositoryName + " Update ===");
+			System.out.println("Local version: " + getLocalVersion());
+			System.out.println("Remote version: " + getRemoteVersion());
+			System.out.println("Download Link: " + getDownloadLink());
 
+		}else{
 			JFrame f = new JFrame("Update Available");
 			f.setLocationRelativeTo(null);
 			f.setSize(200, 150);
@@ -143,9 +154,8 @@ public class GithubUpdater {
 			f.add(downloadBtn);
 			f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			f.setVisible(true);
-		} else {
-			System.out.println("There is an update available: " + downloadLink);
 		}
+			
 	}
 
 	/**

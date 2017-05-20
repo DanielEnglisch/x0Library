@@ -10,5 +10,4 @@ public final class x0Library {
 	public static String getVersion() {
 		return "0.37";
 	}
-
 }
