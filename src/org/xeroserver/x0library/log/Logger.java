@@ -6,35 +6,40 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
- * The Logger class is used to efficiently create log files featuring different levels (Info, Warning, Error, Fatal)
- * and time logs. It is also possible to dump logs to file.
+ * The Logger class is used to efficiently create log files featuring different
+ * levels (Info, Warning, Error, Fatal) and time logs. It is also possible to
+ * dump logs to file.
+ * 
  * @author Xer0
  * @version 2.0
  * @since 2012
  */
 public class Logger {
-	
+
 	/**
 	 * Class that contains the data of the logger message (time, message, type)
+	 * 
 	 * @author Xer0
 	 * @version 1.0
 	 * @since 18.5.2017
 	 */
-	class LoggerData{
-		private String message, prefix,time;
-		
-		private LoggerData(String time, String prefix, String message){
+	class LoggerData {
+		private String message, prefix, time;
+
+		private LoggerData(String time, String prefix, String message) {
 			this.time = time;
 			this.prefix = prefix;
 			this.message = message;
 		}
-		
+
 		public String getTime() {
 			return time;
 		}
+
 		public String getMessage() {
 			return message;
 		}
+
 		public String getPrefix() {
 			return prefix;
 		}
@@ -52,7 +57,9 @@ public class Logger {
 
 	/**
 	 * Constructor
-	 * @param name The display name of the logger
+	 * 
+	 * @param name
+	 *            The display name of the logger
 	 */
 	public Logger(String name) {
 		this.name = name;
@@ -60,7 +67,9 @@ public class Logger {
 
 	/**
 	 * Logs a message without a prefix like ERROR or INFO.
-	 * @param msg The message
+	 * 
+	 * @param msg
+	 *            The message
 	 */
 	public final void log(String msg) {
 		if (name != null)
@@ -73,7 +82,9 @@ public class Logger {
 
 	/**
 	 * Logs a message with the INFO prefix.
-	 * @param msg The message
+	 * 
+	 * @param msg
+	 *            The message
 	 */
 	public final void info(String msg) {
 		if (name != null)
@@ -86,7 +97,9 @@ public class Logger {
 
 	/**
 	 * Logs a message with the WARN prefix.
-	 * @param msg The message
+	 * 
+	 * @param msg
+	 *            The message
 	 */
 	public final void warning(String msg) {
 		if (name != null)
@@ -99,7 +112,9 @@ public class Logger {
 
 	/**
 	 * Logs a message with the ERROR prefix.
-	 * @param msg The message
+	 * 
+	 * @param msg
+	 *            The message
 	 */
 	public final void error(String msg) {
 		if (name != null)
@@ -112,7 +127,9 @@ public class Logger {
 
 	/**
 	 * Logs a message with the FATAL prefix.
-	 * @param msg The message
+	 * 
+	 * @param msg
+	 *            The message
 	 */
 	public final void fatal(String msg) {
 		if (name != null)
@@ -125,8 +142,11 @@ public class Logger {
 
 	/**
 	 * Logs a message with a custom prefix.
-	 * @param prefix The prefix e.g "FUNNY"
-	 * @param msg The message
+	 * 
+	 * @param prefix
+	 *            The prefix e.g "FUNNY"
+	 * @param msg
+	 *            The message
 	 */
 	public final void custom(String prefix, String msg) {
 		if (name != null)
@@ -136,7 +156,7 @@ public class Logger {
 		else
 			flush(prefix, msg);
 	}
-	
+
 	/**
 	 * Gets the saved log.
 	 */
@@ -153,7 +173,9 @@ public class Logger {
 
 	/**
 	 * Dumps the log to file.
-	 * @param f The file to which the log is saved to
+	 * 
+	 * @param f
+	 *            The file to which the log is saved to
 	 * @return weather or not the save was successful
 	 */
 	public final boolean dump(File f) {
@@ -175,10 +197,7 @@ public class Logger {
 		return true;
 	}
 
-
-
 	private final void flush(String prefix, String msg) {
-	
 
 		String formattedTime = null;
 		if (timestampEnabled) {
@@ -192,13 +211,16 @@ public class Logger {
 
 	/**
 	 * Overridable method to create a custom log format.
-	 * @param data The container in which the data of the message (prefix, message, time) is stored.
+	 * 
+	 * @param data
+	 *            The container in which the data of the message (prefix,
+	 *            message, time) is stored.
 	 */
 	public void dataOutput(LoggerData data) {
 		String out = "";
-		if(data.getTime() != null)
+		if (data.getTime() != null)
 			out += "(" + data.getTime() + " s) ";
-		if(data.getPrefix() != null)
+		if (data.getPrefix() != null)
 			out += "{" + data.getPrefix() + "}\t";
 		out += data.getMessage();
 		System.out.println(out);
@@ -215,7 +237,7 @@ public class Logger {
 	public final String getName() {
 		return name;
 	}
-	
+
 	public final void setName(String name) {
 		this.name = name;
 	}
@@ -227,8 +249,8 @@ public class Logger {
 	public final void setTimestampEnabled(boolean timestampEnabled) {
 		this.timestampEnabled = timestampEnabled;
 	}
-	
-	public final void resetTime(){
+
+	public final void resetTime() {
 		startTime = System.nanoTime();
 	}
 

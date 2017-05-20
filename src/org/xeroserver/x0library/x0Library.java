@@ -1,9 +1,14 @@
 package org.xeroserver.x0library;
 
-public final class x0Library{
-	
-	public static String getVersion(){
+public final class x0Library {
+
+	/**
+	 * Gets the current verison of x0Library.
+	 * 
+	 * @return the current version in String format
+	 */
+	public static String getVersion() {
 		return "0.37";
 	}
-	
+
 }
